@@ -119,7 +119,7 @@ const userSchema = new Schema({
     type: Map,
     of: String
   },
-  badges: [{ type: Schema.Types.ObjectId, ref: 'Badges' }]
+  badges: [{ type: Schema.Types.ObjectId, ref: 'Badges' }],
 });
 Auditor.addHooks(userSchema);
 const User = mongoose.model('User', userSchema);
