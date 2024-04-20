@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Topic from '@models/Topic.model.js';
 
 export default defineEventHandler(async (e) => {
   try {

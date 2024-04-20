@@ -49,4 +49,4 @@ const jobSchema = new Schema({
 Auditor.addHooks(jobSchema);
 const Job = mongoose.model('Job', jobSchema);
 export default Job;
-export { jobSchema };
+export { jobSchema, Job };

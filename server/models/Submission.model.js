@@ -59,4 +59,4 @@ const submissionSchema = new Schema({
 Auditor.addHooks(submissionSchema);
 const Submission = mongoose.model('Submission', submissionSchema);
 export default Submission;
-export { submissionSchema };
+export { submissionSchema, Submission };

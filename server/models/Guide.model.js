@@ -22,4 +22,4 @@ const guideSchema = new Schema({
 Auditor.addHooks(guideSchema);
 const Guide = mongoose.model('Guide', guideSchema);
 export default Guide;
-export { guideSchema };
+export { guideSchema, Guide };

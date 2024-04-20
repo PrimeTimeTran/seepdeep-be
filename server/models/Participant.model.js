@@ -26,4 +26,4 @@ const participantSchema = new Schema({
 Auditor.addHooks(participantSchema);
 const Participant = mongoose.model('Participant', participantSchema);
 export default Participant;
-export { participantSchema };
+export { participantSchema, Participant };

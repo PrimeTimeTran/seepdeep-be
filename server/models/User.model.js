@@ -140,4 +140,4 @@ const userSchema = new Schema({
 Auditor.addHooks(userSchema);
 const User = mongoose.model('User', userSchema);
 export default User;
-export { userSchema };
+export { userSchema, User };

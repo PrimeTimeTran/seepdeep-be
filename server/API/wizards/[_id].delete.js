@@ -1,5 +1,3 @@
-import Wizards from '@models/Wizards.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Wizards.findOneAndUpdate(

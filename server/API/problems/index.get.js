@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Problem from '@models/Problem.model.js';
 
 export default defineEventHandler(async (e) => {
   try {

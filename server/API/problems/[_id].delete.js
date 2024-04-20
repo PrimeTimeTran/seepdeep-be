@@ -1,5 +1,3 @@
-import Problem from '@models/Problem.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Problem.findOneAndUpdate(

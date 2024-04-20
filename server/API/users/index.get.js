@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import User from '@models/User.model.js';
 
 export default defineEventHandler(async (e) => {
   try {

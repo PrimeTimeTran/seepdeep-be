@@ -1,5 +1,3 @@
-import Badge from '@models/Badge.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Badge.findOneAndUpdate(

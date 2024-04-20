@@ -16,4 +16,4 @@ const topicSchema = new Schema({
 Auditor.addHooks(topicSchema);
 const Topic = mongoose.model('Topic', topicSchema);
 export default Topic;
-export { topicSchema };
+export { topicSchema, Topic };

@@ -108,4 +108,4 @@ const wizardSchema = new Schema({
 Auditor.addHooks(wizardSchema);
 const Wizards = mongoose.model('Wizards', wizardSchema);
 export default Wizards;
-export { wizardSchema };
+export { wizardSchema, Wizards };

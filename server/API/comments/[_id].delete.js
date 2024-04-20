@@ -1,5 +1,3 @@
-import Comment from '@models/Comment.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Comment.findOneAndUpdate(

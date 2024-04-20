@@ -28,4 +28,4 @@ const contestSchema = new Schema({
 Auditor.addHooks(contestSchema);
 const Contest = mongoose.model('Contest', contestSchema);
 export default Contest;
-export { contestSchema };
+export { contestSchema, Contest };

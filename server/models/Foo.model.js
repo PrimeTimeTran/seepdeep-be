@@ -60,4 +60,4 @@ const fooSchema = new Schema({
 Auditor.addHooks(fooSchema);
 const Foo = mongoose.model('Foo', fooSchema);
 export default Foo;
-export { fooSchema };
+export { fooSchema, Foo };

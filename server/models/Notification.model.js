@@ -26,4 +26,4 @@ const notificationSchema = new Schema({
 Auditor.addHooks(notificationSchema);
 const Notification = mongoose.model('Notification', notificationSchema);
 export default Notification;
-export { notificationSchema };
+export { notificationSchema, Notification };

@@ -1,5 +1,3 @@
-import Article from '@models/Article.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Article.findOneAndUpdate(

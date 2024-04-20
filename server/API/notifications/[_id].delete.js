@@ -1,5 +1,3 @@
-import Notification from '@models/Notification.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Notification.findOneAndUpdate(

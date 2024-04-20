@@ -36,4 +36,4 @@ const NotificationItem = mongoose.model(
   notificationItemSchema
 );
 export default NotificationItem;
-export { notificationItemSchema };
+export { notificationItemSchema, NotificationItem };

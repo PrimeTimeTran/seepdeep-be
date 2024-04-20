@@ -25,4 +25,4 @@ const commentSchema = new Schema({
 Auditor.addHooks(commentSchema);
 const Comment = mongoose.model('Comment', commentSchema);
 export default Comment;
-export { commentSchema };
+export { commentSchema, Comment };

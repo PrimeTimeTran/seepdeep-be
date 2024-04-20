@@ -63,4 +63,4 @@ const problemSchema = new Schema({
 Auditor.addHooks(problemSchema);
 const Problem = mongoose.model('Problem', problemSchema);
 export default Problem;
-export { problemSchema };
+export { problemSchema, Problem };

@@ -1,5 +1,3 @@
-import Participant from '@models/Participant.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Participant.findOneAndUpdate(

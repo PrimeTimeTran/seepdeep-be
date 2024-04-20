@@ -21,4 +21,4 @@ const badgeSchema = new Schema({
 Auditor.addHooks(badgeSchema);
 const Badge = mongoose.model('Badge', badgeSchema);
 export default Badge;
-export { badgeSchema };
+export { badgeSchema, Badge };

@@ -36,4 +36,4 @@ const postSchema = new Schema({
 Auditor.addHooks(postSchema);
 const Post = mongoose.model('Post', postSchema);
 export default Post;
-export { postSchema };
+export { postSchema, Post };

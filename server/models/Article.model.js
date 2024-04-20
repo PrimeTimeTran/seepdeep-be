@@ -50,4 +50,4 @@ const articleSchema = new Schema({
 Auditor.addHooks(articleSchema);
 const Article = mongoose.model('Article', articleSchema);
 export default Article;
-export { articleSchema };
+export { articleSchema, Article };

@@ -1,5 +1,3 @@
-import NotificationItem from '@models/NotificationItem.model.js';
-
 export default defineEventHandler(async (event) => {
   try {
     const doc = await NotificationItem.findOneAndUpdate(

@@ -36,4 +36,4 @@ const companySchema = new Schema({
 Auditor.addHooks(companySchema);
 const Company = mongoose.model('Company', companySchema);
 export default Company;
-export { companySchema };
+export { companySchema, Company };
