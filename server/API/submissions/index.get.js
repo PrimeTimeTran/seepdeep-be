@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Submission from '@models/Submission.model.js';
 export default defineEventHandler(async (e) => {
   try {
     let { limit, page } = e.context;

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Guide from '@models/Guide.model.js';
 export default defineEventHandler(async (e) => {
   try {
     let { limit, page } = e.context;

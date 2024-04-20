@@ -1,4 +1,3 @@
-import Job from '@models/Job.model.js';
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Job.findOneAndUpdate(

@@ -1,5 +1,4 @@
 import User from "../models/User.model"
-
 interface token {
   userId: String
 }

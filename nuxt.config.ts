@@ -21,17 +21,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     host: process.env.HOST,
     googleAPIKey: process.env.GOOGLE_API_KEY,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,PUT,PATCH,POST,DELETE", 
-      "Access-Control-Allow-Headers": "*, Origin, X-Requested-With, Content-Type, Accept"
-    },
     public: {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,PATCH,POST,DELETE", 
-        "Access-Control-Allow-Headers": "*, Origin, X-Requested-With, Content-Type, Accept"
-      },
       apiUrl: process.env.API_URL,
       hostUrl: process.env.HOST_URL,
     },

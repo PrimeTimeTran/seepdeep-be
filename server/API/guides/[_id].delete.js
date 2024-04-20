@@ -1,4 +1,3 @@
-import Guide from '@models/Guide.model.js';
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Guide.findOneAndUpdate(

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Participant from '@models/Participant.model.js';
 export default defineEventHandler(async (e) => {
   try {
     let { limit, page } = e.context;

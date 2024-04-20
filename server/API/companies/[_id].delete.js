@@ -1,4 +1,3 @@
-import Company from '@models/Company.model.js';
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Company.findOneAndUpdate(

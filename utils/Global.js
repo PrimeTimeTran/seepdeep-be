@@ -2,7 +2,7 @@ import _ from 'lodash'
         import { ClockIcon, ChartPieIcon, UserGroupIcon } from '@heroicons/vue/20/solid'
 
         export class GlobalState { 
-          static entityNames = ['auditlogs', 'contests','users','articles','Badges','BadgeItems','comments','companies','jobs','participants','guides','notifications','notificationItems','posts','problems','submissions','topics','wizards','foos',]
+          static entityNames = ['auditlogs', 'contests','users','articles','badges','comments','companies','jobs','participants','guides','notifications','notificationItems','posts','problems','submissions','topics','wizards','foos',]
           static formSortedFields(entityName) {
             // Sort fields => primitives, enums, relations
             const thisEntity = this.entities[entityName]
@@ -28,7 +28,7 @@ import _ from 'lodash'
             { path: 'dashboard', label: 'Dashboard', icon: ChartPieIcon },
             { path: 'auditlogs', label: 'Audit Logs', icon: ClockIcon },
             { path: 'users', label: 'Users', icon: UserGroupIcon },
-            { path: 'contests', label: 'Contests' },{ path: 'articles', label: 'Articles' },{ path: 'Badges', label: 'Badges' },{ path: 'BadgeItems', label: 'BadgeItems' },{ path: 'comments', label: 'Comments' },{ path: 'companies', label: 'Companies' },{ path: 'jobs', label: 'Jobs' },{ path: 'participants', label: 'Participants' },{ path: 'guides', label: 'Guides' },{ path: 'notifications', label: 'Notifications' },{ path: 'notificationItems', label: 'NotificationItems' },{ path: 'posts', label: 'Posts' },{ path: 'problems', label: 'Problems' },{ path: 'submissions', label: 'Submissions' },{ path: 'topics', label: 'Topics' },{ path: 'wizards', label: 'Wizards' },{ path: 'foos', label: 'Foos' },
+            { path: 'contests', label: 'Contests' },{ path: 'articles', label: 'Articles' },{ path: 'badges', label: 'Badges' },{ path: 'comments', label: 'Comments' },{ path: 'companies', label: 'Companies' },{ path: 'jobs', label: 'Jobs' },{ path: 'participants', label: 'Participants' },{ path: 'guides', label: 'Guides' },{ path: 'notifications', label: 'Notifications' },{ path: 'notificationItems', label: 'NotificationItems' },{ path: 'posts', label: 'Posts' },{ path: 'problems', label: 'Problems' },{ path: 'submissions', label: 'Submissions' },{ path: 'topics', label: 'Topics' },{ path: 'wizards', label: 'Wizards' },{ path: 'foos', label: 'Foos' },
           ]
           static entities = {
             contests: {
@@ -139,6 +139,14 @@ import _ from 'lodash'
         
       } 
     ,
+      passwordDigest: {
+        type: 'string',
+        label: 'Password Digest',
+        
+        placeholder: '',
+        
+      } 
+    ,
       firstName: {
         type: 'string',
         label: 'First Name',
@@ -169,14 +177,6 @@ import _ from 'lodash'
         
         placeholder: '',
         options: ['closed','open','pending'],
-      } 
-    ,
-      avatarUrl: {
-        type: 'string',
-        label: 'AvatarURL',
-        
-        placeholder: '',
-        
       } 
     ,
       city: {
@@ -419,14 +419,6 @@ import _ from 'lodash'
         
       } 
     ,
-      badgeItem: {
-        type: 'relation',
-        label: 'Badge Items',
-        relation: 'otm',
-        placeholder: 'one-to-many',
-        
-      } 
-    ,
       articles: {
         type: 'relation',
         label: 'Articles',
@@ -455,6 +447,30 @@ import _ from 'lodash'
         type: 'relation',
         label: 'Badges',
         relation: 'mtm',
+        placeholder: '',
+        
+      } 
+    ,
+      role: {
+        type: 'enumeratorMulti',
+        label: 'Role',
+        
+        placeholder: 'customer, employee, admin',
+        options: ['admin','customer','owner','staff'],
+      } 
+    ,
+      streak: {
+        type: 'map',
+        label: 'Steak',
+        
+        placeholder: '',
+        
+      } 
+    ,
+      languages: {
+        type: 'map',
+        label: 'Languages',
+        
         placeholder: '',
         
       } 
@@ -581,7 +597,7 @@ import _ from 'lodash'
         
       } 
     
-  },Badges: {
+  },badges: {
     
       _id: {
         type: 'text',
@@ -628,56 +644,6 @@ import _ from 'lodash'
         label: 'Users',
         relation: 'mtm',
         placeholder: '',
-        
-      } 
-    
-  },BadgeItems: {
-    
-      _id: {
-        type: 'text',
-        label: 'undefined',
-        
-        placeholder: '',
-        
-      } 
-    ,
-      date: {
-        type: 'date',
-        label: 'Date',
-        
-        placeholder: '',
-        
-      } 
-    ,
-      month: {
-        type: 'string',
-        label: 'Month',
-        
-        placeholder: '',
-        
-      } 
-    ,
-      year: {
-        type: 'string',
-        label: 'Year',
-        
-        placeholder: '',
-        
-      } 
-    ,
-      user: {
-        type: 'relation',
-        label: 'User',
-        relation: 'mto',
-        placeholder: 'many-to-one',
-        
-      } 
-    ,
-      badge: {
-        type: 'relation',
-        label: 'Badge',
-        relation: 'mto',
-        placeholder: 'many-to-one',
         
       } 
     

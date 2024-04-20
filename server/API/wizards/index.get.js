@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Wizards from '@models/Wizards.model.js';
 export default defineEventHandler(async (e) => {
   try {
     let { limit, page } = e.context;
@@ -21,7 +20,6 @@ export default defineEventHandler(async (e) => {
       },
       data
     };
-    console.log({response})
     return response;
   } catch (error) {
     console.log({

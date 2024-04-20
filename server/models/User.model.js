@@ -8,6 +8,12 @@ export const userEnumerators = {
     closed: 'closed',
     deactivated: 'deactivated',
     blocked: 'blocked'
+  },
+  role: {
+    owner: 'owner',
+    admin: 'admin',
+    staff: 'staff',
+    customer: 'customer'
   }
 };
 
@@ -16,7 +22,7 @@ const userSchema = new Schema({
     type: String
   },
   passwordDigest: {
-    type: String,
+    type: String
   },
   firstName: {
     type: String
@@ -30,9 +36,6 @@ const userSchema = new Schema({
   status: {
     type: String,
     enum: ['pending', 'active', 'closed', 'deactivated', 'blocked']
-  },
-  avatarUrl: {
-    type: String
   },
   city: {
     type: String
@@ -120,6 +123,18 @@ const userSchema = new Schema({
     of: String
   },
   badges: [{ type: Schema.Types.ObjectId, ref: 'Badges' }],
+  role: {
+    type: [String],
+    enum: ['owner', 'admin', 'staff', 'customer']
+  },
+  streak: {
+    type: Map,
+    of: String
+  },
+  languages: {
+    type: Map,
+    of: String
+  }
 });
 Auditor.addHooks(userSchema);
 const User = mongoose.model('User', userSchema);
