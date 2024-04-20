@@ -9,6 +9,7 @@ export const userEnumerators = {
     deactivated: 'deactivated',
     blocked: 'blocked'
   },
+
   role: {
     owner: 'owner',
     admin: 'admin',
@@ -33,10 +34,6 @@ const userSchema = new Schema({
   age: {
     type: BigInt
   },
-  status: {
-    type: String,
-    enum: ['pending', 'active', 'closed', 'deactivated', 'blocked']
-  },
   city: {
     type: String
   },
@@ -45,6 +42,10 @@ const userSchema = new Schema({
   },
   dob: {
     type: Date
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'active', 'closed', 'deactivated', 'blocked']
   },
   username: {
     type: String

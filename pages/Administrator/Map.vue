@@ -1,5 +1,6 @@
 <script setup>
-import { Loader } from '@googlemaps/js-api-loader'
+import * as GMaps from '@googlemaps/js-api-loader'
+const { Loader } = GMaps
 definePageMeta({
   layout: 't-main-layout',
 })

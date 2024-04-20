@@ -2,7 +2,7 @@ const isDeveloping = process.env.NODE_ENV === 'development'
 
 export default defineEventHandler(async (e) => {
   try {
-    const isAuthenticated = e.context.user && e.context.user.roles.includes('admin')
+    const isAuthenticated = e.context.user && e.context.user.roles?.includes('admin')
     const isAuthorized = isDeveloping || isAuthenticated || true
     if (!isAuthorized)
       throw createError({
