@@ -1,0 +1,8 @@
+import Badge from '@models/Badge.model.js';
+export default defineEventHandler(async (event) => {
+  try {
+    return await Badge.findOne({ _id: event.context.params?._id });
+  } catch (error) {
+    return error;
+  }
+});

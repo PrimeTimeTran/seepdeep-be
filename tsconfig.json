@@ -1,0 +1,8 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "strict": true
+  },
+  "exclude": ["./src/**", "./utils/Turboship", "./composables/useEntities.ts", "./server/middleware/02.user.global.ts"],
+  "typeRoots": ["./typings", "./node_modules/@types/"]
+}
