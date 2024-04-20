@@ -1,3 +1,5 @@
+import Foo from '@models/Foo.model.js';
+
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Foo.findOneAndUpdate(

@@ -1,3 +1,5 @@
+import Post from '@models/Post.model.js';
+
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Post.findOneAndUpdate(

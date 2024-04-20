@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import Company from '@models/Company.model.js';
+
 export default defineEventHandler(async (e) => {
   try {
     let { limit, page } = e.context;

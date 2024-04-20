@@ -1,3 +1,5 @@
+import Contest from '@models/Contest.model.js';
+
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Contest.findOneAndUpdate(

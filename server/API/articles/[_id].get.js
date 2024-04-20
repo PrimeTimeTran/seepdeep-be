@@ -1,3 +1,5 @@
+import Article from '@models/Article.model.js';
+
 export default defineEventHandler(async (event) => {
   try {
     return await Article.findOne({ _id: event.context.params?._id });

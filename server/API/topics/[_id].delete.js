@@ -1,3 +1,5 @@
+import Topic from '@models/Topic.model.js';
+
 export default defineEventHandler(async (event) => {
   try {
     const doc = await Topic.findOneAndUpdate(

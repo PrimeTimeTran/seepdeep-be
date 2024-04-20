@@ -85,14 +85,14 @@ export default defineNuxtConfig({
   },
   vuefire: {
     config: {
-      appId: '',
-      apiKey: '',
-      projectId: '',
-      authDomain: '',
-      databaseURL: '',
-      measurementId: '',
-      storageBucket: '',
-      messagingSenderId: '',
+      projectId: 'turboship-dev',
+      measurementId: 'G-3Y4HHYCZK7',
+      messagingSenderId: '885916988672',
+      storageBucket: 'turboship-dev.appspot.com',
+      authDomain: 'turboship-dev.firebaseapp.com',
+      databaseURL: 'https://turboship-dev-default-rtdb.firebaseio.com',
+      appId: '1:885916988672:web:1cca060cfd4ac74a2eafe5',
+      apiKey: 'AIzaSyBaBHq_Igg8V6xDmuNBMDWK_KputgYfSLM',
     },
   },
 })
