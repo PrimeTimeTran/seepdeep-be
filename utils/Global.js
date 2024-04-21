@@ -150,12 +150,6 @@ export class GlobalState {
 
         placeholder: '',
       },
-      passwordDigest: {
-        type: 'string',
-        label: 'Password Digest',
-
-        placeholder: '',
-      },
       firstName: {
         type: 'string',
         label: 'First Name',

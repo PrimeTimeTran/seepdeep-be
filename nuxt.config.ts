@@ -39,7 +39,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@formkit/nuxt',
     'nuxt-mongoose',
-    '@nuxt/content',
     'nuxt-vuefire',
     '@samk-dev/nuxt-vcalendar',
     '@nuxtjs/tailwindcss',
