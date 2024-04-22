@@ -7,11 +7,11 @@ const topicSchema = new Schema({
   name: {
     type: String
   },
-  posts: [{ type: Schema.Types.ObjectId, ref: 'Posts' }],
-  guides: [{ type: Schema.Types.ObjectId, ref: 'Guides' }],
-  problems: [{ type: Schema.Types.ObjectId, ref: 'Problems' }],
-  contests: [{ type: Schema.Types.ObjectId, ref: 'Contests' }],
-  submissions: [{ type: Schema.Types.ObjectId, ref: 'Submissions' }]
+  posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+  guides: [{ type: Schema.Types.ObjectId, ref: 'Guide' }],
+  problems: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+  contests: [{ type: Schema.Types.ObjectId, ref: 'Contest' }],
+  submissions: [{ type: Schema.Types.ObjectId, ref: 'Submission' }]
 });
 Auditor.addHooks(topicSchema);
 const Topic = mongoose.model('Topic', topicSchema);

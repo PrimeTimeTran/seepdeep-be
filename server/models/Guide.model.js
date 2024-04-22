@@ -16,8 +16,8 @@ const guideSchema = new Schema({
   description: {
     type: String
   },
-  topics: [{ type: Schema.Types.ObjectId, ref: 'Topics' }],
-  problems: [{ type: Schema.Types.ObjectId, ref: 'Problems' }]
+  topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
+  problems: [{ type: Schema.Types.ObjectId, ref: 'Problem' }]
 });
 Auditor.addHooks(guideSchema);
 const Guide = mongoose.model('Guide', guideSchema);

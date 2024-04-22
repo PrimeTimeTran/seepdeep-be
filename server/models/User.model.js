@@ -23,7 +23,7 @@ const userSchema = new Schema({
     type: String
   },
   passwordDigest: {
-    type: String,
+    type: String
   },
   firstName: {
     type: String
@@ -32,7 +32,7 @@ const userSchema = new Schema({
     type: String
   },
   age: {
-    type: BigInt
+    type: Number
   },
   city: {
     type: String
@@ -72,40 +72,40 @@ const userSchema = new Schema({
     type: String
   },
   views: {
-    type: BigInt
+    type: Number
   },
   discuss: {
-    type: BigInt
+    type: Number
   },
   solutions: {
-    type: BigInt
+    type: Number
   },
   reputation: {
-    type: BigInt
+    type: Number
   },
   contestRating: {
-    type: BigInt
+    type: Number
   },
   globalRanking: {
-    type: BigInt
+    type: Number
   },
   attended: {
-    type: BigInt
+    type: Number
   },
   startYear: {
-    type: BigInt
+    type: Number
   },
   numSubmissions: {
-    type: BigInt
+    type: Number
   },
   numAcceptedProblems: {
-    type: BigInt
+    type: Number
   },
   numSubmittedProblems: {
-    type: BigInt
+    type: Number
   },
   numAcceptedSubmissions: {
-    type: BigInt
+    type: Number
   },
   gender: {
     type: String
@@ -113,17 +113,17 @@ const userSchema = new Schema({
   top: {
     type: Schema.Types.Decimal128
   },
-  submissions: [{ type: Schema.Types.ObjectId, ref: 'Submissions' }],
-  posts: [{ type: Schema.Types.ObjectId, ref: 'Posts' }],
-  contests: [{ type: Schema.Types.ObjectId, ref: 'Contests' }],
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
-  articles: [{ type: Schema.Types.ObjectId, ref: 'Articles' }],
-  problems: [{ type: Schema.Types.ObjectId, ref: 'Problems' }],
+  submissions: [{ type: Schema.Types.ObjectId, ref: 'Submission' }],
+  posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+  contests: [{ type: Schema.Types.ObjectId, ref: 'Contest' }],
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  articles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
+  problems: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
   meta: {
     type: Map,
     of: String
   },
-  badges: [{ type: Schema.Types.ObjectId, ref: 'Badges' }],
+  badges: [{ type: Schema.Types.ObjectId, ref: 'Badge' }],
   role: {
     type: [String],
     enum: ['owner', 'admin', 'staff', 'customer']

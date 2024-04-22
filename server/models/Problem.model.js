@@ -16,7 +16,7 @@ const problemSchema = new Schema({
   difficulty: {
     type: String
   },
-  author: { type: Schema.Types.ObjectId, ref: 'Author' },
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
   isPublished: {
     type: Boolean
   },
@@ -24,13 +24,13 @@ const problemSchema = new Schema({
     type: Boolean
   },
   numLC: {
-    type: BigInt
+    type: Number
   },
   voterIds: {
     type: Map,
     of: String
   },
-  editorialAuthor: { type: Schema.Types.ObjectId, ref: 'EditorialAuthor' },
+  editorialAuthor: { type: Schema.Types.ObjectId, ref: 'User' },
   editorialBody: {
     type: String
   },
@@ -38,7 +38,7 @@ const problemSchema = new Schema({
     type: Schema.Types.Decimal128
   },
   editorialVotes: {
-    type: BigInt
+    type: Number
   },
   accepted: {
     type: Schema.Types.Decimal128
@@ -52,7 +52,7 @@ const problemSchema = new Schema({
   testSuite: {
     type: []
   },
-  topics: [{ type: Schema.Types.ObjectId, ref: 'Topics' }],
+  topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
   hints: {
     type: []
   },

@@ -20,7 +20,7 @@ const companySchema = new Schema({
     type: String
   },
   teamSize: {
-    type: BigInt
+    type: Number
   },
   industries: {
     type: []
@@ -31,7 +31,7 @@ const companySchema = new Schema({
   technologies: {
     type: []
   },
-  jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }]
+  jobs: [{ type: Schema.Types.ObjectId, ref: 'Job' }]
 });
 Auditor.addHooks(companySchema);
 const Company = mongoose.model('Company', companySchema);

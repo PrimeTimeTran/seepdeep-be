@@ -20,7 +20,7 @@ const submissionSchema = new Schema({
     type: String
   },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   problem: { type: Schema.Types.ObjectId, ref: 'Problem' },
   contest: { type: Schema.Types.ObjectId, ref: 'Contest' },
   timeSubmitted: {
@@ -36,13 +36,13 @@ const submissionSchema = new Schema({
     type: Boolean
   },
   penalty: {
-    type: BigInt
+    type: Number
   },
   numVotes: {
-    type: BigInt
+    type: Number
   },
   numComments: {
-    type: BigInt
+    type: Number
   },
   runTime: {
     type: Schema.Types.Decimal128
@@ -54,7 +54,7 @@ const submissionSchema = new Schema({
     type: Map,
     of: String
   },
-  topics: [{ type: Schema.Types.ObjectId, ref: 'Topics' }]
+  topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }]
 });
 Auditor.addHooks(submissionSchema);
 const Submission = mongoose.model('Submission', submissionSchema);

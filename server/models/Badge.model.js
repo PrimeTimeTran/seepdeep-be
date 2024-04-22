@@ -11,12 +11,12 @@ const badgeSchema = new Schema({
     type: String
   },
   year: {
-    type: BigInt
+    type: Number
   },
   month: {
-    type: BigInt
+    type: Number
   },
-  users: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
+  users: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 Auditor.addHooks(badgeSchema);
 const Badge = mongoose.model('Badge', badgeSchema);

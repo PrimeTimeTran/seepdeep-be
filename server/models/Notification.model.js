@@ -14,7 +14,7 @@ const notificationSchema = new Schema({
     type: String
   },
   points: {
-    type: BigInt
+    type: Number
   },
   isPublished: {
     type: Boolean

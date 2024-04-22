@@ -14,20 +14,20 @@ const postSchema = new Schema({
     type: Boolean
   },
   numVotes: {
-    type: BigInt
+    type: Number
   },
   numViews: {
-    type: BigInt
+    type: Number
   },
   numComments: {
-    type: BigInt
+    type: Number
   },
   timeSubmitted: {
     type: Date
   },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
-  topics: [{ type: Schema.Types.ObjectId, ref: 'Topics' }],
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
   voterIds: {
     type: Map,
     of: String

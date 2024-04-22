@@ -22,8 +22,8 @@ const contestSchema = new Schema({
     type: Date
   },
   problem: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
-  submissions: [{ type: Schema.Types.ObjectId, ref: 'Submissions' }],
-  users: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
+  submissions: [{ type: Schema.Types.ObjectId, ref: 'Submission' }],
+  users: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 Auditor.addHooks(contestSchema);
 const Contest = mongoose.model('Contest', contestSchema);

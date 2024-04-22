@@ -11,13 +11,13 @@ const participantSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   submission: { type: Schema.Types.ObjectId, ref: 'Submission' },
   score: {
-    type: BigInt
+    type: Number
   },
   rank: {
-    type: BigInt
+    type: Number
   },
   rating: {
-    type: BigInt
+    type: Number
   },
   time: {
     type: Date

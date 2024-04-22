@@ -29,10 +29,10 @@ const articleSchema = new Schema({
     type: String
   },
   numComments: {
-    type: BigInt
+    type: Number
   },
   numVotes: {
-    type: BigInt
+    type: Number
   },
   isPublished: {
     type: Boolean
@@ -40,8 +40,8 @@ const articleSchema = new Schema({
   isOriginal: {
     type: Boolean
   },
-  author: { type: Schema.Types.ObjectId, ref: 'Author' },
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   voterIds: {
     type: Map,
     of: String

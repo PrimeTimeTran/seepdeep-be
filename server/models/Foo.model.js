@@ -26,7 +26,7 @@ const fooSchema = new Schema({
     type: String
   },
   fooInteger: {
-    type: BigInt
+    type: Number
   },
   fooDecimal: {
     type: Schema.Types.Decimal128
@@ -52,10 +52,10 @@ const fooSchema = new Schema({
     type: [String],
     enum: ['a', 'b', 'c']
   },
-  fooOTM: [{ type: Schema.Types.ObjectId, ref: 'FooOTM' }],
-  fooMTO: { type: Schema.Types.ObjectId, ref: 'FooMTO' },
-  fooOTO: { type: Schema.Types.ObjectId, ref: 'FooOTO' },
-  fooMTM: [{ type: Schema.Types.ObjectId, ref: 'FooMTM' }]
+  fooOTM: [{ type: Schema.Types.ObjectId, ref: 'Related' }],
+  fooMTO: { type: Schema.Types.ObjectId, ref: 'Related' },
+  fooOTO: { type: Schema.Types.ObjectId, ref: 'Related' },
+  fooMTM: [{ type: Schema.Types.ObjectId, ref: 'Related' }]
 });
 Auditor.addHooks(fooSchema);
 const Foo = mongoose.model('Foo', fooSchema);

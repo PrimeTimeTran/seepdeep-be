@@ -5,13 +5,13 @@ export const notificationItemEnumerators = {};
 
 const notificationItemSchema = new Schema({
   icon: {
-    type: BigInt
+    type: Number
   },
   isRead: {
     type: Boolean
   },
   points: {
-    type: BigInt
+    type: Number
   },
   date: {
     type: Date
