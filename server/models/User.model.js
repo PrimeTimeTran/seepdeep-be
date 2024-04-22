@@ -23,7 +23,7 @@ const userSchema = new Schema({
     type: String
   },
   passwordDigest: {
-    type: String
+    type: String,
   },
   firstName: {
     type: String

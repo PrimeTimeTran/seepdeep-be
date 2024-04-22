@@ -1,4 +1,4 @@
-import User from "@models/User.model.js"
+import User from '@models/User.model.js'
 
 const err = {
   statusCode: 400,
@@ -15,11 +15,11 @@ export default defineEventHandler(async (e) => {
 
   const token = jwtSign({ userId: user._id })
 
-  delete user.passwordDigest
-
   const response = {
-    token,
-    user,
+    data: {
+      token,
+      user,
+    },
   }
   return response
 })

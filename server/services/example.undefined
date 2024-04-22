@@ -1,0 +1,17 @@
+
+#include <iostream>
+
+// Define the twoSum function
+int twoSum(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    // Call the twoSum function with arguments 1 and 2
+    int result = twoSum(1, 2);
+
+    // Output the result
+    std::cout << result << std::endl;
+
+    return 0;
+}

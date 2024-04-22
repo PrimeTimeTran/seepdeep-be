@@ -8,6 +8,9 @@ export default defineEventHandler(async (e) => {
   if (user) {
     const id = user.userId
     const me = await User.findById(id).exec()
+    logger.info({msg: `Authenticated request: Id: ${user.userId}, email: ${me?.email}`})
     e.context.user = me
+  } else {
+    logger.info({msg: 'Unauthenticated request'})
   }
 })
