@@ -2,8 +2,9 @@ import { defineEventHandler, readBody } from 'h3'
 
 export default defineEventHandler(async (e) => {
   // TODO:
-  // Problem's submissions, user.solved, user.activeDates, user.languageMastery
-  // Create solved model
+  // Update problem's submissions & benchmarks, user.solved stats, user.activeDates stats, user.languageMastery stats
+  // Create submission with benchmarks
+  // Check if solved already exists and update those metrics.
   try {
     let body = await readBody(e)
     body = JSON.parse(body)

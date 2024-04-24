@@ -19,39 +19,41 @@ class Runner {
 
   testSubmission(language, content) {
     try {
-      this.runResult.language = language
-      const [fileExtension, executablePath] = getVars(language)
-      const scriptPath = path.join(__dirname, `./scripts/runner.${fileExtension}`)
-      fs.writeFileSync(scriptPath, content)
+      this.runResult.language = language;
+      const [fileExtension, executablePath] = getVars(language);
+      const timestamp = Date.now(); // Get current timestamp
+      const scriptPath = path.join(__dirname, `./scripts/runner_${timestamp}.${fileExtension}`); // Append timestamp to filename
+      fs.writeFileSync(scriptPath, content);
       if (language === 'cplusplus') {
-        const compileCommand = `${languageCommands[language]} ${scriptPath} -o ${executablePath}`
+        const compileCommand = `${languageCommands[language]} ${scriptPath} -o ${executablePath}`;
         exec(compileCommand, (compileError) => {
           if (compileError) {
-            console.error(`Error compiling C++ code: ${compileError.message}`)
-            return
+            console.error(`Error compiling C++ code: ${compileError.message}`);
+            return;
           }
           exec(executablePath, (error, stdout, stderr) => {
             if (error) {
-              console.error(`Error running C++ executable: ${error.message}`)
-              return
+              console.error(`Error running C++ executable: ${error.message}`);
+              return;
             }
-            this.buildResult(stdout.trim())
-          })
-        })
+            this.buildResult(stdout.trim());
+          });
+        });
       } else {
-        const command = languageCommands[language]
+        const command = languageCommands[language];
         exec(`${command} ${scriptPath}`, (error, stdout, stderr) => {
           if (error) {
-            console.error(`Error running script: ${error.message}`)
-            return
+            console.error(`Error running script: ${error.message}`);
+            return;
           }
-          this.buildResult(stdout.trim())
-        })
+          this.buildResult(stdout.trim());
+        });
       }
     } catch (error) {
-      console.log({ error })
+      console.log({ error });
     }
   }
+  
 
   buildResult(result) {
     this.runResult.result = result;
@@ -101,9 +103,10 @@ function measureMemoryUsage(fn) {
   fn();
   
   const finalMemoryUsage = process.memoryUsage().heapUsed;
-  const memoryUsed = finalMemoryUsage - initialMemoryUsage;
+  const memoryUsedBytes = finalMemoryUsage - initialMemoryUsage;
+  const memoryUsedMB = memoryUsedBytes / 1024 / 1024; // Convert bytes to megabytes
   
-  console.log(`Memory used by function call: ${memoryUsed} bytes`);
+  console.log(`Memory used by function call: ${memoryUsedMB.toFixed(2)} MB`);
 }
 
 function myFunction1() {
