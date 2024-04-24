@@ -8,15 +8,14 @@ const __dirname = dirname(__filename)
 process.chdir(__dirname)
 
 export const languageCommands = {
-  python: 'python3',
-  javascript: 'node',
-  cplusplus: 'g++',
   dart: 'dart',
+  cplusplus: 'g++',
+  javascript: 'node',
+  python: 'python3',
 }
 
 export function getVars(language) {
   let fileExtension
-  let compileCommand = null
   let executablePath = null
   switch (language) {
     case 'python':
@@ -27,7 +26,7 @@ export function getVars(language) {
       break
     case 'cplusplus':
       fileExtension = 'cpp'
-      executablePath = path.join(__dirname, 'example')
+      executablePath = path.join(__dirname, './scripts/runner.cpp')
       break
     case 'dart':
       fileExtension = 'dart'
@@ -36,5 +35,5 @@ export function getVars(language) {
       console.error(`Unsupported language: ${language}`)
       return
   }
-  return [fileExtension, compileCommand, executablePath]
+  return [fileExtension, executablePath]
 }

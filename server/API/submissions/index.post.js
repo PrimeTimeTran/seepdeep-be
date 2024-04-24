@@ -1,6 +1,9 @@
 import { defineEventHandler, readBody } from 'h3'
 
 export default defineEventHandler(async (e) => {
+  // TODO:
+  // Problem's submissions, user.solved, user.activeDates, user.languageMastery
+  // Create solved model
   try {
     let body = await readBody(e)
     body = JSON.parse(body)

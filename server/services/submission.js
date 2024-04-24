@@ -17,15 +17,14 @@ class Runner {
     }
   }
 
-  testSubmission(language, scriptContent) {
+  testSubmission(language, content) {
     try {
       this.runResult.language = language
-      const [fileExtension, compileCommand, executablePath] = getVars(language)
-      const scriptFilePath = path.join(__dirname, `example.${fileExtension}`)
-      fs.writeFileSync(scriptFilePath, scriptContent)
-
+      const [fileExtension, executablePath] = getVars(language)
+      const scriptPath = path.join(__dirname, `./scripts/runner.${fileExtension}`)
+      fs.writeFileSync(scriptPath, content)
       if (language === 'cplusplus') {
-        const compileCommand = `${languageCommands[language]} ${scriptFilePath} -o ${executablePath}`
+        const compileCommand = `${languageCommands[language]} ${scriptPath} -o ${executablePath}`
         exec(compileCommand, (compileError) => {
           if (compileError) {
             console.error(`Error compiling C++ code: ${compileError.message}`)
@@ -41,7 +40,7 @@ class Runner {
         })
       } else {
         const command = languageCommands[language]
-        exec(`${command} ${scriptFilePath}`, (error, stdout, stderr) => {
+        exec(`${command} ${scriptPath}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error running script: ${error.message}`)
             return
@@ -55,11 +54,15 @@ class Runner {
   }
 
   buildResult(result) {
-    this.runResult.result = result
-    this.runResult.endTime = Date.now()
-    this.runResult.duration = this.runResult.endTime - this.runResult.startTime
-    console.log({...this.runResult})
-  }
+    this.runResult.result = result;
+    this.runResult.endTime = Date.now();
+    this.runResult.duration = this.runResult.endTime - this.runResult.startTime;
+    const timeTakenInMilliseconds = this.runResult.endTime - this.runResult.startTime;
+    this.runResult.runTime = timeTakenInMilliseconds / 1000;
+
+    console.log({...this.runResult});
+}
+
 }
 
 const input1P = `
@@ -90,9 +93,36 @@ int main() {
     return 0;
 }
 `
-const runner1 = new Runner();
-runner1.testSubmission('python', input1P)
-const runner2 = new Runner();
-runner2.testSubmission('javascript', input1J)
-const runner3 = new Runner();
-runner3.testSubmission('cplusplus', input1C)
+
+function measureMemoryUsage(fn) {
+  const initialMemoryUsage = process.memoryUsage().heapUsed;
+  
+  // Call the function
+  fn();
+  
+  const finalMemoryUsage = process.memoryUsage().heapUsed;
+  const memoryUsed = finalMemoryUsage - initialMemoryUsage;
+  
+  console.log(`Memory used by function call: ${memoryUsed} bytes`);
+}
+
+function myFunction1() {
+  const runner1 = new Runner();
+  runner1.testSubmission('python', input1P)
+  
+}
+function myFunction2() {
+  const runner2 = new Runner();
+  runner2.testSubmission('javascript', input1J)
+
+  
+}
+function myFunction3() {
+  const runner3 = new Runner();
+  runner3.testSubmission('cplusplus', input1C)
+  
+}
+
+measureMemoryUsage(myFunction1);
+measureMemoryUsage(myFunction2);
+measureMemoryUsage(myFunction3);

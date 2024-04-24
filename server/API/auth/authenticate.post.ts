@@ -5,7 +5,8 @@ const err = {
   statusMessage: 'Authentication Error: Email/Password invalid',
 }
 export default defineEventHandler(async (e) => {
-  const body = await readBody(e)
+  let body = await readBody(e)
+  body = JSON.parse(body)
   const user = await User.findOne({ email: body.email })
   if (!user) throw createError(err)
 
