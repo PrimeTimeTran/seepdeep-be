@@ -4,7 +4,10 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { exec } from 'child_process'
 import util from 'node:util'
+import EventEmitter from 'node:events'
 import { getVars, runCommands } from './helpers.js'
+
+export const eventEmitter = new EventEmitter()
 
 const __filename = fileURLToPath(import.meta.url)
 // const __dirname = dirname(__filename)
@@ -19,18 +22,16 @@ export default class SubmissionService {
     this.body = body
     this.user = e.context.user
     this.language = 'python'
-    this.foo = 'bar'
   }
 
   async onNewSubmission() {
     // - Create submission instance
-    // - Run & benchmark submission
-    // - Update user streak.
-    // - Update user solved.
-    // - Update user language mastery.
-    // - Update solved problems if already existing, else create.
-    // - Update problem stats
-    
+    // [x] Run & benchmark submission
+    // [ ] Update user streak.
+    // [ ] Update user solved.
+    // [ ] Update user language mastery.
+    // [ ] Update solved problems if already existing, else create.
+    // [ ] Update problem stats
     try {
       this.benchmark()
       this.submission = await new Submission({
@@ -40,7 +41,7 @@ export default class SubmissionService {
       })
     } catch (error) {
       logger.error(error, 'Error:')
-      throw new Error('Error! You didn\'t code this correctly')
+      throw new Error("Error! You didn't code this correctly")
     }
   }
 
@@ -78,6 +79,7 @@ export default class SubmissionService {
 
   scriptRun(command, buildResult = true) {
     this.runResult.timeStart = Date.now()
+    logger.info('onStart')
     exec(command, (error, stdout, _) => {
       if (error) {
         console.error(`Error running script: ${error.message}`)
@@ -92,9 +94,16 @@ export default class SubmissionService {
   buildResult(result) {
     this.runResult.result = result
     this.runResult.timeEnd = Date.now()
-    this.runResult.duration = this.runResult.timeEnd - this.runResult.timeStart
-    const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart
-    this.runResult.timeTaken = timeElapsed / 1000
+    const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart 
+    this.runResult.duration = timeElapsed / 1000
+    this.onComplete(this.runResult)
+  }
+
+  async onComplete(runResult) {
+    logger.info('onComplete')
+    this.submission.runResult = runResult
+    await this.submission.save()
+    eventEmitter.emit('finish', 1, 100)
   }
 }
 

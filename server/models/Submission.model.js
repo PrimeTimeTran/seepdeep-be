@@ -54,7 +54,11 @@ const submissionSchema = new Schema({
     type: Map,
     of: String
   },
-  topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }]
+  topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
+  runResult: {
+    type: Map,
+    of: String
+  },
 });
 Auditor.addHooks(submissionSchema);
 const Submission = mongoose.model('Submission', submissionSchema);
