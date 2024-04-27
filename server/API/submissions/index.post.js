@@ -14,16 +14,22 @@ export default defineEventHandler(async (e) => {
     await service.onNewSubmission()
     return await service.onComplete()
   } catch (error) {
-    if (error === 'Timeout occurred') {
+    if (error.message === 'Timeout') {
       throw createError({
         statusCode: 408,
-        statusMessage: 'Timeout Error',
+        statusMessage: 'Timeout',
+      })
+    } else if (error.message === 'User not found') {
+      throw createError({
+        statusCode: 404,
+        message: error,
+        statusMessage: 'User not found',
       })
     } else {
       throw createError({
         statusCode: 400,
         message: error,
-        statusMessage: 'Submission Error.'
+        statusMessage: 'Submission Error.',
       })
     }
   }

@@ -84,7 +84,8 @@ export default class SubmissionService {
       if (error) {
         let msg = error.message.split('line')[1]
         const match = msg.match(/\d+\n/);
-        const index = match ? error.message.indexOf(match[0]) + match[0].length : -1;
+        // Leave line number as it helps identify where the error came from
+        const index = match ? error.message.indexOf(match[0]) : -1;
         msg = index !== -1 ? error.message.substring(index).trim() : "";
         eventEmitter.emit('error', msg)
       }
@@ -109,7 +110,7 @@ export default class SubmissionService {
   promiseWithTimeout = new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
       clearTimeout(timeoutId)
-      reject(new Error('Timeout occurred'))
+      reject(new Error('Timeout'))
     }, 10000)
 
     eventEmitter.on('error', (error) => {
