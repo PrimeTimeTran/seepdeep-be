@@ -3,15 +3,15 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+// const __dirname = dirname(__filename)
+// process.chdir(__dirname)
+const __dirname = '/Users/future/Downloads/CSGemsBE/nuxt/server/services/'
 
-process.chdir(__dirname)
-
-export const languageCommands = {
+export const runCommands = {
   dart: 'dart',
-  cplusplus: 'g++',
-  javascript: 'node',
   python: 'python3',
+  javascript: 'node',
+  cplusplus: 'g++ -std=c++11',
 }
 
 export function getVars(language) {

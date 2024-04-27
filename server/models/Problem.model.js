@@ -58,6 +58,9 @@ const problemSchema = new Schema({
   },
   constraints: {
     type: []
+  },
+  startCode: {
+    type: String
   }
 });
 Auditor.addHooks(problemSchema);

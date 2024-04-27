@@ -1,23 +1,23 @@
 import { defineEventHandler, readBody } from 'h3'
 
+import SubmissionService from '@services/Submission.service.js'
+
 export default defineEventHandler(async (e) => {
-  // TODO:
-  // Update problem's submissions & benchmarks, user.solved stats, user.activeDates stats, user.languageMastery stats
-  // Create submission with benchmarks
-  // Check if solved already exists and update those metrics.
   try {
     let body = await readBody(e)
     body = JSON.parse(body)
     const user = e.context.user
     if (!user) {
-      throw new Error('User not found in context')
+      throw new Error('User not found.')
     }
-    const submission = new Submission({...body, user: user._id, problem: body.problem });
-    await submission.save();
-    user.submissions.push(submission._id);
-    await user.save()
+    let service = new SubmissionService(e, body)
+    service = await service.onNewSubmission()
+    print(service.runResult)
     return {
-      data: submission,
+      data: {
+        result: service.runResult,
+        submission: service.submission
+      }
     }
   } catch (error) {
     console.error('Error while creating submission:', error)

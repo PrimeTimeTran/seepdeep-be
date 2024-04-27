@@ -1,11 +1,19 @@
 import pino from 'pino'
 import pretty from 'pino-pretty'
+import colorize from '@pinojs/json-colorizer'
+
+import data from './data.json' with { type: "json" };
 
 const stream = pretty({
   levelFirst: true,
-  colorize: true,
-  ignore: 'time,hostname,pid',
+  ignore: 'time, hostname, pid',
 })
+
+const formatters = {
+  log(obj) {
+    return obj
+  }
+}
 
 // trace, debug, info, warn, error, fatal
 export const logger = pino({
@@ -13,9 +21,13 @@ export const logger = pino({
   transport: {
     target: 'pino-pretty',
     options: {
-      colorize: true,
-      messageKey: 'message',
-    },
+      colorize: true
+    }
   },
-  stream,
+  formatters: formatters,
+  stream
 })
+
+export const print = (obj) => {
+  console.log(colorize(obj, { pretty: true }))
+}

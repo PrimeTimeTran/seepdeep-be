@@ -4,3 +4,5 @@ node_modules
 .output
 .nitro
 dist
+
+server/services/scripts
