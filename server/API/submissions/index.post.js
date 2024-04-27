@@ -14,7 +14,17 @@ export default defineEventHandler(async (e) => {
     await service.onNewSubmission()
     return await service.onComplete()
   } catch (error) {
-    console.error('Error while creating submission:', error)
-    return error
+    if (error === 'Timeout occurred') {
+      throw createError({
+        statusCode: 408,
+        statusMessage: 'Timeout Error',
+      })
+    } else {
+      throw createError({
+        statusCode: 400,
+        message: error,
+        statusMessage: 'Submission Error.'
+      })
+    }
   }
 })

@@ -73,7 +73,7 @@ export default class SubmissionService {
         this.scriptRun(`${command} ${scriptPath}`)
       }
     } catch (error) {
-      console.log({ error })
+      logger.info({ msg: error })
     }
   }
 
@@ -82,8 +82,11 @@ export default class SubmissionService {
     logger.info('onStart')
     exec(command, (error, stdout, _) => {
       if (error) {
-        console.error(`Error running script: ${error.message}`)
-        return
+        let msg = error.message.split('line')[1]
+        const match = msg.match(/\d+\n/);
+        const index = match ? error.message.indexOf(match[0]) + match[0].length : -1;
+        msg = index !== -1 ? error.message.substring(index).trim() : "";
+        eventEmitter.emit('error', msg)
       }
       if (buildResult) {
         this.buildResult(stdout.trim())
@@ -94,26 +97,40 @@ export default class SubmissionService {
   buildResult(result) {
     this.runResult.result = result
     this.runResult.timeEnd = Date.now()
-    const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart 
+    const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart
     this.runResult.timeToComplete = timeElapsed / 1000
     eventEmitter.emit('finish', this.runResult)
   }
 
-  async onComplete() {
-    return new Promise((resolve, reject) => {
-      eventEmitter.once('finish', (result) => {
-        logger.info('onComplete')
-        this.submission.runResult = result
-        this.submission.save()
-        resolve({
-          data: {
-            runResult: result,
-            submission: this.submission,
-          },
-        })
+  onComplete() {
+    return this.promiseWithTimeout
+  }
+
+  promiseWithTimeout = new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      clearTimeout(timeoutId)
+      reject(new Error('Timeout occurred'))
+    }, 10000)
+
+    eventEmitter.on('error', (error) => {
+      clearTimeout(timeoutId)
+      logger.info('onError')
+      reject(new Error(error))
+    })
+
+    eventEmitter.on('finish', (result) => {
+      clearTimeout(timeoutId)
+      logger.info('onComplete')
+      this.submission.runResult = result
+      this.submission.save()
+      resolve({
+        data: {
+          runResult: result,
+          submission: this.submission,
+        },
       })
     })
-  }
+  })
 }
 
 // const input1P = `
