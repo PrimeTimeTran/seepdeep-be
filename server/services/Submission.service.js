@@ -95,15 +95,24 @@ export default class SubmissionService {
     this.runResult.result = result
     this.runResult.timeEnd = Date.now()
     const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart 
-    this.runResult.duration = timeElapsed / 1000
-    this.onComplete(this.runResult)
+    this.runResult.timeToComplete = timeElapsed / 1000
+    eventEmitter.emit('finish', this.runResult)
   }
 
-  async onComplete(runResult) {
-    logger.info('onComplete')
-    this.submission.runResult = runResult
-    await this.submission.save()
-    eventEmitter.emit('finish', 1, 100)
+  async onComplete() {
+    return new Promise((resolve, reject) => {
+      eventEmitter.once('finish', (result) => {
+        logger.info('onComplete')
+        this.submission.runResult = result
+        this.submission.save()
+        resolve({
+          data: {
+            runResult: result,
+            submission: this.submission,
+          },
+        })
+      })
+    })
   }
 }
 

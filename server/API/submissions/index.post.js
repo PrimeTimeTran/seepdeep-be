@@ -1,8 +1,6 @@
 import { defineEventHandler, readBody } from 'h3'
 
-import SubmissionService, {
-  eventEmitter,
-} from '@services/Submission.service.js'
+import SubmissionService from '@services/Submission.service.js'
 
 export default defineEventHandler(async (e) => {
   try {
@@ -14,17 +12,7 @@ export default defineEventHandler(async (e) => {
     }
     let service = new SubmissionService(e, body)
     await service.onNewSubmission()
-    const resultPromise = new Promise((resolve, reject) => {
-      eventEmitter.once('finish', (number) => {
-        resolve({
-          data: {
-            result: service.runResult,
-            submission: service.submission,
-          },
-        })
-      })
-    })
-    return await resultPromise
+    return await service.onComplete()
   } catch (error) {
     console.error('Error while creating submission:', error)
     return error
