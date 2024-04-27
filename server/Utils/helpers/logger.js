@@ -2,8 +2,6 @@ import pino from 'pino'
 import pretty from 'pino-pretty'
 import colorize from '@pinojs/json-colorizer'
 
-import data from './data.json' with { type: "json" };
-
 const stream = pretty({
   levelFirst: true,
   ignore: 'time, hostname, pid',

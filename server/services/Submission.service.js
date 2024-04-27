@@ -18,7 +18,6 @@ export default class SubmissionService {
     }
     this.body = body
     this.user = e.context.user
-    // this.language = this.body.language ?? 'python'
     this.language = 'python'
     this.foo = 'bar'
   }
@@ -31,6 +30,7 @@ export default class SubmissionService {
     // - Update user language mastery.
     // - Update solved problems if already existing, else create.
     // - Update problem stats
+    
     try {
       this.benchmark()
       this.submission = await new Submission({
@@ -38,10 +38,9 @@ export default class SubmissionService {
         user: this.user._id,
         problem: this.body.problem,
       })
-      return this
     } catch (error) {
-      console.error('Error in onNewSubmission:', error)
-      throw error
+      logger.error(error, 'Error:')
+      throw new Error('Error! You didn\'t code this correctly')
     }
   }
 

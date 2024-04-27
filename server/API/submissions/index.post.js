@@ -11,11 +11,15 @@ export default defineEventHandler(async (e) => {
       throw new Error('User not found.')
     }
     let service = new SubmissionService(e, body)
-    service = await service.onNewSubmission()
-    print(service.runResult)
+    await service.onNewSubmission()
+    const time = Date.now()
     return {
       data: {
-        result: service.runResult,
+        result: {
+          ...service.runResult,
+          timeEnd: time,
+          duration: (time - service.runResult.timeStart)
+        },
         submission: service.submission
       }
     }
