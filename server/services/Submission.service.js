@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { exec } from 'child_process'
 import util from 'node:util'
+import mongoose from 'mongoose'
 import EventEmitter from 'node:events'
 import { getVars, runCommands } from './helpers.js'
 
@@ -24,11 +25,38 @@ export default class SubmissionService {
     this.language = 'python'
   }
 
+  async updateSolved() {
+    let solveIds = [...new Set(this.user.solves)]
+      let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
+      let solveMap = new Map()
+      solveDocuments.forEach((solve) => {
+        solveMap.set(solve.problem.toString(), solve)
+      })
+
+      let solvedItem = solveMap.get(this.submission.problem.toString())
+
+      if (solvedItem) {
+        logger.info('Problem previously solved')
+        solvedItem = await Solve.findById(solvedItem)
+        console.log(solvedItem)
+      } else {
+        logger.info('Newly Solved Problem')
+        // 662eb06a42bcea5b1784854b
+        let solvedItem = Solve({
+          user: this.user._id,
+          problem: this.submission.problem,
+        })
+        await solvedItem.save()
+        this.user.solves.push(solvedItem._id)
+        console.log(solvedItem)
+      }
+  }
+
   async onNewSubmission() {
     // - Create submission instance
     // [x] Run & benchmark submission
     // [ ] Update user streak.
-    // [ ] Update user solved.
+    // [x] Update user solves.
     // [ ] Update user language mastery.
     // [ ] Update solved problems if already existing, else create.
     // [ ] Update problem stats
@@ -39,6 +67,9 @@ export default class SubmissionService {
         user: this.user._id,
         problem: this.body.problem,
       })
+      this.updateSolved()
+      this.user.submissions.push(this.submission._id)
+      this.user.save()
     } catch (error) {
       logger.error(error, 'Error:')
       throw new Error("Error! You didn't code this correctly")
@@ -83,13 +114,14 @@ export default class SubmissionService {
     exec(command, (error, stdout, _) => {
       if (error) {
         let msg = error.message.split('line')[1]
-        const match = msg.match(/\d+\n/);
+        const match = msg.match(/\d+\n/)
         // Leave line number as it helps identify where the error came from
-        const index = match ? error.message.indexOf(match[0]) : -1;
-        msg = index !== -1 ? error.message.substring(index).trim() : "";
+        const index = match ? error.message.indexOf(match[0]) : -1
+        msg = index !== -1 ? error.message.substring(index).trim() : ''
         eventEmitter.emit('error', msg)
       }
       if (buildResult) {
+        logger.info(stdout)
         this.buildResult(stdout.trim())
       }
     })
@@ -110,12 +142,14 @@ export default class SubmissionService {
   promiseWithTimeout = new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
       clearTimeout(timeoutId)
+      this.submission.save()
       reject(new Error('Timeout'))
     }, 10000)
 
     eventEmitter.on('error', (error) => {
       clearTimeout(timeoutId)
       logger.info('onError')
+      this.submission.save()
       reject(new Error(error))
     })
 
@@ -131,6 +165,7 @@ export default class SubmissionService {
         },
       })
     })
+    
   })
 }
 

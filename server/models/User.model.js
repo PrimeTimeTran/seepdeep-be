@@ -119,6 +119,7 @@ const userSchema = new Schema({
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   articles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
   problems: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+  solves: [{ type: Schema.Types.ObjectId, ref: 'Solve' }],
   meta: {
     type: Map,
     of: String
