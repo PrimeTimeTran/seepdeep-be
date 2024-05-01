@@ -59,6 +59,10 @@ const submissionSchema = new Schema({
     type: Map,
     of: String
   },
+  testCases: {
+    type: Array,
+    of: String
+  },
 });
 Auditor.addHooks(submissionSchema);
 const Submission = mongoose.model('Submission', submissionSchema);

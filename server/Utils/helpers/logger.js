@@ -27,5 +27,9 @@ export const logger = pino({
 })
 
 export const print = (obj) => {
-  console.log(colorize(obj, { pretty: true }))
+  if (typeof obj === 'String') {
+    console.log(colorize(obj, { pretty: true }))
+  } else {
+    console.log(colorize(obj, { pretty: true }))
+  }
 }
