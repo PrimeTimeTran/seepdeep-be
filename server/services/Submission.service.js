@@ -25,11 +25,11 @@ export default class SubmissionService {
       ...this.body,
     }
     this.body = body
-    this.user = e.context.user
-    this.language = 'python'
     this.problem = null
     this.testCases = []
+    this.language = 'python'
     this.executionCount = 0
+    this.user = e.context.user
     this.totalExecutions = null
     this.setup()
     this.createFunctionCalls()
@@ -47,6 +47,15 @@ export default class SubmissionService {
         return index === 0 ? word.toLowerCase() : word.toUpperCase()
       })
       .replace(/\s+/g, '')
+  }
+
+  parseStringToArrayAndNumber(input) {
+    const trimmedInput = input.trim();
+    const regex = /\[.*?\]|-?\d+/g;
+    const parts = trimmedInput.match(regex);
+    const arrays = [JSON.parse(parts.shift())];
+    const numberPart = parseInt(parts.shift());
+    return [arrays, numberPart];
   }
 
   async updateSolved() {
@@ -90,9 +99,9 @@ export default class SubmissionService {
         user: this.user._id,
         problem: this.body.problem,
       })
-      // this.updateSolved()
-      // this.user.submissions.push(this.submission._id)
-      // this.user.save()
+      this.updateSolved()
+      this.user.submissions.push(this.submission._id)
+      this.user.save()
     } catch (error) {
       logger.error(error, 'Error:')
       throw new Error("Error! You didn't code this correctly")
@@ -101,20 +110,22 @@ export default class SubmissionService {
 
   benchmark() {
     const initialMemoryUsage = process.memoryUsage().heapUsed
+    this.runResult.timeStart = Date.now()
     this.calls.map((call, idx) =>
-      this.runTest(call, this.results[idx], idx, (passing) => {
+      this.runTest(call, idx, () => {
         this.executionCount++
         if (this.executionCount === this.totalExecutions) {
+          const finalMemoryUsage = process.memoryUsage().heapUsed
+          const memoryUsedBytes = finalMemoryUsage - initialMemoryUsage
+          this.runResult.memoryUsedMB = memoryUsedBytes / 1024 / 1024
+          this.submission.testCases = this.testCases
           eventEmitter.emit('finish', this.runResult)
         }
       })
     )
-    const finalMemoryUsage = process.memoryUsage().heapUsed
-    const memoryUsedBytes = finalMemoryUsage - initialMemoryUsage
-    this.runResult.memoryUsedMB = memoryUsedBytes / 1024 / 1024
   }
 
-  runTest(fn, outputExpected, idx, callback) {
+  runTest(fn, idx, callback) {
     try {
       const lang = this.language
       const [extension, filePath] = getVars(lang)
@@ -129,17 +140,16 @@ export default class SubmissionService {
       if (lang === 'cplusplus') {
         command += ` -o ${filePath}`
         this.scriptRun(command, false)
-        this.scriptRun(filePath, true, outputExpected, idx, callback)
+        this.scriptRun(filePath, true, idx, callback)
       } else {
-        this.scriptRun(command, true, outputExpected, idx, callback)
+        this.scriptRun(command, true, idx, callback)
       }
     } catch (error) {
       logger.info({ msg: error })
     }
   }
 
-  scriptRun(command, quantify = true, outputExpected, idx, callback) {
-    this.runResult.timeStart = Date.now()
+  scriptRun(command, quantify = true, idx, callback) {
     exec(command, (error, stdout, _) => {
       if (error) {
         let msg = error.message.split('line')[1]
@@ -150,22 +160,24 @@ export default class SubmissionService {
       }
       if (quantify) {
         if (callback) {
-          const stdoutArray = JSON.parse(stdout)
-          const result =
-            JSON.stringify(stdoutArray) === JSON.stringify(outputExpected)
-          this.buildResult(stdout.trim(), result, idx)
-          callback(stdout.trim(), result, this.runResult)
+          this.buildTestResult(stdout.trim(), idx)
+          callback(stdout.trim())
         }
       }
     })
   }
 
-  buildResult(result, passing, idx) {
-    this.runResult.result = result
-    this.runResult.timeEnd = Date.now()
-    this.testCases.push(passing)
-    const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart
-    this.runResult.timeToComplete = timeElapsed / 1000
+  buildTestResult(stdout, idx) {
+    const stdoutArray = JSON.parse(stdout)
+    const outExpected = this.results[idx]
+    const passing = JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
+    const testCase = {
+      passing,
+      outExpected,
+      outActual: stdoutArray,
+      input: this.inputs[idx],
+    }
+    this.testCases.push(testCase)
   }
 
   async onComplete() {
@@ -190,7 +202,6 @@ export default class SubmissionService {
       clearTimeout(timeoutId)
       logger.info('onComplete')
       this.submission.runResult = result
-      this.submission.testCases = this.testCases
       this.submission.save()
       resolve({
         data: {
@@ -205,6 +216,7 @@ export default class SubmissionService {
     try {
       const calls = []
       const results = []
+      const params = []
       this.problem.testSuite.forEach((testCase) => {
         const inputs = testCase.inputs
           .map((input) => {
@@ -218,11 +230,13 @@ export default class SubmissionService {
           })
           .join(', ')
         const call = `\nsolution = Solution()\nresult = solution.${this.functionName}(${inputs}) \nprint(result)`
+        params.push(`${inputs}`)
         calls.push(call)
         results.push(testCase.output)
       })
       this.calls = calls
       this.results = results
+      this.inputs = params
     } catch (error) {
       console.log({ error })
     }

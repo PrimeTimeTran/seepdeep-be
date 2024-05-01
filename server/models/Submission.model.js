@@ -1,70 +1,76 @@
-import mongoose, { Schema } from 'mongoose';
-import { Auditor } from './Audit/Audit';
+import mongoose, { Schema } from 'mongoose'
+import { Auditor } from './Audit/Audit'
 
-export const submissionEnumerators = {};
+export const submissionEnumerators = {}
 
 const submissionSchema = new Schema({
   body: {
-    type: String
+    type: String,
   },
   title: {
-    type: String
+    type: String,
   },
   explanation: {
-    type: String
+    type: String,
   },
   language: {
-    type: String
+    type: String,
   },
   notes: {
-    type: String
+    type: String,
   },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   problem: { type: Schema.Types.ObjectId, ref: 'Problem' },
   contest: { type: Schema.Types.ObjectId, ref: 'Contest' },
   timeSubmitted: {
-    type: Date
+    type: Date,
   },
   isPublished: {
-    type: Boolean
+    type: Boolean,
   },
   isShared: {
-    type: Boolean
+    type: Boolean,
   },
   isContest: {
-    type: Boolean
+    type: Boolean,
   },
   penalty: {
-    type: Number
+    type: Number,
   },
   numVotes: {
-    type: Number
+    type: Number,
   },
   numComments: {
-    type: Number
+    type: Number,
   },
   runTime: {
-    type: Schema.Types.Decimal128
+    type: Schema.Types.Decimal128,
   },
   beats: {
-    type: Schema.Types.Decimal128
+    type: Schema.Types.Decimal128,
   },
   voterIds: {
     type: Map,
-    of: String
+    of: String,
   },
   topics: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
   runResult: {
     type: Map,
-    of: String
+    of: String,
   },
   testCases: {
-    type: Array,
-    of: String
+    type: [
+      {
+        passing: Boolean,
+        input: Schema.Types.Mixed,
+        outExpected: Schema.Types.Mixed,
+        outActual: Schema.Types.Mixed,
+      },
+    ],
   },
-});
-Auditor.addHooks(submissionSchema);
-const Submission = mongoose.model('Submission', submissionSchema);
-export default Submission;
-export { submissionSchema, Submission };
+})
+Auditor.addHooks(submissionSchema)
+const Submission = mongoose.model('Submission', submissionSchema)
+export default Submission
+export { submissionSchema, Submission }
