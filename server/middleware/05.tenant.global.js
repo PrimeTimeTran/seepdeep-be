@@ -1,6 +1,6 @@
 export default defineEventHandler(async (e) => {
-  try {
-  } catch (err) {
-    // logger.error(err, 'Error: Tenant')
-  }
+  // try {
+  // } catch (err) {
+  //   // logger.error(err, 'Error: Tenant')
+  // }
 })
