@@ -98,6 +98,7 @@ export default class SubmissionService {
         ...this.body,
         user: this.user._id,
         problem: this.body.problem,
+        language: this.language
       })
       this.updateSolved()
       this.user.submissions.push(this.submission._id)
