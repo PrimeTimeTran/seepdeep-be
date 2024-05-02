@@ -18,6 +18,8 @@ export const userEnumerators = {
   }
 };
 
+// Auto generate username
+// Auto generate unique profile that stays forever.
 const userSchema = new Schema({
   email: {
     type: String

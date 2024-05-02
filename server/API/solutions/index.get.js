@@ -12,6 +12,10 @@ export default defineEventHandler(async (e) => {
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(20)
+      .populate({
+        path: 'user',
+        select: 'urlAvatar username urlCSProfile',
+      })
     const response = {
       meta: {
         page,
