@@ -59,6 +59,9 @@ const submissionSchema = new Schema({
     type: Map,
     of: String,
   },
+  passing: {
+    type: Schema.Types.Boolean,
+  },
   testCases: {
     type: [
       {

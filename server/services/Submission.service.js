@@ -31,6 +31,7 @@ export default class SubmissionService {
     this.executionCount = 0
     this.user = e.context.user
     this.totalExecutions = null
+    this.isError = false
     this.setup()
     this.createFunctionCalls()
   }
@@ -50,12 +51,12 @@ export default class SubmissionService {
   }
 
   parseStringToArrayAndNumber(input) {
-    const trimmedInput = input.trim();
-    const regex = /\[.*?\]|-?\d+/g;
-    const parts = trimmedInput.match(regex);
-    const arrays = [JSON.parse(parts.shift())];
-    const numberPart = parseInt(parts.shift());
-    return [arrays, numberPart];
+    const trimmedInput = input.trim()
+    const regex = /\[.*?\]|-?\d+/g
+    const parts = trimmedInput.match(regex)
+    const arrays = [JSON.parse(parts.shift())]
+    const numberPart = parseInt(parts.shift())
+    return [arrays, numberPart]
   }
 
   async updateSolved() {
@@ -98,7 +99,7 @@ export default class SubmissionService {
         ...this.body,
         user: this.user._id,
         problem: this.body.problem,
-        language: this.language
+        language: this.language,
       })
       this.updateSolved()
       this.user.submissions.push(this.submission._id)
@@ -119,7 +120,11 @@ export default class SubmissionService {
           const finalMemoryUsage = process.memoryUsage().heapUsed
           const memoryUsedBytes = finalMemoryUsage - initialMemoryUsage
           this.runResult.memoryUsedMB = memoryUsedBytes / 1024 / 1024
+          this.runResult.timeEnd = Date.now()
+          const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart
+          this.runResult.timeToComplete = timeElapsed / 1000
           this.submission.testCases = this.testCases
+          this.submission.passing = this.testCases.every((c) => c.passing)
           eventEmitter.emit('finish', this.runResult)
         }
       })
@@ -140,17 +145,17 @@ export default class SubmissionService {
       let command = `${runCommands[lang]} ${scriptPath}`
       if (lang === 'cplusplus') {
         command += ` -o ${filePath}`
-        this.scriptRun(command, false)
-        this.scriptRun(filePath, true, idx, callback)
+        this.scriptRun(command)
+        this.scriptRun(filePath, idx, callback)
       } else {
-        this.scriptRun(command, true, idx, callback)
+        this.scriptRun(command, idx, callback)
       }
     } catch (error) {
       logger.info({ msg: error })
     }
   }
 
-  scriptRun(command, quantify = true, idx, callback) {
+  scriptRun(command, idx, callback) {
     exec(command, (error, stdout, _) => {
       if (error) {
         let msg = error.message.split('line')[1]
@@ -159,11 +164,9 @@ export default class SubmissionService {
         msg = index !== -1 ? error.message.substring(index).trim() : ''
         eventEmitter.emit('error', msg)
       }
-      if (quantify) {
-        if (callback) {
-          this.buildTestResult(stdout.trim(), idx)
-          callback(stdout.trim())
-        }
+      if (callback) {
+        this.buildTestResult(stdout.trim(), idx)
+        callback(stdout.trim())
       }
     })
   }
@@ -193,10 +196,16 @@ export default class SubmissionService {
     }, 10000)
 
     eventEmitter.on('error', (error) => {
-      clearTimeout(timeoutId)
-      logger.info('onError')
-      this.submission.save()
-      reject(new Error(error))
+      if (!this.isError) {
+        clearTimeout(timeoutId)
+        logger.info('onError')
+        this.isError = !this.isError
+        this.submission.runResult = this.runResult
+        this.submission.testCases = this.testCases
+        this.submission.passing = false
+        this.submission.save()
+        reject(new Error(error))
+      }
     })
 
     eventEmitter.on('finish', (result) => {
@@ -356,7 +365,6 @@ function myFunction3() {
 //   return 0;
 // }
 // `
-
 
 // LinkedList(ListNode), LinkedListWithRandom(Node)
 const pythonClasses = `class ListNode:
