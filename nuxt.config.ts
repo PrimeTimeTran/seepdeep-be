@@ -49,6 +49,7 @@ export default defineNuxtConfig({
     '@utils': path.resolve(__dirname, 'server/utils'),
     '@services': path.resolve(__dirname, 'server/services'),
     '@security': path.resolve(__dirname, 'server/utils/security'),
+    '@helpers': path.resolve(__dirname, 'server/utils/helpers/all.js'),
   },
   postcss: {
     plugins: {

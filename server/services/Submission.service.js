@@ -16,10 +16,6 @@ const __dirname = '/Users/future/Downloads/CSGemsBE/nuxt/server/services/'
 
 // TODO:
 // - Support multiple languages
-// - Remove hardcode of test setup
-
-
-
 export default class SubmissionService {
   constructor(e, body) {
     this.runResult = {
@@ -40,15 +36,7 @@ export default class SubmissionService {
   setup() {
     this.problem = data.data.find((problem) => problem.id === this.body.problem)
     this.totalExecutions = this.problem.testSuite.length
-    this.functionName = this.toCamelCase(this.problem.title)
-  }
-
-  toCamelCase(str) {
-    return str
-      .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
-        return index === 0 ? word.toLowerCase() : word.toUpperCase()
-      })
-      .replace(/\s+/g, '')
+    this.functionName = toCamelCase(this.problem.title)
   }
 
   async updateSolved() {
@@ -84,6 +72,8 @@ export default class SubmissionService {
     // [ ] Update solved problems if already existing, else create.
     // [ ] Update problem stats
     try {
+      console.log(toCamelCase('Two Sum'))
+      console.log(toCamelCase('3Sum'))
       this.benchmark()
       this.submission = await new Submission({
         ...this.body,
@@ -132,6 +122,7 @@ export default class SubmissionService {
         // Info: Add idx to prevent multiple testCases using the same script/file/case
         `./scripts/runner_${timestamp}-${idx}.${extension}`
       )
+      console.log({go: this.body.body})
       const code = 'from typing import List\n' + this.body.body + fn
       fs.writeFileSync(scriptPath, code)
       let command = `${runCommands[lang]} ${scriptPath}`
@@ -149,15 +140,17 @@ export default class SubmissionService {
 
   scriptRun(command, idx, callback) {
     exec(command, (error, stdout, _) => {
+      console.log({ output: stdout.trim() })
       if (error) {
         let msg = error.message.split('line')[1]
         const match = msg.match(/\d+\n/)
         const index = match ? error.message.indexOf(match[0]) : -1
         msg = index !== -1 ? error.message.substring(index).trim() : ''
+        console.log({ msg, what: error.message })
+        this.buildTestResult(stdout.trim(), idx)
         eventEmitter.emit('error', msg)
       }
       if (callback) {
-        console.log({ output: stdout.trim() })
         this.buildTestResult(stdout.trim(), idx)
         callback(stdout.trim())
       }
@@ -183,7 +176,7 @@ export default class SubmissionService {
         clearTimeout(timeoutId)
         reject(new Error('Timeout'))
       }, 10000)
-  
+
       const onFinishHandler = async (result) => {
         clearTimeout(timeoutId)
         logger.info('onComplete')
@@ -196,7 +189,7 @@ export default class SubmissionService {
           },
         })
       }
-  
+
       const onErrorHandler = (error) => {
         if (!this.isError) {
           clearTimeout(timeoutId)
@@ -220,16 +213,8 @@ export default class SubmissionService {
       const results = []
       const params = []
       this.problem.testSuite.forEach((testCase) => {
-        const inputs = testCase.inputs.map((input) => {
-          if (Array.isArray(input.value)) {
-            return `[${input.value.join(', ')}]`
-          } else if (typeof input.value === 'number') {
-            return input.value.toString()
-          } else {
-            return ''
-          }
-        })
-        const inputs2 = testCase.inputs.map((input) => input.value)
+        const inputs = testCase.input.map((input) => JSON.stringify(input))
+        const inputs2 = testCase.input.map((input) => input)
         const call = `\nsolution = Solution()\nresult = solution.${
           this.functionName
         }(${inputs.join(', ')}) \nprint(result)`
