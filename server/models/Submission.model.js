@@ -72,7 +72,7 @@ const submissionSchema = new Schema({
       },
     ],
   },
-})
+}, { timestamps: true })
 Auditor.addHooks(submissionSchema)
 const Submission = mongoose.model('Submission', submissionSchema)
 export default Submission

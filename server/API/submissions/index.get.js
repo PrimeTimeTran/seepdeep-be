@@ -11,8 +11,9 @@ export default defineEventHandler(async (e) => {
         _id: { $in: subIds },
         problem: new mongoose.Types.ObjectId(params.problem),
       })
+        .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
-        .limit(limit)
+        .limit(20)
       const response = {
         meta: {
           page,

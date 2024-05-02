@@ -50,15 +50,6 @@ export default class SubmissionService {
       .replace(/\s+/g, '')
   }
 
-  parseStringToArrayAndNumber(input) {
-    const trimmedInput = input.trim()
-    const regex = /\[.*?\]|-?\d+/g
-    const parts = trimmedInput.match(regex)
-    const arrays = [JSON.parse(parts.shift())]
-    const numberPart = parseInt(parts.shift())
-    return [arrays, numberPart]
-  }
-
   async updateSolved() {
     let solveIds = [...new Set(this.user.solves)]
     let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
@@ -66,13 +57,10 @@ export default class SubmissionService {
     solveDocuments.forEach((solve) => {
       solveMap.set(solve.problem.toString(), solve)
     })
-
     let solvedItem = solveMap.get(this.submission.problem.toString())
-
     if (solvedItem) {
       logger.info('Problem previously solved')
       solvedItem = await Solve.findById(solvedItem)
-      console.log(solvedItem)
     } else {
       logger.info('Newly Solved Problem')
       let solvedItem = Solve({
@@ -81,6 +69,7 @@ export default class SubmissionService {
       })
       await solvedItem.save()
       this.user.solves.push(solvedItem._id)
+      await this.user.save()
       console.log(solvedItem)
     }
   }
@@ -138,7 +127,8 @@ export default class SubmissionService {
       const timestamp = Date.now()
       const scriptPath = path.join(
         __dirname,
-        `./scripts/runner_${timestamp}.${extension}`
+        // Info: Add idx to prevent multiple testCases using the same script/file/case
+        `./scripts/runner_${timestamp}-${idx}.${extension}`
       )
       const code = 'from typing import List\n' + this.body.body + fn
       fs.writeFileSync(scriptPath, code)
@@ -165,6 +155,7 @@ export default class SubmissionService {
         eventEmitter.emit('error', msg)
       }
       if (callback) {
+        console.log({output: stdout.trim()})
         this.buildTestResult(stdout.trim(), idx)
         callback(stdout.trim())
       }
@@ -228,19 +219,20 @@ export default class SubmissionService {
       const results = []
       const params = []
       this.problem.testSuite.forEach((testCase) => {
-        const inputs = testCase.inputs
-          .map((input) => {
-            if (Array.isArray(input.value)) {
-              return `[${input.value.join(', ')}]`
-            } else if (typeof input.value === 'number') {
-              return input.value.toString()
-            } else {
-              return ''
-            }
-          })
-          .join(', ')
-        const call = `\nsolution = Solution()\nresult = solution.${this.functionName}(${inputs}) \nprint(result)`
-        params.push(`${inputs}`)
+        const inputs = testCase.inputs.map((input) => {
+          if (Array.isArray(input.value)) {
+            return `[${input.value.join(', ')}]`
+          } else if (typeof input.value === 'number') {
+            return input.value.toString()
+          } else {
+            return ''
+          }
+        })
+        const inputs2 = testCase.inputs.map((input) => input.value)
+        const call = `\nsolution = Solution()\nresult = solution.${
+          this.functionName
+        }(${inputs.join(', ')}) \nprint(result)`
+        params.push(inputs2)
         calls.push(call)
         results.push(testCase.output)
       })

@@ -137,7 +137,7 @@ const userSchema = new Schema({
     type: Map,
     of: String
   }
-});
+}, { timestamps: true });
 Auditor.addHooks(userSchema);
 const User = mongoose.model('User', userSchema);
 export default User;
