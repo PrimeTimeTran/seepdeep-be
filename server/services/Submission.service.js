@@ -6,8 +6,7 @@ import { exec } from 'child_process'
 import mongoose from 'mongoose'
 import EventEmitter from 'node:events'
 import { getVars, runCommands } from './helpers.js'
-
-export const eventEmitter = new EventEmitter()
+const eventEmitter = new EventEmitter()
 
 import data from './problems.json'
 const __filename = fileURLToPath(import.meta.url)
@@ -18,6 +17,8 @@ const __dirname = '/Users/future/Downloads/CSGemsBE/nuxt/server/services/'
 // TODO:
 // - Support multiple languages
 // - Remove hardcode of test setup
+
+
 
 export default class SubmissionService {
   constructor(e, body) {
@@ -90,6 +91,7 @@ export default class SubmissionService {
         problem: this.body.problem,
         language: this.language,
       })
+      this.runResult.submissionId = this.submission._id
       this.updateSolved()
       this.user.submissions.push(this.submission._id)
       this.user.save()
@@ -155,7 +157,7 @@ export default class SubmissionService {
         eventEmitter.emit('error', msg)
       }
       if (callback) {
-        console.log({output: stdout.trim()})
+        console.log({ output: stdout.trim() })
         this.buildTestResult(stdout.trim(), idx)
         callback(stdout.trim())
       }
@@ -176,42 +178,41 @@ export default class SubmissionService {
   }
 
   async onComplete() {
-    return await this.promiseWithTimeout
-  }
-
-  promiseWithTimeout = new Promise((resolve, reject) => {
-    const timeoutId = setTimeout(() => {
-      clearTimeout(timeoutId)
-      this.submission.save()
-      reject(new Error('Timeout'))
-    }, 10000)
-
-    eventEmitter.on('error', (error) => {
-      if (!this.isError) {
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
         clearTimeout(timeoutId)
-        logger.info('onError')
-        this.isError = !this.isError
-        this.submission.runResult = this.runResult
-        this.submission.testCases = this.testCases
-        this.submission.passing = false
-        this.submission.save()
-        reject(new Error(error))
+        reject(new Error('Timeout'))
+      }, 10000)
+  
+      const onFinishHandler = async (result) => {
+        clearTimeout(timeoutId)
+        logger.info('onComplete')
+        this.submission.runResult = result
+        await this.submission.save()
+        resolve({
+          data: {
+            runResult: result,
+            submission: this.submission,
+          },
+        })
       }
+  
+      const onErrorHandler = (error) => {
+        if (!this.isError) {
+          clearTimeout(timeoutId)
+          logger.info('onError')
+          this.isError = true
+          this.submission.runResult = this.runResult
+          this.submission.testCases = this.testCases
+          this.submission.passing = false
+          this.submission.save()
+          reject(new Error(error))
+        }
+      }
+      eventEmitter.once('error', onErrorHandler)
+      eventEmitter.once('finish', onFinishHandler)
     })
-
-    eventEmitter.on('finish', (result) => {
-      clearTimeout(timeoutId)
-      logger.info('onComplete')
-      this.submission.runResult = result
-      this.submission.save()
-      resolve({
-        data: {
-          runResult: result,
-          submission: this.submission,
-        },
-      })
-    })
-  })
+  }
 
   createFunctionCalls() {
     try {
