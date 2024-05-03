@@ -27,6 +27,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@vueuse/core": "^10.7.0",
     "@vueuse/firebase": "^10.7.0",
+    "@zodyac/zod-mongoose": "^1.1.2",
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.1",
@@ -84,5 +85,11 @@
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview"
   },
-  "type": "module"
+  "type": "module",
+  "config": {
+    "nuxt": {
+        "host": "0.0.0.0",
+        "port": "3000"
+    }
+  }
 }

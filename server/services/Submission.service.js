@@ -1,18 +1,12 @@
 import fs from 'fs'
 import path from 'path'
-// import { dirname } from 'path'
-import { fileURLToPath } from 'url'
 import { exec } from 'child_process'
-import mongoose from 'mongoose'
 import EventEmitter from 'node:events'
 import { getVars, runCommands } from './helpers.js'
 import SolveService from './Solve.service.ts'
 import data from './problems.json'
 
 const eventEmitter = new EventEmitter()
-const __filename = fileURLToPath(import.meta.url)
-// const __dirname = dirname(__filename)
-// process.chdir(__dirname)
 const __dirname = '/Users/future/Documents/Work/seepdeep-be/server/services/'
 
 export default class SubmissionService {

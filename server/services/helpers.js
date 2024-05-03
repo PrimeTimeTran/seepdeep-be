@@ -1,11 +1,4 @@
-import path from 'path'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-// const __dirname = dirname(__filename)
-// process.chdir(__dirname)
-const __dirname = '/Users/future/Downloads/CSGemsBE/nuxt/server/services/'
+const __dirname = '/Users/future/Documents/Work/seepdeep-be/server/services/'
 
 export const runCommands = {
   dart: 'dart',
