@@ -1,13 +1,25 @@
 import mongoose, { Schema } from 'mongoose';
 import { Auditor } from './Audit/Audit';
 
+export const SolveMasteryLevels = Object.freeze({
+  encountered: 'Encountered',
+  novice: 'Novice', 
+  apprentice: 'Apprentice', 
+  proficient: 'Proficient', 
+  intermediate: 'Intermediate', 
+  advanced: 'Advanced', 
+  expert: 'Expert', 
+  guru:'Guru',
+  legend: 'Legend', 
+})
+
 const solveSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   problem: { type: Schema.Types.ObjectId, ref: 'Problem' },
   problemName: { type: String },
   level:{
     type: String,
-    enum: ['Encountered', 'Novice', 'Apprentice', 'Proficient', 'Intermediate', 'Advanced', 'Expert', 'Legend', 'Guru'],
+    enum: ['Encountered', 'Novice', 'Apprentice', 'Proficient', 'Intermediate', 'Advanced', 'Expert', 'Guru', 'Legend'],
   },
   nextSolve: {
     type: Date
@@ -37,10 +49,10 @@ const solveSchema = new Schema({
   countExpert: {
     type: Number
   },
-  countLegend: {
+  countGuru: {
     type: Number
   },
-  countGuru: {
+  countLegend: {
     type: Number
   },
 });
