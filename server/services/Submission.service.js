@@ -72,6 +72,7 @@ export default class SubmissionService {
         language: this.language,
         problem: this.body.problem,
       })
+      this.user.submissions.push(this.submission._id)
       this.runResult.submissionId = this.submission._id
     } catch (error) {
       logger.error(error, 'Error:')
@@ -161,8 +162,7 @@ export default class SubmissionService {
     const onDone = async () => {
       await this.submission.save()
       await this.solveService.updateSolved(this.submission.problem.toString())
-      this.user.submissions.push(this.submission._id)
-      await this.user.save()
+      // await this.user.save()
     }
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {

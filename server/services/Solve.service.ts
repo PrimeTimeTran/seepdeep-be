@@ -1,5 +1,3 @@
-import mongoose from 'mongoose'
-import { User } from '../models/User.model'
 import type { UserType, StreakType } from '~/server/models/User.model'
 
 export default class SolveService {
@@ -18,7 +16,6 @@ export default class SolveService {
     try {
       let streak = this.user.get('streak')
       streak = updateProblemIdForToday(streak, this.problemId, this.language);
-      console.log({streak})
       this.user.set('streak', streak);
       this.user.markModified('streak');
       await this.user.save()
@@ -41,11 +38,11 @@ export default class SolveService {
     })
     let solvedItem = solveMap.get(this.problemId)
     if (solvedItem) {
-      logger.info('Problem previously solved')
+      logger.info('Problem Old')
       solvedItem = await Solve.findById(solvedItem)
       this.updateUserStreak()
     } else {
-      logger.info('Newly Solved Problem')
+      logger.info('Problem New')
       const currentDate = new Date()
       const numberOfDaysToAdd = 1
       const futureDate = new Date(
@@ -65,9 +62,8 @@ export default class SolveService {
   }
 }
 
-function calculateMaxStreak(streak) {
+function calculateMaxStreak(streak: any) {
   const dateKeys = Object.keys(streak).filter((key) => !isNaN(Date.parse(key)))
-  console.log({dateKeys})
   if (dateKeys.length === 0) {
     return 0
   }
@@ -116,9 +112,6 @@ function calculateCurrentStreak(streak: Record<string, any>) {
       year: '2-digit',
     })
   }
-
-  console.log({ currentStreak })
-
   return currentStreak
 }
 
@@ -170,11 +163,8 @@ function updateProblemIdForToday(
   return streak
 }
 
-function calculateTotalLifetime(streak) {
+function calculateTotalLifetime(streak: any) {
   let totalLifetime = 0
-  console.log({ streak })
-
-  // If streak is an object, use Object.entries() to get an iterable array of [key, value] pairs
   const entries = Object.entries(streak)
 
   for (const [date, dayData] of entries) {
