@@ -17,16 +17,6 @@ export const userEnumerators = {
     customer: 'customer',
   },
 }
-const languageMapSchema = new Schema({
-  type: Map,
-  of: Number, // Each language key should map to an integer count
-});
-
-// Define the problems map schema with the language map as values
-const problemsSchema = new Schema({
-  type: Map,
-  of: languageMapSchema,
-});
 // Auto generate username
 // Auto generate unique profile that stays forever.
 const userSchema = new Schema(
@@ -143,7 +133,8 @@ const userSchema = new Schema(
     },
     streak: {
       type: Map,
-      of: Object
+      of: Schema.Types.Mixed,
+      default: {},
       // of: {
       //   dayTotal: Number,
       //   problems: problemsSchema, // Problems map containing nested language maps
@@ -157,7 +148,7 @@ const userSchema = new Schema(
       of: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, strict: false }
 )
 Auditor.addHooks(userSchema)
 const User = mongoose.model('User', userSchema)

@@ -40,27 +40,27 @@ export default class SubmissionService {
     this.createFunctionCalls()
   }
 
-  async updateSolved() {
-    let solveIds = [...new Set(this.user.solves)]
-    let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
-    let solveMap = new Map()
-    solveDocuments.forEach((solve) => {
-      solveMap.set(solve.problem.toString(), solve)
-    })
-    let solvedItem = solveMap.get(this.submission.problem.toString())
-    if (solvedItem) {
-      logger.info('Problem previously solved')
-      solvedItem = await Solve.findById(solvedItem)
-    } else {
-      logger.info('Newly Solved Problem')
-      let solvedItem = Solve({
-        user: this.user._id,
-        problem: this.submission.problem,
-      })
-      await solvedItem.save()
-      this.user.solves.push(solvedItem._id)
-    }
-  }
+  // async updateSolved() {
+  //   let solveIds = [...new Set(this.user.solves)]
+  //   let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
+  //   let solveMap = new Map()
+  //   solveDocuments.forEach((solve) => {
+  //     solveMap.set(solve.problem.toString(), solve)
+  //   })
+  //   let solvedItem = solveMap.get(this.submission.problem.toString())
+  //   if (solvedItem) {
+  //     logger.info('Problem previously solved')
+  //     solvedItem = await Solve.findById(solvedItem)
+  //   } else {
+  //     logger.info('Newly Solved Problem')
+  //     let solvedItem = Solve({
+  //       user: this.user._id,
+  //       problem: this.submission.problem,
+  //     })
+  //     await solvedItem.save()
+  //     this.user.solves.push(solvedItem._id)
+  //   }
+  // }
 
   async onNewSubmission() {
     // - Create submission instance
@@ -166,7 +166,7 @@ export default class SubmissionService {
   async onComplete() {
     const onDone = async () => {
       await this.submission.save()
-      await this.solveService.updateSolved(this.submission._id)
+      await this.solveService.updateSolved(this.submission.problem.toString())
       this.user.submissions.push(this.submission._id)
       await this.user.save()
     }

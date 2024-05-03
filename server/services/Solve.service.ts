@@ -1,27 +1,20 @@
 import mongoose from 'mongoose'
-type LanguageCounts = Map<String, number>;
-type ProblemsMap = Map<String, LanguageCounts>;
-type DateEntry = {
-    dayTotal: number;
-    problems: ProblemsMap;
-};
-type Streak = Map<String, DateEntry>;
 
+import { User } from '../models/User.model'
+type DateEntry = {
+  dayTotal: number
+  problems: Record<string, any>
+}
+type Streak = Map<String, DateEntry>
 
 type User = {
   _id: String
   streak: Streak
   solves: mongoose.Types.ObjectId[]
 }
-
-type Solve = {
-  _id: String
-  problem: Map<String, String>
-}
-
 export default class SolveService {
   body: Map<String, String>
-  problemId: String = ''
+  problemId: string = ''
   user: User
   language: String
 
@@ -36,18 +29,20 @@ export default class SolveService {
       this.user.streak = updateProblemIdForToday(
         this.user.streak,
         this.problemId,
-        this.language
+        this.language,
+        this.user
       )
-      // this.user.totalLifetime = calculateTotalLifetime(this.user.streak)
-      // this.user.maxStreak = calculateMaxStreak(this.user.streak)
-      // this.user.currentStreak = calculateCurrentStreak(this.user.streak)
+      this.user.markModified('streak')
+      this.user.totalLifetime = calculateTotalLifetime(this.user.streak)
+      this.user.maxStreak = calculateMaxStreak(this.user.streak)
+      this.user.currentStreak = calculateCurrentStreak(this.user.streak)
     } catch (error) {
       console.error('Error saving user data:', error)
     }
   }
 
-  async updateSolved(problemId: String) {
-    this.problemId = problemId.toString()
+  async updateSolved(problemId: string) {
+    this.problemId = problemId
     let solveIds = [...new Set(this.user.solves)]
     let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
     let solveMap = new Map()
@@ -58,6 +53,7 @@ export default class SolveService {
     if (solvedItem) {
       logger.info('Problem previously solved')
       solvedItem = await Solve.findById(solvedItem)
+      this.updateUserStreak()
     } else {
       logger.info('Newly Solved Problem')
       const currentDate = new Date()
@@ -79,10 +75,10 @@ export default class SolveService {
   }
 }
 
-function calculateMaxStreak(streak: Map<String, String>) {
-  const dateKeys = Object.keys(streak).filter((key) => !isNaN(Date.parse(key)))
+function calculateMaxStreak(streak: Record<string, any>) {
+  const dateKeys = [...streak.keys()].filter((key) => !isNaN(Date.parse(key)));
   if (dateKeys.length === 0) {
-    return 0
+    return 0;
   }
 
   let count = 1
@@ -105,11 +101,11 @@ function calculateMaxStreak(streak: Map<String, String>) {
     }
     previousDate = currentDate
   }
-  console.log({ currentMAx: Math.max(maxStreak, count) })
+  console.log({ curretMax: Math.max(maxStreak, count) })
   return Math.max(maxStreak, count)
 }
 
-function calculateCurrentStreak(streak: Map<String, String>) {
+function calculateCurrentStreak(streak: Record<string, any>) {
   const today = new Date()
   const formattedToday = today.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -138,8 +134,9 @@ function calculateCurrentStreak(streak: Map<String, String>) {
 
 function updateProblemIdForToday(
   streak: Streak,
-  problemId: String,
-  language: String
+  problemId: string,
+  language: String,
+  user: User
 ) {
   const today = new Date()
   const formattedToday = today.toLocaleDateString('en-US', {
@@ -148,58 +145,52 @@ function updateProblemIdForToday(
     year: '2-digit',
   })
 
-  if (!streak.has(formattedToday)) {
-    const val: ProblemsMap = new Map([
-      [problemId, new Map([[language, 1]])],
-    ]);
-    streak.set(formattedToday, {
+  if (!streak.get(formattedToday)) {
+    const val = new Map([[problemId, new Map([[language, 1]])]])
+    streak = {
       dayTotal: 1,
-      problems: val,
-    });
+      problems: val
+    }
+    // streak.set(formattedToday, {
+    //   dayTotal: 1,
+    //   problems: val,
+    // })
   } else {
-    // const todayEntry = streak.get(formattedToday)
-    // const problems = todayEntry.problems
-
-    // // Check if `problemId` exists in `problems`, if not, initialize it with the language map
-    // if (!problems.has(problemId)) {
-    //   problems.set(
-    //     problemId,
-    //     new Map([
-    //       [language, 1], // Initialize language key with value 1
-    //     ])
-    //   )
-    // } else {
-    //   // Update the existing `problemId` map
-    //   const problemEntry = problems.get(problemId)
-
-    //   // Increment the language count
-    //   if (problemEntry.has(language)) {
-    //     problemEntry.set(language, problemEntry.get(language) + 1)
-    //   } else {
-    //     problemEntry.set(language, 1)
-    //   }
-    // }
-
-    // // Increment dayTotal for the date entry
-    // todayEntry.dayTotal++
+    const today = streak.get(formattedToday)
+    const problems = today!.problems
+    if (!problems[problemId]) {
+      problems.set(problemId, new Map([[language, 1]]))
+    } else {
+      const problemEntry = problems[problemId]
+      if (problemEntry != undefined && problemEntry[language]) {
+        problemEntry[language] = problemEntry[language] + 1
+        const currentDayTotal = problemEntry['dayTotal'] || 0
+        problemEntry['dayTotal'] = currentDayTotal + 1
+      } else {
+        problemEntry[language] = 1
+        problemEntry['dayTotal'] = 1
+        
+      }
+    }
+    today!.dayTotal++
   }
 
   return streak
 }
 
-// function calculateTotalLifetime(streak) {
-//   let totalLifetime = 0
-//   for (const [date, dayData] of streak.entries()) {
-//     let dayTotal = 0
-//     if (dayData.problems) {
-//       for (const [problemId, languageMap] of dayData.problems.entries()) {
-//         for (const [language, count] of languageMap.entries()) {
-//           dayTotal += count
-//         }
-//       }
-//     }
-//     dayData.dayTotal = dayTotal
-//     totalLifetime += dayTotal
-//   }
-//   return totalLifetime
-// }
+function calculateTotalLifetime(streak: Record<string, any>) {
+  let totalLifetime = 0
+  for (const [date, dayData] of streak.entries()) {
+    let dayTotal = 0
+    if (dayData.problems) {
+      const keys = Object.keys(dayData.problems)
+      for (const key of keys) {
+        const val = dayData.problems[key];
+        dayTotal += val.dayTotal 
+      }
+    }
+    dayData.dayTotal = dayTotal
+    totalLifetime += dayTotal
+  }
+  return totalLifetime
+}
