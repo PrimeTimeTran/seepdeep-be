@@ -1,5 +1,3 @@
-const pieee = 3.14
-
 export function toCamelCase(string) {
   let cleanedString = string.replace(/[-.0-9]/g, function(match) {
       return replaceDigitsWithWords(match);
@@ -41,5 +39,3 @@ function replaceDigitsWithWords(input) {
       return digitWords[match];
   });
 }
-
-export { pieee }

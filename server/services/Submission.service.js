@@ -14,8 +14,6 @@ const __filename = fileURLToPath(import.meta.url)
 // process.chdir(__dirname)
 const __dirname = '/Users/future/Downloads/CSGemsBE/nuxt/server/services/'
 
-// TODO:
-// - Support multiple languages
 export default class SubmissionService {
   constructor(e, body) {
     this.runResult = {
@@ -24,19 +22,19 @@ export default class SubmissionService {
     this.body = body
     this.problem = null
     this.testCases = []
+    this.isError = false
     this.language = 'python'
     this.executionCount = 0
     this.user = e.context.user
     this.totalExecutions = null
-    this.isError = false
     this.setup()
-    this.createFunctionCalls()
   }
 
   setup() {
     this.problem = data.data.find((problem) => problem.id === this.body.problem)
     this.totalExecutions = this.problem.testSuite.length
     this.functionName = toCamelCase(this.problem.title)
+    this.createFunctionCalls()
   }
 
   async updateSolved() {
@@ -59,7 +57,6 @@ export default class SubmissionService {
       await solvedItem.save()
       this.user.solves.push(solvedItem._id)
       await this.user.save()
-      console.log(solvedItem)
     }
   }
 
@@ -72,14 +69,12 @@ export default class SubmissionService {
     // [ ] Update solved problems if already existing, else create.
     // [ ] Update problem stats
     try {
-      console.log(toCamelCase('Two Sum'))
-      console.log(toCamelCase('3Sum'))
       this.benchmark()
       this.submission = await new Submission({
         ...this.body,
         user: this.user._id,
-        problem: this.body.problem,
         language: this.language,
+        problem: this.body.problem,
       })
       this.runResult.submissionId = this.submission._id
       this.updateSolved()
@@ -122,7 +117,6 @@ export default class SubmissionService {
         // Info: Add idx to prevent multiple testCases using the same script/file/case
         `./scripts/runner_${timestamp}-${idx}.${extension}`
       )
-      console.log({go: this.body.body})
       const code = 'from typing import List\n' + this.body.body + fn
       fs.writeFileSync(scriptPath, code)
       let command = `${runCommands[lang]} ${scriptPath}`
@@ -345,7 +339,8 @@ function myFunction3() {
 // `
 
 // LinkedList(ListNode), LinkedListWithRandom(Node)
-const pythonClasses = `class ListNode:
+const pythonClasses = `
+class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
