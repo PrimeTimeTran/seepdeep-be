@@ -1,15 +1,19 @@
+
 import type { UserType, StreakType } from '~/server/models/User.model'
+import { Mastery } from '../models/Solve.model'
+import type { SolveType } from '../models/Solve.model'
 
 export default class SolveService {
   user: UserType
   language: string
   problemId: string = ''
   body: Map<string, string>
+  solvedItem?: SolveType | null | undefined
 
   constructor(e: any, body: any, language: string) {
     this.body = body
-    this.user = e.context.user
     this.language = language
+    this.user = e.context.user
   }
 
   async updateUserStreak() {
@@ -18,8 +22,9 @@ export default class SolveService {
       streak = updateStreak(streak, this.problemId, this.language)
       this.user.set('streak', streak)
       this.user.markModified('streak')
-      await this.user.save()
-      streak = this.user.get('streak')
+      // Not saying results in calculating totalLifeTime being wrong
+      // await this.user.save()
+      // streak = this.user.get('streak')
       this.user.totalLifetime = calculateTotalLifetime(streak)
       this.user.maxStreak = calculateMaxStreak(streak)
       this.user.currentStreak = calculateCurrentStreak(streak)
@@ -29,37 +34,48 @@ export default class SolveService {
     }
   }
 
+  async setSolvedItem() {
+    const solveIds = [...new Set(this.user.solves)]
+    const solveDocuments = await Solve.find({ _id: { $in: solveIds } })
+    const solveMap = new Map()
+    solveDocuments.forEach((s) => {
+      const solve: SolveType = s.toObject()
+      solveMap.set(solve.problem.toString(), solve)
+    })
+    let solvedId = solveMap.get(this.problemId)
+    this.solvedItem = await Solve.findById(solvedId)
+  }
+  async createSolvedItem() {
+    const currentDate = new Date()
+    const numberOfDaysToAdd = 1
+    const futureDate = new Date(
+      currentDate.getTime() + numberOfDaysToAdd * 24 * 60 * 60 * 1000
+    )
+    let solvedItem = new Solve({
+      user: this.user._id,
+      countEncountered: 1,
+      nextSolve: futureDate,
+      problem: this.problemId,
+      level: Mastery.Encountered,
+    })
+    const savedSolve = await solvedItem.save()
+    const savedSolveObject = savedSolve.toObject() as SolveType
+    this.solvedItem = savedSolveObject
+    this.user.solves.push(this.solvedItem._id)
+  }
+
   async updateSolved(problemId: string) {
     this.problemId = problemId
-    let solveIds = [...new Set(this.user.solves)]
-    let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
-    let solveMap = new Map()
-    solveDocuments.forEach((solve) => {
-      solveMap.set(solve.problem!.toString(), solve)
-    })
-    let solvedItem = solveMap.get(this.problemId)
-    if (solvedItem) {
-      logger.info('Problem Old')
-      solvedItem = await Solve.findById(solvedItem)
-      this.updateUserStreak()
-    } else {
+    console.log({problemId})
+    await this.setSolvedItem()
+    if (!this.solvedItem) {
       logger.info('Problem New')
-      const currentDate = new Date()
-      const numberOfDaysToAdd = 1
-      const futureDate = new Date(
-        currentDate.getTime() + numberOfDaysToAdd * 24 * 60 * 60 * 1000
-      )
-      let solvedItem = new Solve({
-        user: this.user._id,
-        countEncountered: 1,
-        nextSolve: futureDate,
-        problem: this.problemId,
-        level: SolveMasteryLevels.encountered,
-      })
-      await solvedItem.save()
-      this.user.solves.push(solvedItem._id)
-      this.updateUserStreak()
+      await this.createSolvedItem()
+    } else {
+      logger.info('Problem Old')
     }
+    // Todo: Update details on this solved item.
+    this.updateUserStreak()
   }
 }
 

@@ -31,7 +31,6 @@ export default defineEventHandler(async (e) => {
     const results = await Submission.aggregate(pipeline)
     let { data, totalCount, pageCount } = results[0]
     if (!_.isEmpty(totalCount) && totalCount[0]) {
-      // pageCount = Math.ceil(parseInt(totalCount[0].total) / limit)
       totalCount = totalCount.length > 0 ? totalCount[0].total : 0
     }
     const response = {
