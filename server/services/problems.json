@@ -24,14 +24,14 @@
       "numLC": 1,
       "similar": [{ "difficulty": "Medium", "id": 2, "title": "3 Sum" }],
       "submissions": 24.6,
-      "testSuite": [
+      "testCases": [
         { "output": [0, 1], "explanation": "", "input": [[2, 7, 11, 15], 9] },
         { "output": [1, 2], "explanation": "", "input": [[3, 2, 4], 6] },
         { "output": [0, 1], "explanation": "", "input": [[3, 3], 6] }
       ],
       "title": "Two Sum",
       "topics": [{ "name": "Array" }, { "name": "Hash Table" }],
-      "id": "325eb55b0eeca014fcededbe",
+      "id": "66367f5e0d552cf0a90e85e9",
       "signature": {
         "parameters": [
           { "type": "List[int]", "name": "nums" },
@@ -64,14 +64,14 @@
       "numLC": 1,
       "similar": [{ "difficulty": "Medium", "id": 2, "title": "3 Sum" }],
       "submissions": 24.6,
-      "testSuite": [
+      "testCases": [
         { "output": [0, 1], "explanation": "", "input": [[2, 7, 11, 15], 9] },
         { "output": [1, 2], "explanation": "", "input": [[3, 2, 4], 6] },
         { "output": [0, 1], "explanation": "", "input": [[3, 3], 6] }
       ],
       "title": "Two Sum",
       "topics": [{ "name": "Array" }, { "name": "Hash Table" }],
-      "id": "325eb55b0eeca014fcededbe",
+      "id": "66365afe499de034006863c3",
       "signature": {
         "parameters": [
           { "type": "List[int]", "name": "nums" },
@@ -107,7 +107,7 @@
         { "difficulty": "Easy", "id": 1, "title": "Two Sum" }
       ],
       "submissions": 21.7,
-      "testSuite": [
+      "testCases": [
         {
           "output": [7, 0, 8],
           "explanation": "",
@@ -128,7 +128,7 @@
       ],
       "title": "Add Two Numbers",
       "topics": [{ "name": "Linked List" }, { "name": "Math" }],
-      "id": "ebbfadbdc5b14df2099fab1a",
+      "id": "66365afe499de034006863cd",
       "signature": {
         "parameters": [
           { "type": "List[int]", "name": "l1" },
@@ -168,7 +168,7 @@
         }
       ],
       "submissions": 26.4,
-      "testSuite": [
+      "testCases": [
         { "output": 3, "explanation": "", "input": ["abcabcbb"] },
         { "output": 1, "explanation": "", "input": ["bbbbb"] },
         { "output": 3, "explanation": "", "input": ["pwwkew"] }
@@ -179,7 +179,7 @@
         { "name": "Sliding Window" },
         { "name": "Hash Table" }
       ],
-      "id": "0ecb7ca2ac88ab9faf7411bd",
+      "id": "66365afe499de034006863d8",
       "signature": {
         "parameters": [{ "type": "str", "name": "s" }],
         "returnType": "int"
@@ -220,7 +220,7 @@
         }
       ],
       "submissions": 27.8,
-      "testSuite": [
+      "testCases": [
         { "output": 2, "explanation": "", "input": [[1, 3], [2]] },
         {
           "output": 2.5,
@@ -245,7 +245,7 @@
         { "name": "Binary Search" },
         { "name": "Divide and Conquer" }
       ],
-      "id": "dfeadf868fdb2fbabd5eaf2e",
+      "id": "66365afe499de034006863e3",
       "signature": {
         "parameters": [
           { "type": "List[int]", "name": "nums1" },
@@ -285,7 +285,7 @@
         }
       ],
       "submissions": 23.9,
-      "testSuite": [
+      "testCases": [
         { "output": "bab", "explanation": "", "input": ["babad"] },
         { "output": "bb", "explanation": "", "input": ["cbbd"] },
         { "output": "a", "explanation": "", "input": ["a"] }
@@ -329,7 +329,7 @@
         { "difficulty": "Medium", "id": 38, "title": "Count and Say" }
       ],
       "submissions": 20.4,
-      "testSuite": [
+      "testCases": [
         {
           "output": "PAHNAPLSIIGYIR",
           "explanation": "",
@@ -344,7 +344,7 @@
       ],
       "title": "ZigZag Conversion",
       "topics": [{ "name": "String" }],
-      "id": "d53d7abad8a72e4c1152f9e8",
+      "id": "66365afe499de034006863ef",
       "signature": {
         "parameters": [
           { "type": "str", "name": "s" },
@@ -380,7 +380,7 @@
         { "difficulty": "Easy", "id": 13, "title": "Roman to Integer" }
       ],
       "submissions": 24.6,
-      "testSuite": [
+      "testCases": [
         { "output": 321, "explanation": "", "input": [123] },
         { "output": -321, "explanation": "", "input": [-123] },
         { "output": 21, "explanation": "", "input": [120] }
@@ -424,7 +424,7 @@
         }
       ],
       "submissions": 22.3,
-      "testSuite": [
+      "testCases": [
         { "output": 42, "explanation": "", "input": ["42"] },
         { "output": -42, "explanation": "", "input": ["   -42"] },
         { "output": 4193, "explanation": "", "input": ["4193 with words"] }
@@ -464,7 +464,7 @@
         { "difficulty": "Easy", "id": 13, "title": "Roman to Integer" }
       ],
       "submissions": 26.2,
-      "testSuite": [
+      "testCases": [
         { "output": true, "explanation": "", "input": [121] },
         { "output": false, "explanation": "", "input": [-121] },
         { "output": false, "explanation": "", "input": [10] }
@@ -508,7 +508,7 @@
         }
       ],
       "submissions": 23.7,
-      "testSuite": [
+      "testCases": [
         { "output": false, "explanation": "", "input": ["aa", "a"] },
         { "output": true, "explanation": "", "input": ["aa", "a*"] },
         { "output": true, "explanation": "", "input": ["ab", ".*"] }
@@ -559,7 +559,7 @@
         }
       ],
       "submissions": 27.8,
-      "testSuite": [
+      "testCases": [
         {
           "output": 49,
           "explanation": "",
@@ -607,7 +607,7 @@
         }
       ],
       "submissions": 23.4,
-      "testSuite": [
+      "testCases": [
         { "output": "III", "explanation": "", "input": [3] },
         { "output": "IV", "explanation": "", "input": [4] },
         { "output": "IX", "explanation": "", "input": [9] }
@@ -651,7 +651,7 @@
         }
       ],
       "submissions": 24.9,
-      "testSuite": [
+      "testCases": [
         { "output": 3, "explanation": "", "input": ["III"] },
         { "output": 4, "explanation": "", "input": ["IV"] },
         { "output": 9, "explanation": "", "input": ["IX"] }
@@ -695,7 +695,7 @@
         }
       ],
       "submissions": 28.1,
-      "testSuite": [
+      "testCases": [
         {
           "output": "fl",
           "explanation": "",
@@ -747,7 +747,7 @@
         }
       ],
       "submissions": 25.3,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             [-1, -1, 2],
@@ -794,7 +794,7 @@
         { "difficulty": "Medium", "id": 15, "title": "3Sum" }
       ],
       "submissions": 26.7,
-      "testSuite": [
+      "testCases": [
         { "output": 2, "explanation": "", "input": [[-1, 2, 1, -4], 1] },
         { "output": 0, "explanation": "", "input": [[0, 0, 0], 1] },
         { "output": 2, "explanation": "", "input": [[1, 1, 1, 0], -100] }
@@ -837,7 +837,7 @@
         { "difficulty": "Medium", "id": 46, "title": "Permutations" }
       ],
       "submissions": 25.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"],
           "explanation": "",
@@ -881,7 +881,7 @@
         { "difficulty": "Medium", "id": 15, "title": "3Sum" }
       ],
       "submissions": 27.8,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             [-2, -1, 1, 2],
@@ -940,7 +940,7 @@
         { "difficulty": "Medium", "id": 21, "title": "Merge Two Sorted Lists" }
       ],
       "submissions": 26.5,
-      "testSuite": [
+      "testCases": [
         {
           "output": [1, 2, 3, 5],
           "explanation": "",
@@ -991,7 +991,7 @@
         }
       ],
       "submissions": 25.7,
-      "testSuite": [
+      "testCases": [
         { "output": true, "explanation": "", "input": ["()"] },
         { "output": true, "explanation": "", "input": ["()[]{}"] },
         { "output": false, "explanation": "", "input": ["(]"] }
@@ -1031,7 +1031,7 @@
         { "difficulty": "Easy", "id": 23, "title": "Merge Sorted Array" }
       ],
       "submissions": 27.3,
-      "testSuite": [
+      "testCases": [
         {
           "output": [1, 1, 2, 3, 4, 4],
           "explanation": "",
@@ -1085,7 +1085,7 @@
         { "difficulty": "Medium", "id": 93, "title": "Restore IP Addresses" }
       ],
       "submissions": 29.6,
-      "testSuite": [
+      "testCases": [
         {
           "output": ["((()))", "(()())", "(())()", "()(())", "()()()"],
           "explanation": "",
@@ -1133,7 +1133,7 @@
         { "difficulty": "Hard", "id": 147, "title": "Insertion Sort List" }
       ],
       "submissions": 26.1,
-      "testSuite": [
+      "testCases": [
         {
           "output": [1, 1, 2, 3, 4, 4, 5, 6],
           "explanation": "",
@@ -1187,7 +1187,7 @@
         { "difficulty": "Hard", "id": 25, "title": "Reverse Nodes in k-Group" }
       ],
       "submissions": 29.2,
-      "testSuite": [
+      "testCases": [
         { "output": [2, 1, 4, 3], "explanation": "", "input": [[1, 2, 3, 4]] },
         {
           "output": [2, 1, 4, 3, 5],
@@ -1231,7 +1231,7 @@
         { "difficulty": "Hard", "id": 24, "title": "Swap Nodes in Pairs" }
       ],
       "submissions": 28.4,
-      "testSuite": [
+      "testCases": [
         {
           "output": [2, 1, 4, 3, 5],
           "explanation": "",
@@ -1286,7 +1286,7 @@
         }
       ],
       "submissions": 27.9,
-      "testSuite": [
+      "testCases": [
         { "output": [1, 2], "explanation": "", "input": [[1, 1, 2]] },
         {
           "output": [0, 1, 2, 3, 4],
@@ -1338,7 +1338,7 @@
         }
       ],
       "submissions": 27.3,
-      "testSuite": [
+      "testCases": [
         { "output": [2, 2], "explanation": "", "input": [[3, 2, 2, 3], 3] },
         {
           "output": [0, 1, 4, 0, 3],
@@ -1389,7 +1389,7 @@
         { "difficulty": "Easy", "id": 14, "title": "Longest Common Prefix" }
       ],
       "submissions": 25.6,
-      "testSuite": [
+      "testCases": [
         { "output": 2, "explanation": "", "input": ["sadbutsad", "sad"] }
       ],
       "title": "Find the Index of the First Occurrence in a String",
@@ -1430,7 +1430,7 @@
         { "difficulty": "Hard", "id": 69, "title": "Sqrt(x)" }
       ],
       "submissions": 24.8,
-      "testSuite": [
+      "testCases": [
         { "output": 3, "explanation": "", "input": [10, 3] },
         { "output": -2, "explanation": "", "input": [7, -3] },
         { "output": 0, "explanation": "", "input": [0, 1] }
@@ -1477,7 +1477,7 @@
         }
       ],
       "submissions": 24.1,
-      "testSuite": [
+      "testCases": [
         {
           "output": [0, 9],
           "explanation": "",
@@ -1535,7 +1535,7 @@
         { "difficulty": "Hard", "id": 47, "title": "Permutations II" }
       ],
       "submissions": 26.3,
-      "testSuite": [
+      "testCases": [
         { "output": [1, 3, 2], "explanation": "", "input": [[1, 2, 3]] },
         { "output": [1, 2, 3], "explanation": "", "input": [[3, 2, 1]] },
         { "output": [1, 5, 1], "explanation": "", "input": [[1, 1, 5]] }
@@ -1579,7 +1579,7 @@
         }
       ],
       "submissions": 25.1,
-      "testSuite": [
+      "testCases": [
         { "output": 2, "explanation": "", "input": ["(()"] },
         { "output": 4, "explanation": "", "input": [")()())"] },
         { "output": 0, "explanation": "", "input": [""] }
@@ -1627,7 +1627,7 @@
         }
       ],
       "submissions": 26.4,
-      "testSuite": [
+      "testCases": [
         { "output": 4, "explanation": "", "input": [[4, 5, 6, 7, 0, 1, 2], 0] },
         {
           "output": -1,
@@ -1674,7 +1674,7 @@
         { "difficulty": "Medium", "id": 35, "title": "Search Insert Position" }
       ],
       "submissions": 27.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": [3, 4],
           "explanation": "",
@@ -1729,7 +1729,7 @@
         { "difficulty": "Medium", "id": 74, "title": "Search a 2D Matrix" }
       ],
       "submissions": 28.6,
-      "testSuite": [
+      "testCases": [
         { "output": 2, "explanation": "", "input": [[1, 3, 5, 6], 5] },
         { "output": 1, "explanation": "", "input": [[1, 3, 5, 6], 2] },
         { "output": 4, "explanation": "", "input": [[1, 3, 5, 6], 7] }
@@ -1771,7 +1771,7 @@
         { "difficulty": "Medium", "id": 37, "title": "Sudoku Solver" }
       ],
       "submissions": 29.4,
-      "testSuite": [
+      "testCases": [
         {
           "output": true,
           "explanation": "",
@@ -1841,7 +1841,7 @@
         { "difficulty": "Medium", "id": 36, "title": "Valid Sudoku" }
       ],
       "submissions": 26.1,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             ["5", "3", "4", "6", "7", "8", "9", "1", "2"],
@@ -1902,7 +1902,7 @@
       "numLC": 38,
       "similar": [],
       "submissions": 28.6,
-      "testSuite": [
+      "testCases": [
         { "output": "1", "explanation": "", "input": [1] },
         { "output": "1211", "explanation": "", "input": [4] },
         { "output": "111221", "explanation": "", "input": [5] }
@@ -1942,7 +1942,7 @@
         { "difficulty": "Medium", "id": 216, "title": "Combination Sum III" }
       ],
       "submissions": 30.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": [[2, 2, 3], [7]],
           "explanation": "",
@@ -1996,7 +1996,7 @@
         { "difficulty": "Medium", "id": 39, "title": "Combination Sum" }
       ],
       "submissions": 32.6,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             [1, 1, 6],
@@ -2048,7 +2048,7 @@
       "numLC": 41,
       "similar": [],
       "submissions": 27.8,
-      "testSuite": [
+      "testCases": [
         { "output": 3, "explanation": "", "input": [[1, 2, 0]] },
         { "output": 2, "explanation": "", "input": [[3, 4, -1, 1]] },
         { "output": 1, "explanation": "", "input": [[7, 8, 9, 11, 12]] }
@@ -2085,7 +2085,7 @@
       "numLC": 42,
       "similar": [],
       "submissions": 39.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": 6,
           "explanation": "",
@@ -2130,7 +2130,7 @@
       "numLC": 43,
       "similar": [],
       "submissions": 27.8,
-      "testSuite": [
+      "testCases": [
         { "output": "6", "explanation": "", "input": ["2", "3"] },
         { "output": "56088", "explanation": "", "input": ["123", "456"] },
         { "output": "891", "explanation": "", "input": ["9", "99"] }
@@ -2176,7 +2176,7 @@
         }
       ],
       "submissions": 23.4,
-      "testSuite": [
+      "testCases": [
         { "output": false, "explanation": "", "input": ["aa", "a"] },
         { "output": true, "explanation": "", "input": ["aa", "*"] },
         { "output": false, "explanation": "", "input": ["cb", "?a"] }
@@ -2220,7 +2220,7 @@
       "numLC": 45,
       "similar": [],
       "submissions": 31.2,
-      "testSuite": [
+      "testCases": [
         { "output": 2, "explanation": "", "input": [[2, 3, 1, 1, 4]] },
         { "output": 2, "explanation": "", "input": [[2, 3, 0, 1, 4]] },
         { "output": 0, "explanation": "", "input": [[1]] }
@@ -2259,7 +2259,7 @@
         { "difficulty": "Medium", "id": 47, "title": "Permutations II" }
       ],
       "submissions": 42.9,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             [1, 2, 3],
@@ -2316,7 +2316,7 @@
         { "difficulty": "Medium", "id": 46, "title": "Permutations" }
       ],
       "submissions": 37.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             [1, 1, 2],
@@ -2380,7 +2380,7 @@
       "numLC": 48,
       "similar": [],
       "submissions": 44.8,
-      "testSuite": [
+      "testCases": [
         {
           "output": [
             [7, 4, 1],
@@ -2447,7 +2447,7 @@
       "numLC": 49,
       "similar": [],
       "submissions": 47.6,
-      "testSuite": [
+      "testCases": [
         {
           "output": [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]],
           "explanation": "",
@@ -2488,7 +2488,7 @@
       "numLC": 50,
       "similar": [],
       "submissions": 38.2,
-      "testSuite": [
+      "testCases": [
         { "output": 1024, "explanation": "", "input": [2, 10] },
         { "output": 9.261, "explanation": "", "input": [2.1, 3] },
         { "output": 0.25, "explanation": "", "input": [2, -2] }
@@ -2534,7 +2534,7 @@
       "numLC": 752,
       "similar": [],
       "submissions": 428.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": 6,
           "explanation": "A sequence of valid moves would be '0000' -> '1000' -> '1100' -> '1200' -> '1201' -> '1202' -> '0202'. Note that a sequence like '0000' -> '0001' -> '0002' -> '0102' -> '0202' would be invalid, because the wheels of the lock become stuck after the display becomes the dead end '0102'.",
@@ -2594,7 +2594,7 @@
       "numLC": 76,
       "similar": [],
       "submissions": 428.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": "BANC",
           "explanation": "The entire string s is the minimum window.",
@@ -2651,7 +2651,7 @@
       "numLC": 127,
       "similar": [],
       "submissions": 428.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": 5,
           "explanation": "One shortest transformation sequence is 'hit' -> 'hot' -> 'dot' -> 'dog' -> cog', which is 5 words long.",
@@ -2699,7 +2699,7 @@
       "numLC": 3120,
       "similar": [],
       "submissions": 428.2,
-      "testSuite": [
+      "testCases": [
         {
           "output": 3,
           "explanation": "The special characters in word are 'a', 'b', and 'c'.",

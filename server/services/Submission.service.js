@@ -6,6 +6,8 @@ import { getVars, runCommands } from './helpers.js'
 import SolveService from './Solve.service.ts'
 import data from './problems.json'
 
+import Problem from '../models/Problem.model'
+
 const eventEmitter = new EventEmitter()
 const __dirname = '/Users/future/Documents/Work/seepdeep-be/server/services/'
 
@@ -13,7 +15,6 @@ export default class SubmissionService {
   constructor(e, body) {
     this.runResult = {
       ...this.body,
-      
     }
     this.body = body
     this.problem = null
@@ -24,14 +25,17 @@ export default class SubmissionService {
     this.user = e.context.user
     this.totalExecutions = null
     this.solveService = new SolveService(e, body, this.language)
-    this.setup()
   }
 
-  setup() {
-    this.problem = data.data.find((problem) => problem.id === this.body.problem)
-    this.totalExecutions = this.problem.testSuite.length
-    this.functionName = toCamelCase(this.problem.title)
-    this.createFunctionCalls()
+  async setup() {
+    try {
+      this.problem = await Problem.findOne({ _id: this.body.problem })
+      this.totalExecutions = this.problem.testCases.length
+      this.functionName = toCamelCase(this.problem.title)
+      await this.createFunctionCalls()
+    } catch (error) {
+      logger.error('Setup Submission', error)
+    }
   }
 
   async onNewSubmission() {
@@ -89,7 +93,7 @@ export default class SubmissionService {
         // Info: Add idx to prevent multiple testCases using the same script/file/case
         `./scripts/runner_${timestamp}-${idx}.${extension}`
       )
-      const code = 'from typing import List\n' + this.body.body + fn
+      const code = `from typing import List\n` + this.body.body + '\n' + fn
       fs.writeFileSync(scriptPath, code)
       let command = `${runCommands[lang]} ${scriptPath}`
       if (lang === 'cplusplus') {
@@ -178,26 +182,31 @@ export default class SubmissionService {
     })
   }
 
-  createFunctionCalls() {
+  async createFunctionCalls() {
     try {
       const calls = []
       const results = []
       const params = []
-      this.problem.testSuite.forEach((testCase) => {
-        const inputs = testCase.input.map((input) => JSON.stringify(input))
-        const inputs2 = testCase.input.map((input) => input)
+
+      this.problem.testCases.forEach((testCase) => {
+        const input = testCase.get('input')
+        console.log({ input })
+        const inputs = input?.map((input) => JSON.stringify(input))
+        const inputs2 = input?.map((input) => input)
+        console.log({ input, inputs })
         const call = `\nsolution = Solution()\nresult = solution.${
           this.functionName
         }(${inputs.join(', ')}) \nprint(result)`
+
         params.push(inputs2)
         calls.push(call)
-        results.push(testCase.output)
+        results.push(testCase.get('output'))
       })
       this.calls = calls
       this.results = results
       this.inputs = params
     } catch (error) {
-      console.log({ error })
+      logger.error('Generating Function Calls', { error })
     }
   }
 }
@@ -214,10 +223,8 @@ class Node:
         self.val = int(x)
         self.next = next
         self.random = random
+
 `
-
-
-
 
 // class Solution:
 //     def twoSum(self, nums, target):
@@ -228,8 +235,6 @@ class Node:
 //                 return [store.get(remainder), idx]
 //             store[n] = idx
 
-
-
 // class Solution:
 //     def twoSum(self, nums: List[int], target: int) -> List[int]:
 //         store = {}
@@ -238,4 +243,14 @@ class Node:
 //             if store.get(remainder) != None:
 //                 return [store.get(remainder), idx]
 //             store[n] = idx
-            
+
+// class Solution:
+//     def longestSubstringWithoutRepeatingCharacters(self, s: str) -> int:
+//         ans, l, seen = 0, 0, set()
+//         for r, c in enumerate(s):
+//             while c in seen:
+//                 seen.remove(s[l])
+//                 l+=1
+//             seen.add(c)
+//             ans = max(ans, r - l + 1)
+//         return ans

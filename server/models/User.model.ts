@@ -38,7 +38,6 @@ const streakSchema = z.map(
 )
 
 const zUser = z.object({
-  // _id: z.objectI,
   email: z.string(),
   passwordDigest: z.string(),
   username: z.optional(z.string()),
@@ -82,12 +81,12 @@ const zUser = z.object({
   problems: z.array(zId.describe('ObjectId:Problem')),
   solves: z.array(zId.describe('ObjectId:Solve')),
   roles: z.array(zId.describe('ObjectId:Role')),
-  // status: z.enum(Object.values(userEnumerators.status)),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
 
 type StreakType = z.infer<typeof streakSchema>
+
 type UserType = z.infer<typeof zUser> &
   mongoose.Document & {
     markModified: (path: string) => void

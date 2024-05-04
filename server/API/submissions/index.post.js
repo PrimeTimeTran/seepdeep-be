@@ -11,6 +11,7 @@ export default defineEventHandler(async (e) => {
       throw new Error('User not found.')
     }
     let service = new SubmissionService(e, body)
+    await service.setup()
     await service.onNewSubmission()
     return await service.onComplete()
   } catch (error) {

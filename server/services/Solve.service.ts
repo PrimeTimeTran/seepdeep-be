@@ -2,6 +2,7 @@
 import type { UserType, StreakType } from '~/server/models/User.model'
 import { Mastery } from '../models/Solve.model'
 import type { SolveType } from '../models/Solve.model'
+import mongoose from 'mongoose'
 
 export default class SolveService {
   user: UserType
@@ -23,8 +24,8 @@ export default class SolveService {
       this.user.set('streak', streak)
       this.user.markModified('streak')
       // Not saying results in calculating totalLifeTime being wrong
-      // await this.user.save()
-      // streak = this.user.get('streak')
+      await this.user.save()
+      streak = this.user.get('streak')
       this.user.totalLifetime = calculateTotalLifetime(streak)
       this.user.maxStreak = calculateMaxStreak(streak)
       this.user.currentStreak = calculateCurrentStreak(streak)
@@ -34,18 +35,19 @@ export default class SolveService {
     }
   }
 
-  async setSolvedItem() {
+  async setSolvedItem(problemId: string) {
     const solveIds = [...new Set(this.user.solves)]
     const solveDocuments = await Solve.find({ _id: { $in: solveIds } })
     const solveMap = new Map()
     solveDocuments.forEach((s) => {
       const solve: SolveType = s.toObject()
-      solveMap.set(solve.problem.toString(), solve)
+      solveMap.set(solve.problem?.toString(), solve)
     })
-    let solvedId = solveMap.get(this.problemId)
+
+    let solvedId = solveMap.get(problemId)
     this.solvedItem = await Solve.findById(solvedId)
   }
-  async createSolvedItem() {
+  async createSolvedItem(problemId: string) {
     const currentDate = new Date()
     const numberOfDaysToAdd = 1
     const futureDate = new Date(
@@ -53,11 +55,10 @@ export default class SolveService {
     )
     let solvedItem = new Solve({
       user: this.user._id,
-      countEncountered: 1,
       nextSolve: futureDate,
-      problem: this.problemId,
-      level: Mastery.Encountered,
+      problem: new mongoose.Types.ObjectId(problemId),
     })
+    console.log({newSolveItem: solvedItem})
     const savedSolve = await solvedItem.save()
     const savedSolveObject = savedSolve.toObject() as SolveType
     this.solvedItem = savedSolveObject
@@ -65,12 +66,11 @@ export default class SolveService {
   }
 
   async updateSolved(problemId: string) {
-    this.problemId = problemId
-    console.log({problemId})
-    await this.setSolvedItem()
+    console.log({inboundProblemId: problemId})
+    await this.setSolvedItem(problemId)
     if (!this.solvedItem) {
       logger.info('Problem New')
-      await this.createSolvedItem()
+      await this.createSolvedItem(problemId)
     } else {
       logger.info('Problem Old')
     }
@@ -140,6 +140,8 @@ function updateStreak(streak: StreakType, problemId: string, language: string) {
     day: '2-digit',
     year: '2-digit',
   })
+
+  console.log({streak})
 
   // Ditto
   if (!streak[formattedToday]) {

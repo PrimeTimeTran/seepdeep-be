@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import { zId } from '@zodyac/zod-mongoose'
 
 import { Auditor } from './Audit/Audit'
-import { zodToMongooseSchema } from './model.helpers'
+import { mongoIdSchema, zodToMongooseSchema } from './model.helpers'
 
 export enum Mastery {
   Encountered = 'Encountered',
@@ -18,9 +18,9 @@ export enum Mastery {
 }
 
 const zSolve = z.object({
-  user: z.array(zId),
+  user: zId.describe('ObjectId:User'),
   problem: zId.describe('ObjectId:Problem'),
-  countEncountered: z.number().default(0),
+  countEncountered: z.number().default(1),
   countNovice: z.number().default(0),
   countApprentice: z.number().default(0),
   countProficient: z.number().default(0),
@@ -30,7 +30,7 @@ const zSolve = z.object({
   countGuru: z.number().default(0),
   countLegend: z.number().default(0),
   nextSolve: z.date(),
-  level: z.nativeEnum(Mastery),
+  level: z.nativeEnum(Mastery).default(Mastery.Encountered),
 })
 
 type SolveType = z.infer<typeof zSolve> &

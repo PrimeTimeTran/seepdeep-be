@@ -6,7 +6,6 @@ export function zodToMongooseSchema(zodSchema) {
 
   for (const key in zodSchema.shape) {
     const zodType = zodSchema.shape[key]
-
     if (zodType instanceof z.ZodString) {
       schema[key] = {
         type: String,
@@ -42,17 +41,22 @@ export function zodToMongooseSchema(zodSchema) {
         type: zodToMongooseSchema(zodType.unwrap()),
         required: false,
       }
-    } else if (
-      zodType instanceof z.ZodString &&
-      zodType._def.description === 'ObjectId:Problem'
-    ) {
+    } else if (key === 'problem' || key === 'user') {
       schema[key] = {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Problem',
         required: !zodType.isOptional(),
+      }
+    } else if (zodType instanceof z.ZodDefault) {
+      schema[key] = {
+        type: zodType._def.innerType instanceof z.ZodNumber ? Number : String,
+        required: !zodType.isOptional(),
+        default: zodType._def.defaultValue(),
       }
     }
   }
 
   return schema
 }
+
+export const mongoIdSchema = z.string().regex(/^[0-9a-f]{24}$/)

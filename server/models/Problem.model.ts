@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
 import { Auditor } from './Audit/Audit'
 
 const zSignatureParameter = z.object({
@@ -11,12 +11,16 @@ const zSignature = z.object({
   parameters: z.array(zSignatureParameter),
   returnType: z.string(),
 })
-
-const zTestSuite = z.object({
-  output: z.array(z.number()),
-  explanation: z.string(),
-  input: z.tuple([z.array(z.number()), z.number()]),
-})
+const zTestCases = z.object({
+    output: z.array(z.union([z.number(), z.string()])),
+    explanation: z.string(),
+    input: z.union([
+        z.array(z.number()),
+        z.array(z.string()),
+        z.number(),
+        z.string(),
+    ]),
+});
 
 const zTopic = z.object({
   name: z.string(),
@@ -53,7 +57,7 @@ const zProblem = z.object({
   numLC: z.number(),
   similar: z.array(zSimilar),
   submissions: z.number(),
-  testSuite: z.array(zTestSuite),
+  testCases: z.array(zTestCases),
   title: z.string(),
   topics: z.array(zTopic),
   id: z.string(),
@@ -63,8 +67,12 @@ const zProblem = z.object({
 
 type ProblemType = z.infer<typeof zProblem>
 
-const problemSchema = zodToMongooseSchema(zProblem)
-const Problem = new mongoose.Schema(problemSchema)
+const problemSchemaDefinition = zodToMongooseSchema(zProblem)
+const problemSchema = new mongoose.Schema(problemSchemaDefinition)
+Auditor.addHooks(problemSchema)
+
+const Problem = mongoose.model<ProblemType>('Problem', problemSchema)
+
 export default Problem
 export { problemSchema, Problem }
 export type { ProblemType }
