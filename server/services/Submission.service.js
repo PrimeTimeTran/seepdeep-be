@@ -4,7 +4,6 @@ import { exec } from 'child_process'
 import EventEmitter from 'node:events'
 import { getVars, runCommands } from './helpers.js'
 import SolveService from './Solve.service.ts'
-import data from './problems.json'
 
 import Problem from '../models/Problem.model'
 
@@ -190,14 +189,11 @@ export default class SubmissionService {
 
       this.problem.testCases.forEach((testCase) => {
         const input = testCase.get('input')
-        console.log({ input })
         const inputs = input?.map((input) => JSON.stringify(input))
         const inputs2 = input?.map((input) => input)
-        console.log({ input, inputs })
         const call = `\nsolution = Solution()\nresult = solution.${
           this.functionName
         }(${inputs.join(', ')}) \nprint(result)`
-
         params.push(inputs2)
         calls.push(call)
         results.push(testCase.get('output'))

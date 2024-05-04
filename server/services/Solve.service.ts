@@ -23,7 +23,9 @@ export default class SolveService {
       streak = updateStreak(streak, this.problemId, this.language)
       this.user.set('streak', streak)
       this.user.markModified('streak')
-      // Not saying results in calculating totalLifeTime being wrong
+      // For some reason, when I test, totalLifeTime doesn't update without saving first here. 
+      // Although if there is a value, it does. Only the initial
+      // Time a user creates a submission for the day I've seemed to produce this problem.
       await this.user.save()
       streak = this.user.get('streak')
       this.user.totalLifetime = calculateTotalLifetime(streak)
@@ -47,6 +49,7 @@ export default class SolveService {
     let solvedId = solveMap.get(problemId)
     this.solvedItem = await Solve.findById(solvedId)
   }
+
   async createSolvedItem(problemId: string) {
     const currentDate = new Date()
     const numberOfDaysToAdd = 1
@@ -58,7 +61,6 @@ export default class SolveService {
       nextSolve: futureDate,
       problem: new mongoose.Types.ObjectId(problemId),
     })
-    console.log({newSolveItem: solvedItem})
     const savedSolve = await solvedItem.save()
     const savedSolveObject = savedSolve.toObject() as SolveType
     this.solvedItem = savedSolveObject
@@ -66,7 +68,6 @@ export default class SolveService {
   }
 
   async updateSolved(problemId: string) {
-    console.log({inboundProblemId: problemId})
     await this.setSolvedItem(problemId)
     if (!this.solvedItem) {
       logger.info('Problem New')
