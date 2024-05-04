@@ -15,9 +15,9 @@ export default class SolveService {
   async updateUserStreak() {
     try {
       let streak = this.user.get('streak')
-      streak = updateProblemIdForToday(streak, this.problemId, this.language);
-      this.user.set('streak', streak);
-      this.user.markModified('streak');
+      streak = updateStreak(streak, this.problemId, this.language)
+      this.user.set('streak', streak)
+      this.user.markModified('streak')
       await this.user.save()
       streak = this.user.get('streak')
       this.user.totalLifetime = calculateTotalLifetime(streak)
@@ -92,7 +92,7 @@ function calculateMaxStreak(streak: any) {
   return Math.max(maxStreak, count)
 }
 
-function calculateCurrentStreak(streak: Record<string, any>) {
+function calculateCurrentStreak(streak: StreakType) {
   const today = new Date()
   const formattedToday = today.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -102,7 +102,8 @@ function calculateCurrentStreak(streak: Record<string, any>) {
 
   let currentStreak = 0
   let currentDate = formattedToday
-
+  // Todo: Fix errors by linter/TS when you learn how TS works =)
+  // Code works though.
   while (streak[currentDate]) {
     currentStreak++
     const prevDate = new Date(currentDate)
@@ -116,11 +117,7 @@ function calculateCurrentStreak(streak: Record<string, any>) {
   return currentStreak
 }
 
-function updateProblemIdForToday(
-  streak: StreakType,
-  problemId: string,
-  language: string
-) {
+function updateStreak(streak: StreakType, problemId: string, language: string) {
   const today = new Date()
   const formattedToday = today.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -128,8 +125,7 @@ function updateProblemIdForToday(
     year: '2-digit',
   })
 
-  // Todo: Fix errors by linter/TS when you learn how TS works =)
-  // Code works though.
+  // Ditto
   if (!streak[formattedToday]) {
     const problemEntry = {
       [language]: 1,
@@ -155,43 +151,29 @@ function updateProblemIdForToday(
     } else {
       const problemEntry = problems[problemId]
       const value = problemEntry[language]
-      console.log({value})
-      if (value) {
-        problemEntry[language] = value + 1
-      } else {
-        problemEntry[language] = 1
-      }
+      problemEntry[language] = value ? value + 1 : 1
     }
     // Ditto
-    streak[formattedToday].dayTotal = streak[formattedToday].dayTotal+1
+    streak[formattedToday].dayTotal = streak[formattedToday].dayTotal + 1
   }
 
   return streak
 }
 
-function calculateTotalLifetime(streak: any) {
+function calculateTotalLifetime(streak: StreakType) {
   let totalLifetime = 0
-  const entries = Object.entries(streak)
-
-  for (const [date, dayData] of entries) {
+  const dates = Object.values(streak)
+  for (const dateData of dates) {
     let dayTotal = 0
-    // Ditto
-    if (dayData.problems) {
-      // Ditto
-      const keys = Object.keys(dayData.problems)
-      for (const key of keys) {
-        // Ditto
-        const languageMap = dayData.problems[key]
-        const langKeys = Object.keys(languageMap)
-        let val = 0
-        for (const langKey of langKeys) {
-          val += languageMap[langKey]
-        }
-        dayTotal += val
+    if (dateData.problems) {
+      const problemIds = Object.keys(dateData.problems)
+      for (const problemId of problemIds) {
+        const langMap = dateData.problems[problemId]
+        const langKeys = Object.keys(langMap)
+        dayTotal += langKeys.reduce((sum, key) => sum + langMap[key], 0)
       }
     }
-    // Ditto
-    dayData.dayTotal = dayTotal
+    dateData.dayTotal = dayTotal
     totalLifetime += dayTotal
   }
   return totalLifetime
