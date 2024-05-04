@@ -34,34 +34,12 @@ export default class SubmissionService {
     this.createFunctionCalls()
   }
 
-  // async updateSolved() {
-  //   let solveIds = [...new Set(this.user.solves)]
-  //   let solveDocuments = await Solve.find({ _id: { $in: solveIds } })
-  //   let solveMap = new Map()
-  //   solveDocuments.forEach((solve) => {
-  //     solveMap.set(solve.problem.toString(), solve)
-  //   })
-  //   let solvedItem = solveMap.get(this.submission.problem.toString())
-  //   if (solvedItem) {
-  //     logger.info('Problem previously solved')
-  //     solvedItem = await Solve.findById(solvedItem)
-  //   } else {
-  //     logger.info('Newly Solved Problem')
-  //     let solvedItem = Solve({
-  //       user: this.user._id,
-  //       problem: this.submission.problem,
-  //     })
-  //     await solvedItem.save()
-  //     this.user.solves.push(solvedItem._id)
-  //   }
-  // }
-
   async onNewSubmission() {
-    // - Create submission instance
-    // [x] Run & benchmark submission
+    // [x] Create submission instance
+    // [x] Run & benchmark submission.
     // [x] Update user solves.
     // [x] Update solved problems if already existing, else create.
-    // [ ] Update user streak.
+    // [x] Update user streak.
     // [ ] Update user language mastery.
     // [ ] Update problem stats
     try {
@@ -162,7 +140,6 @@ export default class SubmissionService {
     const onDone = async () => {
       await this.submission.save()
       await this.solveService.updateSolved(this.submission.problem.toString())
-      // await this.user.save()
     }
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {

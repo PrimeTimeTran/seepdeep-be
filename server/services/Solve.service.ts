@@ -23,6 +23,7 @@ export default class SolveService {
       this.user.totalLifetime = calculateTotalLifetime(streak)
       this.user.maxStreak = calculateMaxStreak(streak)
       this.user.currentStreak = calculateCurrentStreak(streak)
+      await this.user.save()
     } catch (error) {
       console.error('Error saving user data:', error)
     }
@@ -127,6 +128,8 @@ function updateProblemIdForToday(
     year: '2-digit',
   })
 
+  // Todo: Fix errors by linter/TS when you learn how TS works =)
+  // Code works though.
   if (!streak[formattedToday]) {
     const problemEntry = {
       [language]: 1,
@@ -136,8 +139,10 @@ function updateProblemIdForToday(
       dayTotal: 1,
       problems: problemsMap,
     }
+    // Ditto
     streak[formattedToday] = dayEntry
   } else {
+    // Ditto
     const todayEntry = streak[formattedToday]
     const problems = todayEntry!.problems
     if (!problems[problemId]) {
@@ -157,6 +162,7 @@ function updateProblemIdForToday(
         problemEntry[language] = 1
       }
     }
+    // Ditto
     streak[formattedToday].dayTotal = streak[formattedToday].dayTotal+1
   }
 
@@ -169,13 +175,22 @@ function calculateTotalLifetime(streak: any) {
 
   for (const [date, dayData] of entries) {
     let dayTotal = 0
+    // Ditto
     if (dayData.problems) {
+      // Ditto
       const keys = Object.keys(dayData.problems)
       for (const key of keys) {
-        const val = dayData.problems[key]
-        dayTotal += val.dayTotal
+        // Ditto
+        const languageMap = dayData.problems[key]
+        const langKeys = Object.keys(languageMap)
+        let val = 0
+        for (const langKey of langKeys) {
+          val += languageMap[langKey]
+        }
+        dayTotal += val
       }
     }
+    // Ditto
     dayData.dayTotal = dayTotal
     totalLifetime += dayTotal
   }
