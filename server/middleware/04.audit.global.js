@@ -1,3 +1,5 @@
+import { defineEventHandler } from 'h3';
+
 let closure = () => {}
 
 export function captureEvent(val) {

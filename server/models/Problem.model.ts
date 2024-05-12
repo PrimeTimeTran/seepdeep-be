@@ -2,6 +2,7 @@ import { z } from 'zod'
 import mongoose from 'mongoose'
 import { zId } from '@zodyac/zod-mongoose'
 import { Auditor } from './Audit/Audit'
+import { zodToMongooseSchema} from './model.helpers'
 
 const zSignatureParameter = z.object({
   type: z.string(),

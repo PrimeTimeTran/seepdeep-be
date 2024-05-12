@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   mongoose: {
     options: {},
     modelsDir: 'models',
-    uri: process.env.MONGODB_URI,
+    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship',
   },
   runtimeConfig: {
     host: process.env.HOST,
@@ -49,6 +49,7 @@ export default defineNuxtConfig({
     '@samk-dev/nuxt-vcalendar',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
+    '@nuxt/test-utils/module'
   ],
   alias: {
     '@models': path.resolve(__dirname, 'server/models'),

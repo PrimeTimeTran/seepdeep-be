@@ -27,6 +27,7 @@ export default defineEventHandler(async (e) => {
         statusMessage: 'User not found',
       })
     } else {
+      console.log(error)
       throw createError({
         statusCode: 400,
         message: error,

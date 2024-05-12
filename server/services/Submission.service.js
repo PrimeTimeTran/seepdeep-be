@@ -23,6 +23,7 @@ if (process.env.ENV == 'production') {
 
 export default class SubmissionService {
   constructor(e, body) {
+    console.log('Submission.service.js')
     this.runResult = {
       ...this.body,
     }
@@ -39,8 +40,10 @@ export default class SubmissionService {
   }
 
   async setup() {
+    console.log('setup')
     try {
       this.problem = await Problem.findOne({ _id: this.body.problem })
+      console.log('setup', problem)
       this.totalExecutions = this.problem.testCases.length
       this.functionName = toCamelCase(this.problem.title)
       await this.createFunctionCalls()
@@ -50,6 +53,7 @@ export default class SubmissionService {
   }
 
   async onNewSubmission() {
+    console.log('onNewSubmission')
     // [x] Create submission instance
     // [x] Run & benchmark submission.
     // [x] Update user solves.
@@ -104,22 +108,13 @@ export default class SubmissionService {
           console.error('Error reading directory:', err)
           return
         }
-        logger.info({
-          msg: 'files: ' + files,
-        })
         console.log('Files in directory:', files)
-      })
-      logger.info({
-        msg: 'scriptsDirectoryPath: ' + scriptsDirectoryPath,
       })
       const scriptPath = path.join(
         scriptsDirectoryPath,
         // Info: Add idx to prevent multiple testCases using the same script/file/case
         `runner_${timestamp}-${idx}.${extension}`
       )
-      logger.info({
-        msg: 'scriptPath: ' + scriptPath,
-      })
       const code = `from typing import List\n` + this.body.body + '\n' + fn
       fs.writeFileSync(scriptPath, code)
       let command = `${runCommands[lang]} ${scriptPath}`
