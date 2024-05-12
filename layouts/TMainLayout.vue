@@ -21,7 +21,7 @@ definePageMeta({
       <template v-slot:scripts />
       <template v-slot:default>
         <slot />
-        <ChatBar />
+        <!-- <ChatBar /> -->
       </template>
     </TGlobalContainer>
   </div>
