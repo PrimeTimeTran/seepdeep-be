@@ -2,13 +2,31 @@ import fs from 'fs'
 import path from 'path'
 import { exec } from 'child_process'
 import EventEmitter from 'node:events'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 import { getVars, runCommands } from './helpers.js'
 import SolveService from './Solve.service.ts'
 
 import Problem from '../models/Problem.model'
 
 const eventEmitter = new EventEmitter()
-const __dirname = '/Users/future/Documents/Work/seepdeep-be/server/services/'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+let scriptsDirectoryPath =
+  '/Users/future/Documents/Work/seepdeep-be/server/services/scripts/'
+logger.info({
+  msg: 'process.env.ENV is ' + process.env.ENV,
+})
+if (process.env.ENV == 'production') {
+  // scriptsDirectoryPath = __dirname + '/../../server/services/scripts/'
+  scriptsDirectoryPath = '/usr/src/app/server/services/scripts/'
+  if (!fs.existsSync(scriptsDirectoryPath)) {
+    fs.mkdirSync(scriptsDirectoryPath, { recursive: true })
+    console.log(`Directory created: ${scriptsDirectoryPath}`)
+  } else {
+    console.log(`Directory already exists: ${scriptsDirectoryPath}`)
+  }
+}
 
 export default class SubmissionService {
   constructor(e, body) {
@@ -88,11 +106,18 @@ export default class SubmissionService {
       const lang = this.language
       const [extension, filePath] = getVars(lang)
       const timestamp = Date.now()
+      logger.info({
+        msg:
+          'scriptsDirectoryPath: ' + scriptsDirectoryPath,
+      })
       const scriptPath = path.join(
-        __dirname,
+        scriptsDirectoryPath,
         // Info: Add idx to prevent multiple testCases using the same script/file/case
-        `./scripts/runner_${timestamp}-${idx}.${extension}`
+        `runner_${timestamp}-${idx}.${extension}`
       )
+      logger.info({
+        msg: 'scriptPath: ' + scriptPath,
+      })
       const code = `from typing import List\n` + this.body.body + '\n' + fn
       fs.writeFileSync(scriptPath, code)
       let command = `${runCommands[lang]} ${scriptPath}`
