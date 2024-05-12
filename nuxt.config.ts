@@ -61,19 +61,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  content: {
-    documentDriven: true,
-    api: {
-      baseURL: '/api/_my_content',
-    },
-    highlight: {
-      preload: ['dart', 'python', 'javascript', 'js', 'typescript', 'ts', 'vue'],
-      theme: {
-        light: 'github-light',
-        default: 'github-dark',
-      },
-    },
-  },
   build: {
     transpile: [
       '@fortawesome/vue-fontawesome',
