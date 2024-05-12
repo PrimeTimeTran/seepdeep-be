@@ -1,7 +1,6 @@
 <script setup>
 import { Icon } from '#components'
 import {
-  MapIcon,
   Bars4Icon,
   BellIcon,
   LanguageIcon,
@@ -74,7 +73,6 @@ function onToggleTheme(callback) {
         :notificationCount="state.notificationCount"
         @click="() => $router.push(`/administrator/chat`)"
       />
-      <TSidebarItem :text="'Map'" :state @click="() => $router.push(`/administrator/map`)" :icon="MapIcon" />
       <TSidebarItem
         :state
         :text="'Design'"

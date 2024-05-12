@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import { zId } from '@zodyac/zod-mongoose'
 
 import { Auditor } from './Audit/Audit'
-import { mongoIdSchema, zodToMongooseSchema } from './model.helpers'
+import { zodToMongooseSchema } from './model.helpers'
 
 export enum Mastery {
   Encountered = 'Encountered',
@@ -33,16 +33,16 @@ const zSolve = z.object({
   level: z.nativeEnum(Mastery).default(Mastery.Encountered),
 })
 
-type SolveType = z.infer<typeof zSolve> &
-  mongoose.Document & {
-    markModified: (path: string) => void
-  }
-
 const solveSchemaDefinition = zodToMongooseSchema(zSolve)
 const solveSchema = new mongoose.Schema(solveSchemaDefinition)
 
 Auditor.addHooks(solveSchema)
 const Solve = mongoose.model('Solve', solveSchema)
+
+export type SolveType = z.infer<typeof zSolve> &
+  mongoose.Document & {
+    markModified: (path: string) => void
+  }
+
 export default Solve
 export { solveSchema, Solve }
-export type { SolveType }

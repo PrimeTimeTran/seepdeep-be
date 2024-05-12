@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import mongoose from 'mongoose'
+import { zId } from '@zodyac/zod-mongoose'
 import { Auditor } from './Audit/Audit'
 
 const zSignatureParameter = z.object({
@@ -12,18 +13,14 @@ const zSignature = z.object({
   returnType: z.string(),
 })
 const zTestCases = z.object({
-    output: z.array(z.union([z.number(), z.string()])),
-    explanation: z.string(),
-    input: z.union([
-        z.array(z.number()),
-        z.array(z.string()),
-        z.number(),
-        z.string(),
-    ]),
-});
-
-const zTopic = z.object({
-  name: z.string(),
+  output: z.array(z.union([z.number(), z.string()])),
+  explanation: z.string(),
+  input: z.union([
+    z.array(z.number()),
+    z.array(z.string()),
+    z.number(),
+    z.string(),
+  ]),
 })
 
 const zEditorialVotes = z.record(z.number())
@@ -59,7 +56,7 @@ const zProblem = z.object({
   submissions: z.number(),
   testCases: z.array(zTestCases),
   title: z.string(),
-  topics: z.array(zTopic),
+  topics: z.array(zId.describe('ObjectId:Topic')),
   id: z.string(),
   signature: zSignature,
   startCode: z.string().nonempty(),

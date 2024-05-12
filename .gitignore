@@ -4,8 +4,9 @@ node_modules
 .output
 .nitro
 dist
-
 server/services/scripts
 playground
 
+.env.production
+notes
 server/services/StorageService/credentials.json

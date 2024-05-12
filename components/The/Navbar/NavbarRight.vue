@@ -26,12 +26,12 @@
         </svg>
       </label>
     </div>
-    <NuxtLink
+    <!-- <NuxtLink
       href="/login"
       class="flex items-center text-gray-500 hover:text-green-500 dark:text-gray dark:hover:text-green-500 cursor-pointer transition-colors duration-300 py-3"
     >
       <FontAwesomeIcon icon="fa-solid fa-sign-out" class="mr-3" />
       Login
-    </NuxtLink>
+    </NuxtLink> -->
   </div>
 </template>

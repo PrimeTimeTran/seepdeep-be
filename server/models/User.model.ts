@@ -71,7 +71,6 @@ const zUser = z.object({
   totalLifetime: z.number(),
   currentStreak: z.number(),
   maxStreak: z.number(),
-  // 05/03/24 -> problems -> 325eb55b0eeca014fcededbe -> python -> int
   streak: streakSchema,
   submissions: z.array(zId.describe('ObjectId:Submission')),
   posts: z.array(zId.describe('ObjectId:Post')),

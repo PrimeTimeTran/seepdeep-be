@@ -1,8 +1,6 @@
-
-import type { UserType, StreakType } from '~/server/models/User.model'
-import { Mastery } from '../models/Solve.model'
-import type { SolveType } from '../models/Solve.model'
 import mongoose from 'mongoose'
+import type { SolveType } from '../models/Solve.model'
+import type { UserType, StreakType } from '~/server/models/User.model'
 
 export default class SolveService {
   user: UserType
@@ -23,7 +21,7 @@ export default class SolveService {
       streak = updateStreak(streak, this.problemId, this.language)
       this.user.set('streak', streak)
       this.user.markModified('streak')
-      // For some reason, when I test, totalLifeTime doesn't update without saving first here. 
+      // For some reason, when I test, totalLifeTime doesn't update without saving first here.
       // Although if there is a value, it does. Only the initial
       // Time a user creates a submission for the day I've seemed to produce this problem.
       await this.user.save()
@@ -68,6 +66,7 @@ export default class SolveService {
   }
 
   async updateSolved(problemId: string) {
+    this.problemId = problemId
     await this.setSolvedItem(problemId)
     if (!this.solvedItem) {
       logger.info('Problem New')
@@ -142,7 +141,7 @@ function updateStreak(streak: StreakType, problemId: string, language: string) {
     year: '2-digit',
   })
 
-  console.log({streak})
+  console.log({ streak, problemId })
 
   // Ditto
   if (!streak[formattedToday]) {
@@ -161,11 +160,7 @@ function updateStreak(streak: StreakType, problemId: string, language: string) {
     const todayEntry = streak[formattedToday]
     const problems = todayEntry!.problems
     if (!problems[problemId]) {
-      const languagesMap = new Map([[language, 1]])
-      const problemEntry = {
-        dayTotal: 1,
-        languages: languagesMap,
-      }
+      const problemEntry = new Map([[language, 1], ['dayTotal', 1]])
       problems[problemId] = problemEntry
     } else {
       const problemEntry = problems[problemId]

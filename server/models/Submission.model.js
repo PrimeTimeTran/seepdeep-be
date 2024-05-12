@@ -1,8 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import { Auditor } from './Audit/Audit'
 
-export const submissionEnumerators = {}
-
 const submissionSchema = new Schema({
   body: {
     type: String,
