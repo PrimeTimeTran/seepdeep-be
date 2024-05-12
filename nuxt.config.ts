@@ -13,6 +13,10 @@ export default defineNuxtConfig({
   formkit: {
     autoImport: true,
   },
+  routeRules: {
+    '/administrator/**': { ssr: false },
+    '/api/**': { cors: true, ssr: false, prerender: false },
+  },
   mongoose: {
     options: {},
     modelsDir: 'models',
