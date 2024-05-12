@@ -15,6 +15,7 @@ export default class SubmissionService {
     this.runResult = {
       ...this.body,
     }
+    this.calls = []
     this.body = body
     this.problem = null
     this.testCases = []

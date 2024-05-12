@@ -25,6 +25,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     host: process.env.HOST,
     googleAPIKey: process.env.GOOGLE_API_KEY,
+    authTokenExpiresIn: process.env.AUTH_TOKEN_EXPIRES_IN || '3650 days',
+    authTokenSecret: process.env.AUTH_TOKEN_SECRET || 'secretsecretTaseSpray',
     public: {
       apiUrl: process.env.API_URL,
       hostUrl: process.env.HOST_URL,
