@@ -26,7 +26,8 @@ export default class SolveService {
       // Time a user creates a submission for the day I've seemed to produce this problem.
       await this.user.save()
       streak = this.user.get('streak')
-      this.user.totalLifetime = calculateTotalLifetime(streak)
+      let totalLifetime = calculateTotalLifetime(streak)
+      this.user.totalLifetime = totalLifetime
       this.user.maxStreak = calculateMaxStreak(streak)
       this.user.currentStreak = calculateCurrentStreak(streak)
       await this.user.save()
@@ -184,7 +185,8 @@ function calculateTotalLifetime(streak: StreakType) {
       for (const problemId of problemIds) {
         const langMap = dateData.problems[problemId]
         const langKeys = Object.keys(langMap)
-        dayTotal += langKeys.reduce((sum, key) => sum + langMap[key], 0)
+        const problemTotal = langKeys.reduce((sum, key) => sum + langMap[key], 0)
+        dayTotal += problemTotal
       }
     }
     dateData.dayTotal = dayTotal
