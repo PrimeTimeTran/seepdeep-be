@@ -3,7 +3,10 @@ FROM node:18-alpine3.18
 
 WORKDIR /usr/src/app
 
-RUN apk update && apk upgrade
+RUN apk update && \
+    apk upgrade && \
+    apk add python3
+
 RUN apk add git
 
 COPY .env.production .

@@ -2,24 +2,17 @@ import fs from 'fs'
 import path from 'path'
 import { exec } from 'child_process'
 import EventEmitter from 'node:events'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
 import { getVars, runCommands } from './helpers.js'
 import SolveService from './Solve.service.ts'
 
 import Problem from '../models/Problem.model'
 
 const eventEmitter = new EventEmitter()
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 let scriptsDirectoryPath =
-  '/Users/future/Documents/Work/seepdeep-be/server/services/scripts/'
-logger.info({
-  msg: 'process.env.ENV is ' + process.env.ENV,
-})
+  '/Users/future/Documents/Work/seepdeep-be/server/services/scripts'
+
 if (process.env.ENV == 'production') {
-  // scriptsDirectoryPath = __dirname + '/../../server/services/scripts/'
-  scriptsDirectoryPath = '/usr/src/app/server/services/scripts/'
+  scriptsDirectoryPath = '/tmp/scripts'
   if (!fs.existsSync(scriptsDirectoryPath)) {
     fs.mkdirSync(scriptsDirectoryPath, { recursive: true })
     console.log(`Directory created: ${scriptsDirectoryPath}`)
@@ -106,9 +99,18 @@ export default class SubmissionService {
       const lang = this.language
       const [extension, filePath] = getVars(lang)
       const timestamp = Date.now()
+      fs.readdir('/tmp/scripts', (err, files) =>{
+        if (err) {
+          console.error('Error reading directory:', err)
+          return
+        }
+        logger.info({
+          msg: 'files: ' + files,
+        })
+        console.log('Files in directory:', files)
+      })
       logger.info({
-        msg:
-          'scriptsDirectoryPath: ' + scriptsDirectoryPath,
+        msg: 'scriptsDirectoryPath: ' + scriptsDirectoryPath,
       })
       const scriptPath = path.join(
         scriptsDirectoryPath,
@@ -135,13 +137,18 @@ export default class SubmissionService {
 
   scriptRun(command, idx, callback) {
     exec(command, (error, stdout, _) => {
-      console.log({ output: stdout.trim() })
+      logger.error({
+        output: stdout.trim(),
+      })
       if (error) {
         let msg = error.message.split('line')[1]
-        const match = msg.match(/\d+\n/)
+        const match = msg?.match(/\d+\n/)
         const index = match ? error.message.indexOf(match[0]) : -1
         msg = index !== -1 ? error.message.substring(index).trim() : ''
-        console.log({ msg, what: error.message })
+        logger.error({
+          msg,
+          message: error.message
+        })
         this.buildTestResult(stdout.trim(), idx)
         eventEmitter.emit('error', msg)
       }
