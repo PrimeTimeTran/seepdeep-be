@@ -4,4 +4,4 @@
 
 nuxi cleanup
 npm run dev
-nuxi generate
+nuxi build
