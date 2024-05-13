@@ -15,10 +15,11 @@ import Problem from '../models/Problem.model'
 
 import { problemSolutionMap, languages } from './code.js'
 
-const currentLang = languages[6]
+const currentLang = languages[5]
 
 const eventEmitter = new EventEmitter()
-let scriptsDirectoryPath = '/tmp/scripts'
+const defaultScriptPath = '/tmp/scripts'
+let scriptsDirectoryPath = defaultScriptPath
 if (!fs.existsSync(scriptsDirectoryPath)) {
   fs.mkdirSync(scriptsDirectoryPath, { recursive: true })
   fs.mkdirSync(scriptsDirectoryPath + '/bin', { recursive: true })
@@ -55,7 +56,7 @@ export default class SubmissionService {
       )
       await this.createFunctionCalls()
     } catch (error) {
-      logger.error({ err: error }, 'Setup Submission:')
+      logger.fatal({ error: error.message }, 'Setup Submission')
     }
   }
 
@@ -80,7 +81,10 @@ export default class SubmissionService {
       this.user.submissions.push(this.submission._id)
       this.runResult.submissionId = this.submission._id
     } catch (error) {
-      logger.error(error, 'Error:')
+      logger.error({
+        error: error.message,
+        msg: 'New Submission creation failed',
+      })
       throw new Error("Error! You didn't code this correctly")
     }
   }
@@ -141,8 +145,8 @@ export default class SubmissionService {
         this.scriptRun(command)
         this.scriptRun(filePath, idx, callback)
       } else if (lang === 'java') {
-        const binDir = path.join('/tmp/scripts', 'bin')
-        fileName = path.join('/tmp/scripts', fileName)
+        const binDir = path.join(defaultScriptPath, 'bin')
+        fileName = path.join(defaultScriptPath, fileName)
         let compileCode = `javac -d ${binDir} ${fileName}`
         this.scriptRun(compileCode)
         let runCode = `java -cp /tmp/scripts/bin Solution${idx}`
@@ -151,31 +155,27 @@ export default class SubmissionService {
         this.scriptRun(command, idx, callback)
       }
     } catch (error) {
-      logger.info({ msg: error })
+      logger.fatal({ error: error.message }, 'Running Tests')
     }
   }
 
   scriptRun(command, idx, callback) {
     exec(command, (error, stdout, _) => {
       if (error) {
-        logger.error({
-          output: stdout.trim(),
-        })
         let msg = error.message.split('line')[1]
         const match = msg?.match(/\d+\n/)
         const index = match ? error.message.indexOf(match[0]) : -1
         msg = index !== -1 ? error.message.substring(index).trim() : ''
-        logger.error({
-          msg,
-          message: error.message,
-        })
+        logger.warn({ error: error.message }, 'Not all tests passed')
         this.buildTestResult(stdout.trim(), idx)
         eventEmitter.emit('error', msg)
       }
-      logger.info({
-        output: stdout.trim(),
-      })
       if (callback) {
+        // Msg key takes place of 2nd argument.
+        logger.info({
+          output: stdout.trim(),
+          msg: 'Test Output',
+        })
         this.buildTestResult(stdout.trim(), idx)
         callback(stdout.trim())
       }
@@ -183,22 +183,27 @@ export default class SubmissionService {
   }
 
   buildTestResult(stdout, idx) {
-    let stdoutArray = JSON.parse(stdout)
-    let outExpected = this.results[idx]
-    // Some problems the order of the returned elements don't matter.
-    // For example 1. twoSum
-    if (true) {
-      stdoutArray = stdoutArray.sort()
-      outExpected = outExpected.sort()
+    try {
+      let stdoutArray = JSON.parse(stdout)
+      let outExpected = this.results[idx]
+      // Some problems the order of the returned elements don't matter.
+      // For example 1. twoSum
+      if (true) {
+        stdoutArray = stdoutArray.sort()
+        outExpected = outExpected.sort()
+      }
+      const passing =
+        JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
+      const testCase = {
+        passing,
+        outExpected,
+        outActual: stdoutArray,
+        input: this.inputs[idx],
+      }
+      this.testCases.push(testCase)
+    } catch (error) {
+      logger.fatal({ error: error.message }, 'Building test result')
     }
-    const passing = JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
-    const testCase = {
-      passing,
-      outExpected,
-      outActual: stdoutArray,
-      input: this.inputs[idx],
-    }
-    this.testCases.push(testCase)
   }
 
   async onComplete() {
@@ -266,7 +271,7 @@ export default class SubmissionService {
       this.results = results
       this.inputs = params
     } catch (error) {
-      logger.error('Generating Function Calls', { error })
+      logger.fatal({ error: error.message }, 'Creating Functions Calls')
     }
   }
 }

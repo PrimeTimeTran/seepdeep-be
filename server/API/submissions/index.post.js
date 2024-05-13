@@ -15,6 +15,7 @@ export default defineEventHandler(async (e) => {
     await service.onNewSubmission()
     return await service.onComplete()
   } catch (error) {
+    logger.error({ error: error.message, msg: 'Error creating submission' })
     if (error.message === 'Timeout') {
       throw createError({
         statusCode: 408,

@@ -32,7 +32,7 @@ export default class SolveService {
       this.user.currentStreak = calculateCurrentStreak(streak)
       await this.user.save()
     } catch (error) {
-      console.error('Error saving user data:', error)
+      logger.fatal({ error: error }, 'Updating User Streak')
     }
   }
 

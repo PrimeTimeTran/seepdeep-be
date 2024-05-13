@@ -10,7 +10,7 @@ export default defineEventHandler(async (e) => {
         statusMessage: 'Unauthorized',
       })
   } catch (error) {
-    logger.error({ err: error }, 'Error:')
+    logger.fatal({ error: error.message, msg: 'Role error' })
     const statusCode = error.statusCode === 403 ? 403 : 500
     const statusMessage = error.statusCode === 403 ? 'Forbidden: Unauthorized access' : 'Internal Server error'
     throw createError({

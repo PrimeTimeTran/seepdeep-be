@@ -1,4 +1,4 @@
-import { defineEventHandler } from 'h3';
+import { defineEventHandler } from 'h3'
 
 let closure = () => {}
 
@@ -21,6 +21,6 @@ export default defineEventHandler(async (e) => {
   try {
     captureEvent(e)
   } catch (error) {
-    logger.error({ err: error }, 'Error:')
+    logger.fatal({ error: error.message, msg: 'Auditing Error' })
   }
 })
