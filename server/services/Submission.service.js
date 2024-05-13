@@ -34,9 +34,9 @@ export default class SubmissionService {
     this.calls = []
     this.body = body
     this.language = body.language
-    this.language = currentLang
-    this.body.language = currentLang
-    this.body.body = problemSolutionMap[1][currentLang].code
+    // this.language = currentLang
+    // this.body.language = currentLang
+    // this.body.body = problemSolutionMap[1][currentLang].code
     this.problem = null
     this.testCases = []
     this.isError = false
@@ -75,8 +75,8 @@ export default class SubmissionService {
         user: this.user._id,
         problem: this.body.problem,
         language: this.language,
-        language: currentLang,
-        body: problemSolutionMap[1][currentLang].code,
+        // language: currentLang,
+        // body: problemSolutionMap[1][currentLang].code,
       })
       this.user.submissions.push(this.submission._id)
       this.runResult.submissionId = this.submission._id
