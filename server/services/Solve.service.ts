@@ -142,8 +142,6 @@ function updateStreak(streak: StreakType, problemId: string, language: string) {
     year: '2-digit',
   })
 
-  console.log({ streak, problemId })
-
   // Ditto
   if (!streak[formattedToday]) {
     const problemEntry = {

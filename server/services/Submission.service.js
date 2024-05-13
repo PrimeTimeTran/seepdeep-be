@@ -2,37 +2,42 @@ import fs from 'fs'
 import path from 'path'
 import { exec } from 'child_process'
 import EventEmitter from 'node:events'
-import { getVars, runCommands } from './helpers.js'
+import {
+  getVars,
+  runCommands,
+  problemInitializer,
+  makeMethodNameWithLanguage,
+} from './helpers.js'
 import SolveService from './Solve.service.ts'
 
 import Problem from '../models/Problem.model'
 
-const eventEmitter = new EventEmitter()
-let scriptsDirectoryPath =
-  '/Users/future/Documents/Work/seepdeep-be/server/services/scripts'
+import { problemSolutionMap, languages } from './code.js'
 
-if (process.env.ENV == 'production') {
-  scriptsDirectoryPath = '/tmp/scripts'
-  if (!fs.existsSync(scriptsDirectoryPath)) {
-    fs.mkdirSync(scriptsDirectoryPath, { recursive: true })
-    console.log(`Directory created: ${scriptsDirectoryPath}`)
-  } else {
-    console.log(`Directory already exists: ${scriptsDirectoryPath}`)
-  }
+const currentLang = languages[5]
+
+const eventEmitter = new EventEmitter()
+let scriptsDirectoryPath = '/tmp/scripts'
+if (!fs.existsSync(scriptsDirectoryPath)) {
+  fs.mkdirSync(scriptsDirectoryPath, { recursive: true })
+  fs.mkdirSync(scriptsDirectoryPath + '/bin', { recursive: true })
+  console.log(`Directory created: ${scriptsDirectoryPath}`)
 }
 
 export default class SubmissionService {
   constructor(e, body) {
-    console.log('Submission.service.js')
     this.runResult = {
       ...this.body,
     }
     this.calls = []
     this.body = body
+    this.language = body.language
+    // this.language = currentLang
+    // this.body.language = currentLang
+    // this.body.body = problemSolutionMap[1][currentLang].code
     this.problem = null
     this.testCases = []
     this.isError = false
-    this.language = 'python'
     this.executionCount = 0
     this.user = e.context.user
     this.totalExecutions = null
@@ -40,15 +45,16 @@ export default class SubmissionService {
   }
 
   async setup() {
-    console.log('setup')
     try {
       this.problem = await Problem.findOne({ _id: this.body.problem })
-      console.log('setup', problem)
       this.totalExecutions = this.problem.testCases.length
-      this.functionName = toCamelCase(this.problem.title)
+      this.functionName = makeMethodNameWithLanguage(
+        this.language,
+        this.problem.title
+      )
       await this.createFunctionCalls()
     } catch (error) {
-      logger.error('Setup Submission', error)
+      logger.error({ err: error }, 'Setup Submission:')
     }
   }
 
@@ -66,8 +72,10 @@ export default class SubmissionService {
       this.submission = await new Submission({
         ...this.body,
         user: this.user._id,
-        language: this.language,
         problem: this.body.problem,
+        language: this.language,
+        // language: currentLang,
+        // body: problemSolutionMap[1][currentLang].code,
       })
       this.user.submissions.push(this.submission._id)
       this.runResult.submissionId = this.submission._id
@@ -98,30 +106,38 @@ export default class SubmissionService {
     )
   }
 
-  runTest(fn, idx, callback) {
+  runTest(inputs, idx, callback) {
     try {
       const lang = this.language
       const [extension, filePath] = getVars(lang)
       const timestamp = Date.now()
-      fs.readdir('/tmp/scripts', (err, files) =>{
-        if (err) {
-          console.error('Error reading directory:', err)
-          return
-        }
-        console.log('Files in directory:', files)
-      })
+      let fileName = `runner_${timestamp}-${idx}.${extension}`
       const scriptPath = path.join(
         scriptsDirectoryPath,
         // Info: Add idx to prevent multiple testCases using the same script/file/case
-        `runner_${timestamp}-${idx}.${extension}`
+        fileName
       )
-      const code = `from typing import List\n` + this.body.body + '\n' + fn
+      let code = problemInitializer[lang](
+        this.functionName,
+        this.body.body,
+        inputs,
+        this.problem.signature,
+        idx
+      )
+
       fs.writeFileSync(scriptPath, code)
       let command = `${runCommands[lang]} ${scriptPath}`
       if (lang === 'cplusplus') {
         command += ` -o ${filePath}`
         this.scriptRun(command)
         this.scriptRun(filePath, idx, callback)
+      } else if (lang === 'java') {
+        const binDir = path.join('/tmp/scripts', 'bin')
+        fileName = path.join('/tmp/scripts', fileName)
+        var compileCode = `javac -d ${binDir} ${fileName}`
+        this.scriptRun(compileCode)
+        var runCode = `java -cp /tmp/scripts/bin Solution${idx}`;
+        this.scriptRun(runCode, idx, callback)
       } else {
         this.scriptRun(command, idx, callback)
       }
@@ -132,21 +148,24 @@ export default class SubmissionService {
 
   scriptRun(command, idx, callback) {
     exec(command, (error, stdout, _) => {
-      logger.error({
-        output: stdout.trim(),
-      })
       if (error) {
+        logger.error({
+          output: stdout.trim(),
+        })
         let msg = error.message.split('line')[1]
         const match = msg?.match(/\d+\n/)
         const index = match ? error.message.indexOf(match[0]) : -1
         msg = index !== -1 ? error.message.substring(index).trim() : ''
         logger.error({
           msg,
-          message: error.message
+          message: error.message,
         })
         this.buildTestResult(stdout.trim(), idx)
         eventEmitter.emit('error', msg)
       }
+      logger.info({
+        output: stdout.trim(),
+      })
       if (callback) {
         this.buildTestResult(stdout.trim(), idx)
         callback(stdout.trim())
@@ -155,8 +174,15 @@ export default class SubmissionService {
   }
 
   buildTestResult(stdout, idx) {
-    const stdoutArray = JSON.parse(stdout)
-    const outExpected = this.results[idx]
+    let stdoutArray = JSON.parse(stdout)
+    let outExpected = this.results[idx]
+    // Some problems the order of the returned elements don't matter.
+    // For example 1. twoSum
+    console.log({ stdout, idx })
+    if (true) {
+      stdoutArray = stdoutArray.sort()
+      outExpected = outExpected.sort()
+    }
     const passing = JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
     const testCase = {
       passing,
@@ -219,11 +245,13 @@ export default class SubmissionService {
         const input = testCase.get('input')
         const inputs = input?.map((input) => JSON.stringify(input))
         const inputs2 = input?.map((input) => input)
-        const call = `\nsolution = Solution()\nresult = solution.${
-          this.functionName
-        }(${inputs.join(', ')}) \nprint(result)`
         params.push(inputs2)
-        calls.push(call)
+        if (this.language == 'java') {
+          calls.push(inputs)
+        } else {
+          calls.push(`${inputs.join(', ')}`)
+        }
+
         results.push(testCase.get('output'))
       })
       this.calls = calls
@@ -247,7 +275,6 @@ class Node:
         self.val = int(x)
         self.next = next
         self.random = random
-
 `
 
 // class Solution:
