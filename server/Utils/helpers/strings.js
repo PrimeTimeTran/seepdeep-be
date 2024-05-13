@@ -53,3 +53,9 @@ function replaceDigitsWithWords(input) {
     return digitWords[match]
   })
 }
+
+export function replaceBrackets(str) {
+  str = str.replace(/\[/g, '{')
+  str = str.replace(/\]/g, '}')
+  return str
+}

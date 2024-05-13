@@ -1,6 +1,8 @@
-import { toSnakeCase } from '../utils/helpers/strings'
-
-const __dirname = '/Users/future/Documents/Work/seepdeep-be/server/services/'
+import {
+  replaceBrackets,
+  toCamelCase,
+  toSnakeCase,
+} from '../utils/helpers/strings'
 
 export const runCommands = {
   python: 'python3',
@@ -14,40 +16,63 @@ export const runCommands = {
 }
 
 export function getVars(language) {
-  let fileExtension
+  let extension
   let executablePath = null
   switch (language) {
     case 'python':
-      fileExtension = 'py'
+      extension = 'py'
       break
     case 'ruby':
-      fileExtension = 'rb'
+      extension = 'rb'
       break
     case 'js':
-      fileExtension = 'js'
+      extension = 'js'
       break
     case 'ts':
-      fileExtension = 'ts'
+      extension = 'ts'
       break
     case 'dart':
-      fileExtension = 'dart'
+      extension = 'dart'
       break
     case 'java':
-      fileExtension = 'java'
+      extension = 'java'
       break
     case 'go':
-      fileExtension = 'go'
+      extension = 'go'
       break
     case 'cplusplus':
-      fileExtension = 'cpp'
-      executablePath = path.join(__dirname, './scripts/runner.cpp')
-      break
+      extension = 'cpp'
     default:
       console.error(`Unsupported language: ${language}`)
       return
   }
-  return [fileExtension, executablePath]
+  return [extension, executablePath]
 }
+
+const languageSpecificType = {
+  go: {
+    'str': 'string',
+    'List[int]': '[]int',
+    'List[str]': '[]string',
+    'List[List[int]]': '[][]int',
+    'List[List[str]]': '[][]string',
+  },
+  java: {
+    'str': 'String',
+    'List[int]': 'new int[]',
+    'List[str]': 'new String[]',
+    'List[List[int]]': 'new int[][]',
+    'List[List[str]]': 'new String[][]',
+  },
+}
+
+const parseTypes = [
+  'str',
+  'List[int]',
+  'List[str]',
+  'List[List[int]]',
+  'List[List[str]]',
+]
 
 export const problemInitializer = {
   python: function (functionName, codeBody, inputs) {
@@ -86,25 +111,37 @@ export const problemInitializer = {
     }`
   },
   go: function (functionName, codeBody, inputs, signature, idx) {
-    var args = []
-    var testIdx = -1
-    for (var input of signature.parameters) {
+    let args = []
+    let testIdx = -1
+    for (let input of signature.parameters) {
       testIdx += 1
-      if (input.type === 'List[int]') {
-        var str = inputs[testIdx]
-        str = str.replace(/\[/g, '{')
-        str = str.replace(/\]/g, '}')
-        args.push(`[]int ${str}`)
+      if (parseTypes.includes(input.type)) {
+        args.push(
+          `${languageSpecificType.go[input.type]} ${replaceBrackets(
+            inputs[testIdx]
+          )}`
+        )
       } else {
         args.push(inputs[testIdx])
       }
+      // if (input.type === 'List[int]') {
+      //   args.push(`[]int ${str}`)
+      // } else if (input.type === 'List[str]') {
+      //   args.push(`[]string ${str}`)
+      // } else if (input.type === 'List[List[str]') {
+      //   args.push(`[][]string ${str}`)
+      // } else if (input.type === 'List[List[int]') {
+      //   args.push(`[][]int ${str}`)
+      // } else {
+      //   args.push(inputs[testIdx])
+      // }
     }
     return `
     package main
     import (
-        "fmt"
-        "strings"
-        "strconv"
+      "fmt"
+      "strings"
+      "strconv"
     )
     ${codeBody}
     func main() {
@@ -115,49 +152,58 @@ export const problemInitializer = {
       }
       output := fmt.Sprintf("[%s]", strings.Join(strResult, ","))
       fmt.Println(output)
-      }`
+    }`
   },
   java: function (functionName, codeBody, inputs, signature, idx) {
-    var args = []
-    var testIdx = -1
-    for (var input of signature.parameters) {
+    let args = []
+    let testIdx = -1
+    for (let input of signature.parameters) {
       testIdx += 1
-      if (input.type === 'List[int]') {
-        var str = inputs[testIdx]
-        str = str.replace(/\[/g, '{')
-        str = str.replace(/\]/g, '}')
-        args.push(`new int[] ${str}`)
+      if (parseTypes.includes(input.type)) {
+        args.push(
+          `${languageSpecificType.java[input.type]} ${replaceBrackets(
+            inputs[testIdx]
+          )}`
+        )
       } else {
         args.push(inputs[testIdx])
       }
+      // var str = replaceBrackets(inputs[testIdx])
+      // if (input.type === 'List[int]') {
+      //   args.push(`new int[] ${str}`)
+      // } else if (input.type === 'List[str]') {
+      //   args.push(`new String[] ${str}`)
+      // } else if (input.type === 'List[List[int]') {
+      //   args.push(`new int[][] ${str}`)
+      // } else if (input.type === 'List[List[str]') {
+      //   args.push(`new String[][] ${str}`)
+      // } else {
+      //   args.push(inputs[testIdx])
+      // }
     }
     const mainFunction = `public static void main(String[] args) {
       Solution${idx} solution = new Solution${idx}();
       System.out.println(Arrays.toString(solution.${functionName}(${args})));
     }`
-    const javaCode = `
+    let code = `
     import java.util.*;
-
     ${codeBody}
     `
     const classRegex = /class\s+Solution\s*{/
-    const classStartIndex = javaCode.search(classRegex)
-    const openingBraceIndex = javaCode.indexOf('{', classStartIndex)
+    const classStartIndex = code.search(classRegex)
+    const openingBraceIndex = code.indexOf('{', classStartIndex)
 
     if (classStartIndex !== -1 && openingBraceIndex !== -1) {
-      const beforeClass = javaCode.slice(0, classStartIndex)
-      const classDefinition = javaCode.slice(
-        classStartIndex,
-        openingBraceIndex + 1
-      )
+      const beforeClass = code.slice(0, classStartIndex)
+      const classDefinition = code.slice(classStartIndex, openingBraceIndex + 1)
       const modifiedClassDefinition = classDefinition.replace(
         /class\s+Solution/g,
         `class Solution${idx}`
       )
-      const afterClass = javaCode.slice(openingBraceIndex + 1)
+      const afterClass = code.slice(openingBraceIndex + 1)
 
-      const modifiedJavaCode = `${beforeClass}${modifiedClassDefinition}${mainFunction}\n${afterClass}`
-      return modifiedJavaCode
+      code = `${beforeClass}${modifiedClassDefinition}${mainFunction}\n${afterClass}`
+      return code
     } else {
       console.log('Class definition not found in Java code.')
     }
@@ -176,6 +222,7 @@ export function makeMethodNameWithLanguage(language, title) {
     case 'go':
       return toCamelCase(title)
     default:
+      console.error(`Unsupported language: ${language}`)
       break
   }
 }

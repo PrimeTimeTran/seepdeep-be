@@ -8,6 +8,7 @@ import {
   problemInitializer,
   makeMethodNameWithLanguage,
 } from './helpers.js'
+
 import SolveService from './Solve.service.ts'
 
 import Problem from '../models/Problem.model'
@@ -59,7 +60,6 @@ export default class SubmissionService {
   }
 
   async onNewSubmission() {
-    console.log('onNewSubmission')
     // [x] Create submission instance
     // [x] Run & benchmark submission.
     // [x] Update user solves.
@@ -93,7 +93,10 @@ export default class SubmissionService {
         this.executionCount++
         if (this.executionCount === this.totalExecutions) {
           const finalMemoryUsage = process.memoryUsage().heapUsed
-          const memoryUsedBytes = finalMemoryUsage - initialMemoryUsage
+          let memoryUsedBytes = finalMemoryUsage - initialMemoryUsage
+          if (memoryUsedBytes < 0) {
+            memoryUsedBytes = Math.abs(memoryUsedBytes)
+          }
           this.runResult.memoryUsedMB = memoryUsedBytes / 1024 / 1024
           this.runResult.timeEnd = Date.now()
           const timeElapsed = this.runResult.timeEnd - this.runResult.timeStart
@@ -140,13 +143,10 @@ export default class SubmissionService {
       } else if (lang === 'java') {
         const binDir = path.join('/tmp/scripts', 'bin')
         fileName = path.join('/tmp/scripts', fileName)
-        var compileCode = `javac -d ${binDir} ${fileName}`
+        let compileCode = `javac -d ${binDir} ${fileName}`
         this.scriptRun(compileCode)
-        var runCode = `java -cp /tmp/scripts/bin Solution${idx}`
+        let runCode = `java -cp /tmp/scripts/bin Solution${idx}`
         this.scriptRun(runCode, idx, callback)
-      } else if (lang === 'go') {
-        command = `${runCommands[lang]} ${scriptPath}`
-        this.scriptRun(command, idx, callback)
       } else {
         this.scriptRun(command, idx, callback)
       }
@@ -187,7 +187,6 @@ export default class SubmissionService {
     let outExpected = this.results[idx]
     // Some problems the order of the returned elements don't matter.
     // For example 1. twoSum
-    console.log({ stdout, idx })
     if (true) {
       stdoutArray = stdoutArray.sort()
       outExpected = outExpected.sort()
@@ -246,22 +245,21 @@ export default class SubmissionService {
 
   async createFunctionCalls() {
     try {
+      const specials = ['java', 'go']
       const calls = []
-      const results = []
       const params = []
+      const results = []
 
       this.problem.testCases.forEach((testCase) => {
         const input = testCase.get('input')
         const inputs = input?.map((input) => JSON.stringify(input))
         const inputs2 = input?.map((input) => input)
-        params.push(inputs2)
-        var specials = ['java', 'go']
         if (specials.includes(this.language)) {
           calls.push(inputs)
         } else {
           calls.push(`${inputs.join(', ')}`)
         }
-
+        params.push(inputs2)
         results.push(testCase.get('output'))
       })
       this.calls = calls
