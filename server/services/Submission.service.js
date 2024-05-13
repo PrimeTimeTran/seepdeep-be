@@ -33,7 +33,7 @@ export default class SubmissionService {
     }
     this.calls = []
     this.body = body
-    this.language = body.language
+    this.language = body.lang
     // this.language = currentLang
     // this.body.language = currentLang
     // this.body.body = problemSolutionMap[1][currentLang].code

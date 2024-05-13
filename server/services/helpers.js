@@ -51,14 +51,14 @@ export function getVars(language) {
 
 const languageSpecificType = {
   go: {
-    'str': 'string',
+    str: 'string',
     'List[int]': '[]int',
     'List[str]': '[]string',
     'List[List[int]]': '[][]int',
     'List[List[str]]': '[][]string',
   },
   java: {
-    'str': 'String',
+    str: 'String',
     'List[int]': 'new int[]',
     'List[str]': 'new String[]',
     'List[List[int]]': 'new int[][]',
@@ -76,12 +76,14 @@ const parseTypes = [
 
 export const problemInitializer = {
   python: function (functionName, codeBody, inputs) {
-    return `
-    from typing import List
-    ${codeBody}
-    solution = Solution()
-    result = solution.${functionName}(${inputs})
-    print(result)`
+    const code = `
+from typing import List\n${codeBody}\n
+
+solution = Solution()\n
+result = solution.${functionName}(${inputs})\n
+print(result)`
+    logger.info({ code: code, msg: 'Code' })
+    return code
   },
   ruby: function (functionName, codeBody, inputs) {
     return `
@@ -213,8 +215,8 @@ export const problemInitializer = {
 export function makeMethodNameWithLanguage(language, title) {
   switch (language) {
     case 'ruby':
-    case 'python':
       return toSnakeCase(title)
+    case 'python':
     case 'js':
     case 'ts':
     case 'dart':
