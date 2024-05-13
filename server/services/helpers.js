@@ -9,7 +9,7 @@ export const runCommands = {
   ts: 'npx ts-node',
   dart: 'dart',
   java: 'java',
-  go: 'go',
+  go: '/usr/local/go/bin/go run',
   cplusplus: 'g++ -std=c++11',
 }
 
@@ -85,6 +85,38 @@ export const problemInitializer = {
       print(result);
     }`
   },
+  go: function (functionName, codeBody, inputs, signature, idx) {
+    var args = []
+    var testIdx = -1
+    for (var input of signature.parameters) {
+      testIdx += 1
+      if (input.type === 'List[int]') {
+        var str = inputs[testIdx]
+        str = str.replace(/\[/g, '{')
+        str = str.replace(/\]/g, '}')
+        args.push(`[]int ${str}`)
+      } else {
+        args.push(inputs[testIdx])
+      }
+    }
+    return `
+    package main
+    import (
+        "fmt"
+        "strings"
+        "strconv"
+    )
+    ${codeBody}
+    func main() {
+      result := ${functionName}(${args})
+      var strResult []string
+      for _, num := range result {
+          strResult = append(strResult, strconv.Itoa(num))
+      }
+      output := fmt.Sprintf("[%s]", strings.Join(strResult, ","))
+      fmt.Println(output)
+      }`
+  },
   java: function (functionName, codeBody, inputs, signature, idx) {
     var args = []
     var testIdx = -1
@@ -125,7 +157,6 @@ export const problemInitializer = {
       const afterClass = javaCode.slice(openingBraceIndex + 1)
 
       const modifiedJavaCode = `${beforeClass}${modifiedClassDefinition}${mainFunction}\n${afterClass}`
-      console.log(modifiedJavaCode)
       return modifiedJavaCode
     } else {
       console.log('Class definition not found in Java code.')
@@ -135,17 +166,14 @@ export const problemInitializer = {
 
 export function makeMethodNameWithLanguage(language, title) {
   switch (language) {
-    case 'python':
-      return toCamelCase(title)
     case 'ruby':
+    case 'python':
       return toSnakeCase(title)
     case 'js':
-      return toCamelCase(title)
     case 'ts':
-      return toCamelCase(title)
     case 'dart':
-      return toCamelCase(title)
     case 'java':
+    case 'go':
       return toCamelCase(title)
     default:
       break

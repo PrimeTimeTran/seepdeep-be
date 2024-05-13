@@ -14,7 +14,7 @@ import Problem from '../models/Problem.model'
 
 import { problemSolutionMap, languages } from './code.js'
 
-const currentLang = languages[5]
+const currentLang = languages[6]
 
 const eventEmitter = new EventEmitter()
 let scriptsDirectoryPath = '/tmp/scripts'
@@ -32,9 +32,9 @@ export default class SubmissionService {
     this.calls = []
     this.body = body
     this.language = body.language
-    // this.language = currentLang
-    // this.body.language = currentLang
-    // this.body.body = problemSolutionMap[1][currentLang].code
+    this.language = currentLang
+    this.body.language = currentLang
+    this.body.body = problemSolutionMap[1][currentLang].code
     this.problem = null
     this.testCases = []
     this.isError = false
@@ -74,8 +74,8 @@ export default class SubmissionService {
         user: this.user._id,
         problem: this.body.problem,
         language: this.language,
-        // language: currentLang,
-        // body: problemSolutionMap[1][currentLang].code,
+        language: currentLang,
+        body: problemSolutionMap[1][currentLang].code,
       })
       this.user.submissions.push(this.submission._id)
       this.runResult.submissionId = this.submission._id
@@ -112,7 +112,7 @@ export default class SubmissionService {
       const [extension, filePath] = getVars(lang)
       const timestamp = Date.now()
       let fileName = `runner_${timestamp}-${idx}.${extension}`
-      const scriptPath = path.join(
+      let scriptPath = path.join(
         scriptsDirectoryPath,
         // Info: Add idx to prevent multiple testCases using the same script/file/case
         fileName
@@ -125,7 +125,13 @@ export default class SubmissionService {
         idx
       )
 
+      if (lang === 'go') {
+        scriptPath = path.join(scriptsDirectoryPath, `go-${timestamp}-${idx}`)
+        fs.mkdirSync(scriptPath)
+        scriptPath = path.join(scriptPath, `main.go`)
+      }
       fs.writeFileSync(scriptPath, code)
+
       let command = `${runCommands[lang]} ${scriptPath}`
       if (lang === 'cplusplus') {
         command += ` -o ${filePath}`
@@ -136,8 +142,11 @@ export default class SubmissionService {
         fileName = path.join('/tmp/scripts', fileName)
         var compileCode = `javac -d ${binDir} ${fileName}`
         this.scriptRun(compileCode)
-        var runCode = `java -cp /tmp/scripts/bin Solution${idx}`;
+        var runCode = `java -cp /tmp/scripts/bin Solution${idx}`
         this.scriptRun(runCode, idx, callback)
+      } else if (lang === 'go') {
+        command = `${runCommands[lang]} ${scriptPath}`
+        this.scriptRun(command, idx, callback)
       } else {
         this.scriptRun(command, idx, callback)
       }
@@ -246,7 +255,8 @@ export default class SubmissionService {
         const inputs = input?.map((input) => JSON.stringify(input))
         const inputs2 = input?.map((input) => input)
         params.push(inputs2)
-        if (this.language == 'java') {
+        var specials = ['java', 'go']
+        if (specials.includes(this.language)) {
           calls.push(inputs)
         } else {
           calls.push(`${inputs.join(', ')}`)
