@@ -166,7 +166,7 @@ export default class SubmissionService {
         const match = msg?.match(/\d+\n/)
         const index = match ? error.message.indexOf(match[0]) : -1
         msg = index !== -1 ? error.message.substring(index).trim() : ''
-        logger.warn({ error: error.message }, 'Not all tests passed')
+        logger.warn({ error: error.message, language: this.language }, 'Not all tests passed')
         this.buildTestResult(stdout.trim(), idx)
         eventEmitter.emit('error', msg)
       }

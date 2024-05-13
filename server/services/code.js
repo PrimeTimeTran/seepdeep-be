@@ -8,6 +8,10 @@ export const languages = [
   'go',
   'cplusplus',
 ]
+
+// Python, ruby, js working in prod
+// TS timing out in prod but not local. Not consistent.
+// Dart just errors. Dart command not found.
 export const problemSolutionMap = {
   1: {
     python: {
