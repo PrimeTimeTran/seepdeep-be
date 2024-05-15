@@ -1,6 +1,14 @@
 import _ from 'lodash'
 import { ClockIcon, ChartPieIcon, UserGroupIcon } from '@heroicons/vue/20/solid'
 
+const feedbackModel = {
+  title: '',
+  body: '',
+  userId: '',
+  email: '',
+  type: ''
+}
+
 export class GlobalState {
   static entityNames = [
     'auditlogs',
@@ -19,9 +27,11 @@ export class GlobalState {
     'problems',
     'submissions',
     'topics',
+    'feedbacks',
     'wizards',
     'foos',
   ]
+
   static formSortedFields(entityName) {
     // Sort fields => primitives, enums, relations
     const thisEntity = this.entities[entityName]
@@ -65,6 +75,7 @@ export class GlobalState {
     { path: 'problems', label: 'Problems' },
     { path: 'submissions', label: 'Submissions' },
     { path: 'topics', label: 'Topics' },
+    { path: 'feedbacks', label: 'Feedbacks' },
     { path: 'wizards', label: 'Wizards' },
     { path: 'foos', label: 'Foos' },
   ]
@@ -1420,7 +1431,6 @@ export class GlobalState {
       topSpells: {
         type: 'enumeratorMulti',
         label: 'topSpells',
-
         placeholder:
           'jinxes, hexes, charms, curses, spells, counters, healing, transfigurations',
         options: [
@@ -1453,6 +1463,35 @@ export class GlobalState {
           'unknown',
           'gryffindor',
         ],
+      },
+    },
+    feedbacks: {
+      title: {
+        type: 'string',
+        label: 'Title',
+        placeholder: 'Title',
+      },
+      email: {
+        type: 'string',
+        label: 'Email',
+        placeholder: 'Email',
+      },
+      body: {
+        type: 'text',
+        label: 'Body',
+        placeholder: 'Body',
+      },
+      type: {
+        type: 'enumerator',
+        label: 'Type',
+        placeholder: 'bug-report,feature-request',
+        options: ['bug-report', 'feature-request'],
+      },
+      user: {
+        type: 'relation',
+        label: 'User',
+        relation: 'mto',
+        placeholder: 'many-to-one',
       },
     },
     foos: {
