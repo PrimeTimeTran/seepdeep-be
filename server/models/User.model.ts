@@ -68,9 +68,9 @@ const zUser = z.object({
   numbAcceptedSubmissions: z.optional(z.number()),
   gender: z.optional(z.string()),
   top: z.optional(z.number()),
-  totalLifetime: z.number(),
-  currentStreak: z.number(),
-  maxStreak: z.number(),
+  totalLifetime: z.number().default(0),
+  currentStreak: z.number().default(0),
+  maxStreak: z.number().default(0),
   streak: streakSchema,
   submissions: z.array(zId.describe('ObjectId:Submission')),
   posts: z.array(zId.describe('ObjectId:Post')),
@@ -80,8 +80,8 @@ const zUser = z.object({
   problems: z.array(zId.describe('ObjectId:Problem')),
   solves: z.array(zId.describe('ObjectId:Solve')),
   roles: z.array(zId.describe('ObjectId:Role')),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.date().transform((value: any) => value || new Date()),
+  updatedAt: z.date().transform((value: any) => value || new Date()) 
 })
 
 type StreakType = z.infer<typeof streakSchema>
