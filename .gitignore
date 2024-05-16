@@ -10,3 +10,5 @@ playground
 .env.production
 notes
 server/services/StorageService/credentials.json
+
+audios

@@ -6,6 +6,11 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+const dbConnectionStringUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship';
+console.log({
+  dbConnectionStringUri
+})
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   plugins: ['~/plugins/fontawesome.ts'],
@@ -20,13 +25,14 @@ export default defineNuxtConfig({
   mongoose: {
     options: {},
     modelsDir: 'models',
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship',
+    uri: dbConnectionStringUri,
   },
   runtimeConfig: {
     host: process.env.HOST,
     googleAPIKey: process.env.GOOGLE_API_KEY,
     authTokenExpiresIn: process.env.AUTH_TOKEN_EXPIRES_IN || '3650 days',
     authTokenSecret: process.env.AUTH_TOKEN_SECRET || 'secretsecretTaseSpray',
+    openAIKey: process.env.OPENAI_KEY || 'openAIKey',
     public: {
       apiUrl: process.env.API_URL,
       hostUrl: process.env.HOST_URL,

@@ -40,6 +40,8 @@
     "luxon": "^3.4.4",
     "mongoose": "^8.0.2",
     "nitropack": "^2.7.2",
+    "openai": "^4.47.1",
+    "openai-streams": "^6.2.0",
     "pinia": "^2.1.7",
     "pino": "^8.17.1",
     "pino-pretty": "^10.3.0",
