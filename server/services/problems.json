@@ -1,6 +1,7 @@
 {
   "data": [
     {
+      "answer": "\nclass Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        store = {}\n        for idx, n in enumerate(nums):\n            remainder = target - n\n            if store.get(remainder) != None:\n                return [store.get(remainder), idx]\n            store[n] = idx\n",
       "acceptanceRate": 52.4,
       "accepted": 12.9,
       "author": {
@@ -41,6 +42,7 @@
       }
     },
     {
+      "answer": "\n  class Solution:\n      def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:\n          def toint(n):\n              return n.val + 10 * toint(n.next) if n else 0\n      \n          def tolist(n):\n              node = ListNode(n % 10)\n              if n > 9:\n                  node.next = tolist(n // 10)\n              return node\n          return tolist(toint(l1) + toint(l2))\n",
       "acceptanceRate": 39.2,
       "accepted": 17.8,
       "author": {
@@ -98,6 +100,7 @@
       }
     },
     {
+      "answer": "\n  class Solution:    \n      def lengthOfLongestSubstring(self, s: str) -> int:\n          ans, l, seen = 0, 0, set()\n          for r, c in enumerate(s):\n              while c in seen:\n                  seen.remove(s[l])\n                  l+=1\n              seen.add(c)\n              ans = max(ans, r - l + 1)\n          return ans\n",
       "acceptanceRate": 30.1,
       "accepted": 14.6,
       "author": {
