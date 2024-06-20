@@ -52,7 +52,7 @@ collections:
   - name: articles
     create: true
     label: Article
-    folder: content/articles
+    folder: content/Articles
     format: frontmatter
     slug: "{{fields.createdAt}}-{{slug}}"
     # editor:

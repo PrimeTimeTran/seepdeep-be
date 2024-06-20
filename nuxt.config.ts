@@ -12,13 +12,26 @@ console.log({
 })
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  nitro: {
+    prerender: {
+      failOnError: false,
+      routes: ['/', '/articles/**/**/**', '/theme/**'],
+      ignore: ['/administrator/**'],
+    },
+  },
+  devtools: {
+    enabled: true,
+    timeline: {
+      enabled: true,
+    },
+  },
   plugins: ['~/plugins/fontawesome.ts'],
   css: ['@fortawesome/fontawesome-svg-core/styles.css'],
   formkit: {
     autoImport: true,
   },
   routeRules: {
+    '/articles/**/**/**': { prerender: true },
     '/administrator/**': { ssr: false },
     '/api/**': { cors: true, ssr: false, prerender: false },
   },
@@ -96,14 +109,13 @@ export default defineNuxtConfig({
   },
   vuefire: {
     config: {
-      projectId: 'turboship-dev',
-      measurementId: 'G-3Y4HHYCZK7',
-      messagingSenderId: '885916988672',
-      storageBucket: 'turboship-dev.appspot.com',
-      authDomain: 'turboship-dev.firebaseapp.com',
-      databaseURL: 'https://turboship-dev-default-rtdb.firebaseio.com',
-      appId: '1:885916988672:web:1cca060cfd4ac74a2eafe5',
-      apiKey: 'AIzaSyBaBHq_Igg8V6xDmuNBMDWK_KputgYfSLM',
+      projectId: "seepdeep-dev",
+      measurementId: "G-Y90JY37LDH",
+      messagingSenderId: "870966333694",
+      storageBucket: "seepdeep-dev.appspot.com",
+      authDomain: "seepdeep-dev.firebaseapp.com",
+      apiKey: "AIzaSyC_H8RdeUmT-5sms4ai23E6nLe_nvFghuA",
+      appId: "1:870966333694:web:9d5168051bd506074155af",
     },
   },
 })

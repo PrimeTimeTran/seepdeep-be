@@ -5,27 +5,16 @@ const navItems = [
     name: 'Home',
     icon: 'fa-house',
   },
-  // {
-  //   url: '/articles/vue/vue-1-fundamentals',
-  //   name: 'Articles',
-  //   icon: 'fa-newspaper',
-  // },
-  // {
-  //   url: '/entities',
-  //   name: 'Entity Builder',
-  //   icon: 'fa-cubes',
-  // },
-
+  {
+    url: '/articles',
+    name: 'Articles',
+    icon: 'fa-house',
+  },
   {
     name: 'Showcase',
     icon: 'fa-palette',
     dropdown: true,
     links: [
-      // {
-      //   url: '/ecommerce',
-      //   name: 'Ecommerce',
-      //   icon: 'fa-dashboard',
-      // },
       {
         url: '/administrator/dashboard',
         name: 'Admin Dashboard',
