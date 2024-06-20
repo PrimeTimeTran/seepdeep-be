@@ -12,3 +12,5 @@ notes
 server/services/StorageService/credentials.json
 
 audios
+# Local Netlify folder
+.netlify

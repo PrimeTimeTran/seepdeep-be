@@ -46,7 +46,18 @@ export default defineNuxtConfig({
       ],
     },
   },
+  content: {
+    documentDriven: true,
+    highlight: {
+      preload: ['dart', 'python', 'javascript', 'js', 'typescript', 'ts', 'vue', 'vue-html', 'bash'],
+      theme: {
+        light: 'github-light',
+        default: 'github-dark',
+      },
+    },
+  },
   modules: [
+    '@nuxt/content',
     'nuxt-icon',
     '@pinia/nuxt',
     '@formkit/nuxt',

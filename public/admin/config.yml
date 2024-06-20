@@ -1,0 +1,219 @@
+backend:
+  branch: main
+  name: git-gateway
+  squash_merges: true
+  site_domain: https://seepdeep.com
+  repo: PrimeTimeTran/seepdeep-be
+
+site_url: https://seepdeep.com
+# logo_url: https://seepdeep.com/images/icon-black.png
+publish_mode: editorial_workflow
+media_folder: "/public/images/uploads"
+
+# used together with `npx netlify-cms-proxy-server`. https://www.netlifycms.org/docs/beta-features/#working-with-a-local-git-repository
+local_backend: true
+
+# Docs: https://www.netlifycms.org/docs/configuration-options/#collections
+collections:
+  - label: "Site settings"
+    name: "site"
+    files:
+      - label: "Info"
+        name: "info"
+        file: "content/site/info.json"
+        format: "json"
+        editor:
+          preview: false
+        fields:
+          - {
+              label: Site Name,
+              name: site name,
+              widget: string,
+              hint: "This is used for the site title",
+            }
+          - {
+              label: Site Description,
+              name: site description,
+              widget: string,
+              hint: "This is used as descriptive text for links that link to this site",
+            }
+          - {
+              label: Site Language,
+              name: sitelang,
+              widget: string,
+              pattern:
+                [
+                  "^[a-z]{2}([-])?([A-Za-z]{2})?$",
+                  'Must match "xx" or "xx-XX" syntax (ex. "en" or "sv-SE")',
+                ],
+            }
+
+          # - { label: Site Email, name: siteemail, widget: string, required: false }
+  - name: articles
+    create: true
+    label: Article
+    folder: content/articles
+    format: frontmatter
+    slug: "{{fields.createdAt}}-{{slug}}"
+    # editor:
+    #   preview: true
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    fields:
+      - {
+          name: "createdAt",
+          widget: "datetime",
+          time_format: false,
+          format: "YYYY-MM-DD",
+          label: "Created Date",
+          date_format: "YYYY-MM-DD",
+        }
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          required: true,
+        }
+      - { label: "Tag", name: "tags", widget: "string", required: false }
+      - {
+          label: "Featured Image",
+          name: "thumbnail",
+          widget: "image",
+          required: false,
+        }
+      - label: Images
+        name: images
+        widget: list
+        field: { label: Image, name: image, widget: image }
+
+  - name: posts
+    create: true
+    label: Post
+    folder: content/Posts
+    format: frontmatter
+    slug: "{{fields.createdAt}}-{{slug}}"
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    fields:
+      - {
+          label: "Created Date",
+          name: "createdAt",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+        }
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          required: false,
+        }
+      - { label: "Tag", name: "tags", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+      - {
+          label: "Featured Image",
+          name: "thumbnail",
+          widget: "image",
+          required: false,
+        }
+      - label: Images
+        name: images
+        widget: list
+        field: { label: Image, name: image, widget: image }
+
+  - name: snippets
+    create: true
+    label: Snippet
+    folder: content/Snippets
+    format: frontmatter
+    slug: "{{fields.createdAt}}-{{slug}}"
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    fields:
+      - {
+          label: "Created Date",
+          name: "createdAt",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+        }
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          required: false,
+        }
+      - { label: "Tag", name: "tags", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+      - {
+          label: "Featured Image",
+          name: "thumbnail",
+          widget: "image",
+          required: false,
+        }
+      - label: Images
+        name: images
+        widget: list
+        field: { label: Image, name: image, widget: image }
+
+  - name: "tag"
+    label: "Tags"
+    create: true
+    label_singular: "Tag"
+    folder: "content/tags"
+    format: "frontmatter"
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "tag" }
+
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    folder: "content/projects"
+    create: true
+    format: "frontmatter"
+    slug: "{{slug}}"
+    preview_path: "projects/{{slug}}"
+    fields:
+      - {
+          label: "Project Category",
+          name: "category",
+          widget: "select",
+          default: "animals",
+          options:
+            [
+              { label: "Animals", value: "animals" },
+              { label: "Food", value: "food" },
+            ],
+        }
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Cover Image",
+          name: "cover",
+          widget: "image",
+          required: false,
+          allow_multiple: false,
+        }
+      - { label: "Content", name: "body", widget: "markdown", required: false }
+      - {
+          label: "Gallery",
+          name: "gallery",
+          widget: "list",
+          required: false,
+          summary: "{{fields.image}}",
+          field: { label: "Image", name: "image", widget: "image" },
+        }
