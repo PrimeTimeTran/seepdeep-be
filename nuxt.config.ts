@@ -6,12 +6,15 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const dbConnectionStringUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship';
+const dbConnectionStringUri =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship'
 console.log({
-  dbConnectionStringUri
+  dbConnectionStringUri,
+  env: process.env.ENV_FILE
 })
 
 export default defineNuxtConfig({
+  sourcemap: { server: true, client: false },
   nitro: {
     prerender: {
       failOnError: false,
@@ -55,14 +58,30 @@ export default defineNuxtConfig({
     head: {
       script: [
         { src: '/js/Hotkeys.js', tagPosition: 'head' },
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js', tagPosition: 'head' },
+        {
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js',
+          tagPosition: 'head',
+        },
       ],
     },
   },
   content: {
+    experimental: {
+      search: true
+    },
     documentDriven: true,
     highlight: {
-      preload: ['dart', 'python', 'javascript', 'js', 'typescript', 'ts', 'vue', 'vue-html', 'bash'],
+      preload: [
+        'dart',
+        'python',
+        'javascript',
+        'js',
+        'typescript',
+        'ts',
+        'vue',
+        'vue-html',
+        'bash',
+      ],
       theme: {
         light: 'github-light',
         default: 'github-dark',
@@ -79,7 +98,8 @@ export default defineNuxtConfig({
     '@samk-dev/nuxt-vcalendar',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
-    '@nuxt/test-utils/module'
+    '@nuxt/test-utils/module',
+    '@nuxt/image',
   ],
   alias: {
     '@models': path.resolve(__dirname, 'server/models'),
@@ -109,13 +129,13 @@ export default defineNuxtConfig({
   },
   vuefire: {
     config: {
-      projectId: "seepdeep-dev",
-      measurementId: "G-Y90JY37LDH",
-      messagingSenderId: "870966333694",
-      storageBucket: "seepdeep-dev.appspot.com",
-      authDomain: "seepdeep-dev.firebaseapp.com",
-      apiKey: "AIzaSyC_H8RdeUmT-5sms4ai23E6nLe_nvFghuA",
-      appId: "1:870966333694:web:9d5168051bd506074155af",
+      projectId: 'seepdeep-dev',
+      measurementId: 'G-Y90JY37LDH',
+      messagingSenderId: '870966333694',
+      storageBucket: 'seepdeep-dev.appspot.com',
+      authDomain: 'seepdeep-dev.firebaseapp.com',
+      apiKey: 'AIzaSyC_H8RdeUmT-5sms4ai23E6nLe_nvFghuA',
+      appId: '1:870966333694:web:9d5168051bd506074155af',
     },
-  },
+  }
 })

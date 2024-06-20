@@ -2,11 +2,17 @@
 const emit = defineEmits(['toggled'])
 
 const { toc } = useContent()
+console.log({
+  toc: toc.value.links
+})
 
 const currentRoute = ref('')
 
 watch(toc, (newTOC, oldTOC) => {
   const router = useRoute()
+  console.log({
+    gogogo: router.fullPath
+  })
   currentRoute.value = router.fullPath
 })
 
@@ -28,9 +34,14 @@ const callExposedFunction = (category) => {
 
 <template>
   <div class="pt-8 overflow-auto scrollbar-hide">
+    <!-- <ContentNavigation v-slot="{ navigation }">
+      <pre>
+        {{ navigation }}
+      </pre>
+    </ContentNavigation> -->
     <ContentNavigation v-slot="{ navigation }">
       <ul class="mx-8">
-        <li class="list-none" :key="category._path" v-for="category in navigation[1].children">
+        <li class="list-none" :key="category._path" v-for="category in navigation[2].children">
           <ul class="list-none">
             <NuxtLink
               :to="category._path"
