@@ -35,7 +35,9 @@ export function useResources(resource) {
     }
   }
   onBeforeMount(async () => {
-    const { data, error } = await useFetch(baseURL + `?page=${meta.page}&limit=${meta.limit}`)
+    const { data, error } = await useFetch(
+      baseURL + `?page=${meta.page}&limit=${meta.limit}`
+    )
     if (!error.value) {
       console.log({
         baseURL,
@@ -67,7 +69,10 @@ export function useResources(resource) {
     const queryParams = new URLSearchParams(Object.entries(fields)).toString()
     params.value = queryParams
 
-    const url = makeApiQueryString(apiUrl + `/${resource}?page=${meta.page}&limit=${meta.limit}`, fields)
+    const url = makeApiQueryString(
+      apiUrl + `/${resource}?page=${meta.page}&limit=${meta.limit}`,
+      fields
+    )
     try {
       let { data, error } = await useFetch(url)
       if (!error.value) {
@@ -87,7 +92,12 @@ export function useResources(resource) {
     let nextPage = meta.page + diff
     if (diff == -10) nextPage = 1
     if (diff == 10) nextPage = meta.pageCount
-    return [`/${resource}?page=${nextPage}&limit=${meta.limit}${params.value ? '&' + params.value : ''}`, nextPage]
+    return [
+      `/${resource}?page=${nextPage}&limit=${meta.limit}${
+        params.value ? '&' + params.value : ''
+      }`,
+      nextPage,
+    ]
   }
   const fetchPage = async (diff) => {
     let [str, nextPage] = getPaginationString(diff)
@@ -113,9 +123,13 @@ export function useResources(resource) {
   }
   const sort = (field, direction) => {
     if (direction === 'ASC') {
-      items.value = items.value.sort((a, b) => ((a[field] ?? '') > (b[field] ?? '') ? 1 : -1))
+      items.value = items.value.sort((a, b) =>
+        (a[field] ?? '') > (b[field] ?? '') ? 1 : -1
+      )
     } else if (direction === 'DESC') {
-      items.value = items.value.sort((a, b) => ((a[field] ?? '') > (b[field] ?? '') ? -1 : 1))
+      items.value = items.value.sort((a, b) =>
+        (a[field] ?? '') > (b[field] ?? '') ? -1 : 1
+      )
     }
   }
   return {

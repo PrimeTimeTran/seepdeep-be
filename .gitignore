@@ -1,3 +1,4 @@
+.DS_Store
 node_modules
 .nuxt
 .vscode
@@ -7,6 +8,8 @@ dist
 server/services/scripts
 playground
 
+.env
+.env.local
 .env.production
 notes
 server/services/StorageService/credentials.json

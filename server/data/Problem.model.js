@@ -109,12 +109,12 @@ const problemSchema = new Schema({
   testCases: {
     type: [
       {
-        output: [Number | String],
+        output: Schema.Types.Mixed,
         explanation: String,
         input: {
           type: [Schema.Types.Mixed],
           required: true,
-      },
+        },
       },
     ],
     required: true,

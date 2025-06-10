@@ -10,7 +10,7 @@ const dbConnectionStringUri =
   process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship'
 console.log({
   dbConnectionStringUri,
-  env: process.env.ENV_FILE
+  env: process.env.ENV_FILE,
 })
 
 export default defineNuxtConfig({
@@ -67,7 +67,7 @@ export default defineNuxtConfig({
   },
   content: {
     experimental: {
-      search: true
+      search: true,
     },
     documentDriven: true,
     highlight: {
@@ -137,5 +137,5 @@ export default defineNuxtConfig({
       apiKey: 'AIzaSyC_H8RdeUmT-5sms4ai23E6nLe_nvFghuA',
       appId: '1:870966333694:web:9d5168051bd506074155af',
     },
-  }
+  },
 })

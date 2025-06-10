@@ -2,7 +2,7 @@ import { z } from 'zod'
 import mongoose from 'mongoose'
 import { zId } from '@zodyac/zod-mongoose'
 import { Auditor } from './Audit/Audit'
-import { zodToMongooseSchema} from './model.helpers'
+import { zodToMongooseSchema } from './model.helpers'
 
 const zSignatureParameter = z.object({
   type: z.string(),
@@ -14,7 +14,12 @@ const zSignature = z.object({
   returnType: z.string(),
 })
 const zTestCases = z.object({
-  output: z.array(z.union([z.number(), z.string()])),
+  output: z.union([
+    z.number(),
+    z.string(),
+    z.boolean(),
+    z.array(z.union([z.number(), z.string(), z.boolean()])),
+  ]),
   explanation: z.string(),
   input: z.union([
     z.array(z.number()),

@@ -15,8 +15,6 @@ import Problem from '../models/Problem.model'
 
 import { problemSolutionMap, languages } from './code.js'
 
-const currentLang = languages[5]
-
 const eventEmitter = new EventEmitter()
 const defaultScriptPath = '/tmp/scripts'
 let scriptsDirectoryPath = defaultScriptPath
@@ -49,6 +47,8 @@ export default class SubmissionService {
   async setup() {
     try {
       this.problem = await Problem.findOne({ _id: this.body.problem })
+      // console.log({ problem: this.body.problem })
+      // console.log({ problem: this.problem })
       this.totalExecutions = this.problem.testCases.length
       this.functionName = makeMethodNameWithLanguage(
         this.language,
@@ -61,13 +61,6 @@ export default class SubmissionService {
   }
 
   async onNewSubmission() {
-    // [x] Create submission instance
-    // [x] Run & benchmark submission.
-    // [x] Update user solves.
-    // [x] Update solved problems if already existing, else create.
-    // [x] Update user streak.
-    // [ ] Update user language mastery.
-    // [ ] Update problem stats
     try {
       this.benchmark()
       this.submission = await new Submission({
@@ -166,9 +159,13 @@ export default class SubmissionService {
         const match = msg?.match(/\d+\n/)
         const index = match ? error.message.indexOf(match[0]) : -1
         msg = index !== -1 ? error.message.substring(index).trim() : ''
-        logger.warn({ error: error.message, language: this.language }, 'Not all tests passed')
-        this.buildTestResult(stdout.trim(), idx)
-        eventEmitter.emit('error', msg)
+        logger.warn(
+          { error: error.message, language: this.language },
+          'Not all tests passed'
+        )
+        this.buildTestResult(stdout.trim(), idx, error.message)
+        callback(stdout.trim())
+        // eventEmitter.emit('error', msg)
       }
       if (callback) {
         // Msg key takes place of 2nd argument.
@@ -182,19 +179,22 @@ export default class SubmissionService {
     })
   }
 
-  buildTestResult(stdout, idx) {
+  buildTestResult(stdout, idx, stackTrace) {
     try {
-      let stdoutArray = JSON.parse(stdout)
-      let outExpected = this.results[idx]
-      // Some problems the order of the returned elements don't matter.
-      // For example 1. twoSum
-      if (true) {
-        stdoutArray = stdoutArray.sort()
-        outExpected = outExpected.sort()
+      let fixedStdout = stdout.trim()
+      if (fixedStdout === 'True') fixedStdout = 'true'
+      if (fixedStdout === 'False') fixedStdout = 'false'
+      let stdoutArray
+      if (fixedStdout === '') {
+        stdoutArray = null
+      } else {
+        stdoutArray = JSON.parse(fixedStdout)
       }
+      let outExpected = this.results[idx]
       const passing =
         JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
       const testCase = {
+        stackTrace,
         passing,
         outExpected,
         outActual: stdoutArray,
@@ -254,7 +254,6 @@ export default class SubmissionService {
       const calls = []
       const params = []
       const results = []
-
       this.problem.testCases.forEach((testCase) => {
         const input = testCase.get('input')
         const inputs = input?.map((input) => JSON.stringify(input))
@@ -265,7 +264,19 @@ export default class SubmissionService {
           calls.push(`${inputs.join(', ')}`)
         }
         params.push(inputs2)
-        results.push(testCase.get('output'))
+        // TODO: Fix integers look like arrays in some problems.
+        let result = testCase.get('output')
+        // Inconsistent behavior in some problems.
+        // Sometimes the output is an array of arrays, so we need to flatten it.
+        // For example: 3. Longest Substring Without Repeating Characters
+        // if (
+        //   this.problem._id.equals('66367f5e0d552cf0a90e8609') ||
+        //   this.problem._id.equals('66367f5e0d552cf0a90e875c') ||
+        //   this.problem._id.equals('66367f5e0d552cf0a90e8614')
+        // ) {
+        //   result = testCase.get('output')[0]
+        // }
+        results.push(result)
       })
       this.calls = calls
       this.results = results
