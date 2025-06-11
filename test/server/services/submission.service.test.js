@@ -1,4 +1,6 @@
 // import SubmissionService from "../../../server/services/Solve.service";
+import { describe, it, expect } from 'vitest'
+
 const body = `
 {
   "lang": "python",
@@ -7,13 +9,13 @@ const body = `
   "problem": "66365afe499de034006863c3"
 }
 `
-describe('Submissions Service', function() {
-  describe('Submit Python code', function() {
-    it('When python code is submitted, then the service runs it without error.', ()=> {
-      expect(true).toBe(true);
-    });
-    it('When the method parameter contains an int, it does not error.', ()=> {
-      expect(true).toBe(true);
-    });
-  });
-});
+describe('Submissions Service', function () {
+  describe('Submit Python code', function () {
+    it('When python code is submitted, then the service runs it without error.', () => {
+      expect(true).toBe(true)
+    })
+    it('When the method parameter contains an int, it does not error.', () => {
+      expect(true).toBe(true)
+    })
+  })
+})

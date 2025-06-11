@@ -179,20 +179,49 @@ export default class SubmissionService {
     })
   }
 
+  // Extract function to a "functions" service...?
+  normalizeArray(arr) {
+    return arr
+      .map((inner) => [...inner].sort())
+      .sort((a, b) => a.join('').localeCompare(b.join('')))
+  }
+  // Extract function to a "functions" service...?
+  isArrayOfArrays(arr) {
+    return Array.isArray(arr) && arr.every((inner) => Array.isArray(inner))
+  }
+
   buildTestResult(stdout, idx, stackTrace) {
     try {
       let fixedStdout = stdout.trim()
       if (fixedStdout === 'True') fixedStdout = 'true'
       if (fixedStdout === 'False') fixedStdout = 'false'
+
+      // Group Anagrams needs to be parsed.
+      if (fixedStdout.startsWith("['") || fixedStdout.startsWith("[['")) {
+        fixedStdout = fixedStdout.replace(/'/g, '"')
+      }
       let stdoutArray
+      
+      // When a test case fails.
       if (fixedStdout === '') {
         stdoutArray = null
       } else {
         stdoutArray = JSON.parse(fixedStdout)
       }
       let outExpected = this.results[idx]
-      const passing =
-        JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
+      let passing = JSON.stringify(stdoutArray) === JSON.stringify(outExpected)
+
+      // When the test case is correct but the ordering isn't correct
+      if (
+        this.isArrayOfArrays(outExpected) &&
+        this.isArrayOfArrays(outActual)
+      ) {
+        const normalizedExpected = normalizeArray(outExpected)
+        const normalizedActual = normalizeArray(outActual)
+        passing =
+          JSON.stringify(normalizedExpected) ===
+          JSON.stringify(normalizedActual)
+      }
       const testCase = {
         stackTrace,
         passing,
