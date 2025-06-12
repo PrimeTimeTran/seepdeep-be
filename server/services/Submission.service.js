@@ -168,7 +168,6 @@ export default class SubmissionService {
         // eventEmitter.emit('error', msg)
       }
       if (callback) {
-        // Msg key takes place of 2nd argument.
         logger.info({
           output: stdout.trim(),
           msg: 'Test Output',
@@ -201,7 +200,7 @@ export default class SubmissionService {
         fixedStdout = fixedStdout.replace(/'/g, '"')
       }
       let stdoutArray
-      
+
       // When a test case fails.
       if (fixedStdout === '') {
         stdoutArray = null
@@ -214,10 +213,10 @@ export default class SubmissionService {
       // When the test case is correct but the ordering isn't correct
       if (
         this.isArrayOfArrays(outExpected) &&
-        this.isArrayOfArrays(outActual)
+        this.isArrayOfArrays(stdoutArray)
       ) {
-        const normalizedExpected = normalizeArray(outExpected)
-        const normalizedActual = normalizeArray(outActual)
+        const normalizedExpected = this.normalizeArray(outExpected)
+        const normalizedActual = this.normalizeArray(stdoutArray)
         passing =
           JSON.stringify(normalizedExpected) ===
           JSON.stringify(normalizedActual)

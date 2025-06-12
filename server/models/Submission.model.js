@@ -27,12 +27,15 @@ const submissionSchema = new Schema(
     },
     isPublished: {
       type: Boolean,
+      default: false,
     },
     isShared: {
       type: Boolean,
+      default: false,
     },
     isContest: {
       type: Boolean,
+      default: false,
     },
     penalty: {
       type: Number,
