@@ -10,6 +10,7 @@ const submissionSchema = new Schema(
       type: String,
     },
     explanation: {
+      default: '',
       type: String,
     },
     language: {

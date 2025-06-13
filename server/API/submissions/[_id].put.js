@@ -1,12 +1,13 @@
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
+  const bodyRaw = await readBody(event)
+  const body = typeof bodyRaw === 'string' ? JSON.parse(bodyRaw) : bodyRaw
   try {
     return await Submission.findOneAndUpdate(
       { _id: event.context.params?._id },
       body,
       { new: true }
-    );
+    )
   } catch (error) {
-    return error;
+    return error
   }
-});
+})
