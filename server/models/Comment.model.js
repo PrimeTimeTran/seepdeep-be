@@ -1,14 +1,14 @@
-import mongoose, { Schema } from 'mongoose';
-import { Auditor } from './Audit/Audit';
+import mongoose, { Schema } from 'mongoose'
+import { Auditor } from './Audit/Audit'
 
-export const commentEnumerators = {};
+export const commentEnumerators = {}
 
 const commentSchema = new Schema({
   body: {
-    type: String
+    type: String,
   },
   code: {
-    type: String
+    type: String,
   },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   post: { type: Schema.Types.ObjectId, ref: 'Post' },
@@ -17,12 +17,20 @@ const commentSchema = new Schema({
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   problem: { type: Schema.Types.ObjectId, ref: 'Problem' },
   submission: { type: Schema.Types.ObjectId, ref: 'Submission' },
-  voterIds: {
-    type: Map,
-    of: String
-  }
-});
-Auditor.addHooks(commentSchema);
-const Comment = mongoose.model('Comment', commentSchema);
-export default Comment;
-export { commentSchema, Comment };
+  voteIdsUp: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  voteIdsDown: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+})
+Auditor.addHooks(commentSchema)
+const Comment = mongoose.model('Comment', commentSchema)
+export default Comment
+export { commentSchema, Comment }

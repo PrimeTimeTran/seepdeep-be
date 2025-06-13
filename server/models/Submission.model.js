@@ -41,9 +41,26 @@ const submissionSchema = new Schema(
     penalty: {
       type: Number,
     },
-    numVotes: {
+    numVotesUp: {
+      default: 0,
       type: Number,
     },
+    numVotesDown: {
+      default: 0,
+      type: Number,
+    },
+    voteIdsUp: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    voteIdsDown: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     numComments: {
       type: Number,
     },
@@ -64,6 +81,10 @@ const submissionSchema = new Schema(
     },
     passing: {
       type: Schema.Types.Boolean,
+    },
+    viewCount: {
+      default: 0,
+      type: Schema.Types.Number,
     },
     testCases: {
       type: [
