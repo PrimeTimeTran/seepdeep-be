@@ -5,10 +5,17 @@ export default defineEventHandler(async (e) => {
   try {
     let { limit, page } = e.context
     let params = getQuery(e)
-    const subDocs = await Submission.find({
+    const query = {
       isShared: true,
       problem: new mongoose.Types.ObjectId(params.problem),
-    })
+    }
+    if (params.explanation) {
+      query.explanation = {
+        $regex: params.explanation,
+        $options: 'i',
+      }
+    }
+    const subDocs = await Submission.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(20)
