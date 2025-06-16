@@ -7,10 +7,10 @@ import { zodToMongooseSchema } from './model.helpers'
 
 const zTopic = z.object({
   name: z.string(),
-  posts: z.array(zId.describe('ObjectId:Post')),
-  guides: z.array(zId.describe('ObjectId:Guide')),
-  contests: z.array(zId.describe('ObjectId:Contest')),
-  submissions: z.array(zId.describe('ObjectId:Submission')),
+  posts: z.array(zId.describe('ObjectId:Post')).default([]),
+  guides: z.array(zId.describe('ObjectId:Guide')).default([]),
+  contests: z.array(zId.describe('ObjectId:Contest')).default([]),
+  submissions: z.array(zId.describe('ObjectId:Submission')).default([]),
 })
 
 const topicSchemaDefinition = zodToMongooseSchema(zTopic)

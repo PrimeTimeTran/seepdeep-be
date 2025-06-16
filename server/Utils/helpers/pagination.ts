@@ -24,25 +24,21 @@ export function buildQuery(params: object) {
     })
 
     if (params.hasOwnProperty(key)) {
-      // Info Queries 2. A list of values. Multiple houses for example.
+      // Special-case handling for topicId → query.topics.$in
+      if (key === 'topicId' && mongoose.isValidObjectId(value)) {
+        query.topics = { $in: [new mongoose.Types.ObjectId(value)] }
+        continue // skip default parsing
+      }
+
+      // Your existing logic follows
       if (isArray(params, key)) {
         const values = value!.toString().split(',')
         const regexArray = getRegexedValues(values)
         query[key] = { $in: regexArray }
-
-        // Info Queries 3. True of false values. True/False wizard has apparition ability.
       } else if (value == 'false' || value == 'true') {
         query[key] = value
       } else {
-        // Info Queries 4. Multifaceted:
-        // - 1. Type casting matches. So "1" matches 1
-        // - 2. Case insensitive matches. So "harry" matches "Harry"
-        // - 3. Fuzzy matches. So "Har" matches "Harry" or "Mary" matches "Mary" & "Mary-Anne"
-        // - 4. Substring matches. So "arry" matches "Harry" or "ione" matches "Hermione"
         const val = getRegexedValue(value)
-        console.log({
-          val,
-        })
         query[key] = !isNaN(val) ? parseFloat(val) : { $regex: val }
       }
     }
@@ -59,7 +55,7 @@ export function buildPipeline(
   query: object,
   page: number,
   limit: number,
-  fieldsToPopulate: PopulateField[] = [],
+  fieldsToPopulate: PopulateField[] = []
 ): mongoose.PipelineStage[] {
   const matchStage = {
     $match: {
