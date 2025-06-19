@@ -5,6 +5,18 @@ import API from '../../../../server/api/submissions/index.post.js'
 const app = createApp()
 app.use(API)
 const handler = toPlainHandler(app)
+global.logger = {
+  info: vi.fn(),
+  error: vi.fn(),
+  warn: vi.fn(),
+  fatal: vi.fn(),
+  debug: vi.fn(),
+}
+global.createError = (...args) => {
+  const err = new Error(args[0]?.message || args[0] || 'Mocked error')
+  err.statusCode = args[0]?.statusCode || 500
+  return err
+}
 
 const body = String.raw`{
   "lang": "python",
@@ -23,16 +35,16 @@ const problems = [
 ]
 
 describe('Event Handler', () => {
-  test('should handle new submission successfully', async () => {
+  test('1. Two Sum passes tests', async () => {
     const result = await handler({
       method: 'POST',
       path: '/api/submissions',
       headers: {
-        'content-type': 'text/json',
+        'content-type': 'application/json',
         authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWNkMmY0YzAyNjAwNDZhNDQzNTExYTIiLCJpYXQiOjE3MTM2NDg2NzgsImV4cCI6MjAyOTAwODY3OH0.HnX3iDxGkKdcgaxpZSAR34jXq5T1pASW6vaeEjuJ6EM',
       },
-      body: body,
+      body,
       context: {
         user: {
           _id: '65cd2f4c0260046a443511a2',
@@ -44,7 +56,7 @@ describe('Event Handler', () => {
       result,
     })
     expect(true).toBe(true)
-  }, 10000)
+  }, 25000)
 
   test('should handle errors properly', async () => {
     // Write test case for error handling

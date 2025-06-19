@@ -90,7 +90,7 @@ const submissionSchema = new Schema(
       type: [
         {
           passing: Boolean,
-          input: Schema.Types.Mixed,
+          inputs: Schema.Types.Mixed,
           outExpected: Schema.Types.Mixed,
           outActual: Schema.Types.Mixed,
           stackTrace: String,

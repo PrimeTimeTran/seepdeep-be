@@ -213,7 +213,7 @@ export default class SubmissionService {
         passing,
         outExpected,
         outActual: stdoutArray,
-        input: this.inputs[idx],
+        inputs: this.inputs[idx],
       }
       this.testCases.push(testCase)
     } catch (error) {
@@ -270,16 +270,22 @@ export default class SubmissionService {
       const params = []
       const results = []
       this.problem.testCases.forEach((testCase) => {
-        const input = testCase.get('input')
-        const inputs = input?.map((input) => JSON.stringify(input))
-        const inputs2 = input?.map((input) => input)
+        const input = testCase.get('inputs')
+        const inputs = input
+          ? Object.entries(input).map(([key, value]) => JSON.stringify(value))
+          : []
+
+        const inputs2 = input
+          ? Object.fromEntries(
+              Object.entries(input).map(([key, value]) => [key, String(value)])
+            )
+          : {}
         if (specials.includes(this.language)) {
           calls.push(inputs)
         } else {
           calls.push(`${inputs.join(', ')}`)
         }
         params.push(inputs2)
-        // TODO: Fix integers look like arrays in some problems.
         let result = testCase.get('output')
         results.push(result)
       })

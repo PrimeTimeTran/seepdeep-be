@@ -13,6 +13,13 @@ const zSignature = z.object({
   parameters: z.array(zSignatureParameter),
   returnType: z.string(),
 })
+const zInputValue = z.union([
+  z.number(),
+  z.string(),
+  z.array(z.number()),
+  z.array(z.string()),
+])
+
 const zTestCases = z.object({
   output: z.union([
     z.number(),
@@ -21,12 +28,7 @@ const zTestCases = z.object({
     z.array(z.union([z.number(), z.string(), z.boolean()])),
   ]),
   explanation: z.string(),
-  input: z.union([
-    z.array(z.number()),
-    z.array(z.string()),
-    z.number(),
-    z.string(),
-  ]),
+  inputs: z.record(z.string(), zInputValue),
 })
 
 const zEditorialVotes = z.record(z.number())
