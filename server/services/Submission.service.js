@@ -13,8 +13,6 @@ import SolveService from './Solve.service.ts'
 
 import Problem from '../models/Problem.model'
 
-import { problemSolutionMap, languages } from './code.js'
-
 const eventEmitter = new EventEmitter()
 const defaultScriptPath = '/tmp/scripts'
 let scriptsDirectoryPath = defaultScriptPath
@@ -32,9 +30,6 @@ export default class SubmissionService {
     this.calls = []
     this.body = body
     this.language = body.lang
-    // this.language = currentLang
-    // this.body.language = currentLang
-    // this.body.body = problemSolutionMap[1][currentLang].code
     this.problem = null
     this.testCases = []
     this.isError = false
@@ -47,8 +42,6 @@ export default class SubmissionService {
   async setup() {
     try {
       this.problem = await Problem.findOne({ _id: this.body.problem })
-      // console.log({ problem: this.body.problem })
-      // console.log({ problem: this.problem })
       this.totalExecutions = this.problem.testCases.length
       this.functionName = makeMethodNameWithLanguage(
         this.language,
@@ -66,10 +59,8 @@ export default class SubmissionService {
       this.submission = await new Submission({
         ...this.body,
         user: this.user._id,
-        problem: this.body.problem,
         language: this.language,
-        // language: currentLang,
-        // body: problemSolutionMap[1][currentLang].code,
+        problem: this.body.problem,
       })
       this.user.submissions.push(this.submission._id)
       this.runResult.submissionId = this.submission._id
@@ -112,11 +103,7 @@ export default class SubmissionService {
       const [extension, filePath] = getVars(lang)
       const timestamp = Date.now()
       let fileName = `runner_${timestamp}-${idx}.${extension}`
-      let scriptPath = path.join(
-        scriptsDirectoryPath,
-        // Info: Add idx to prevent multiple testCases using the same script/file/case
-        fileName
-      )
+      let scriptPath = path.join(scriptsDirectoryPath, fileName)
       let code = problemInitializer[lang](
         this.functionName,
         this.body.body,
@@ -294,16 +281,6 @@ export default class SubmissionService {
         params.push(inputs2)
         // TODO: Fix integers look like arrays in some problems.
         let result = testCase.get('output')
-        // Inconsistent behavior in some problems.
-        // Sometimes the output is an array of arrays, so we need to flatten it.
-        // For example: 3. Longest Substring Without Repeating Characters
-        // if (
-        //   this.problem._id.equals('66367f5e0d552cf0a90e8609') ||
-        //   this.problem._id.equals('66367f5e0d552cf0a90e875c') ||
-        //   this.problem._id.equals('66367f5e0d552cf0a90e8614')
-        // ) {
-        //   result = testCase.get('output')[0]
-        // }
         results.push(result)
       })
       this.calls = calls
@@ -314,46 +291,3 @@ export default class SubmissionService {
     }
   }
 }
-
-// LinkedList(ListNode), LinkedListWithRandom(Node)
-const pythonClasses = `
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-class Node:
-    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
-        self.val = int(x)
-        self.next = next
-        self.random = random
-`
-
-// class Solution:
-//     def twoSum(self, nums, target):
-//         store = {}
-//         for idx, n in enumerate(nums):
-//             remainder = target - n
-//             if store.get(remainder) != None:
-//                 return [store.get(remainder), idx]
-//             store[n] = idx
-
-// class Solution:
-//     def twoSum(self, nums: List[int], target: int) -> List[int]:
-//         store = {}
-//         for idx, n in enumerate(nums):
-//             remainder = target - n
-//             if store.get(remainder) != None:
-//                 return [store.get(remainder), idx]
-//             store[n] = idx
-
-// class Solution:
-//     def longestSubstringWithoutRepeatingCharacters(self, s: str) -> int:
-//         ans, l, seen = 0, 0, set()
-//         for r, c in enumerate(s):
-//             while c in seen:
-//                 seen.remove(s[l])
-//                 l+=1
-//             seen.add(c)
-//             ans = max(ans, r - l + 1)
-//         return ans
