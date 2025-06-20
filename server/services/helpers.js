@@ -88,6 +88,7 @@ print(result)`
   },
   ruby: function (functionName, codeBody, inputs) {
     return `
+    require 'set'
     ${codeBody}
     result = ${functionName}(${inputs})
     print(result)`
@@ -127,17 +128,6 @@ print(result)`
       } else {
         args.push(inputs[testIdx])
       }
-      // if (input.type === 'List[int]') {
-      //   args.push(`[]int ${str}`)
-      // } else if (input.type === 'List[str]') {
-      //   args.push(`[]string ${str}`)
-      // } else if (input.type === 'List[List[str]') {
-      //   args.push(`[][]string ${str}`)
-      // } else if (input.type === 'List[List[int]') {
-      //   args.push(`[][]int ${str}`)
-      // } else {
-      //   args.push(inputs[testIdx])
-      // }
     }
     return `
     package main
@@ -159,34 +149,43 @@ print(result)`
   },
   java: function (functionName, codeBody, inputs, signature, idx) {
     let args = []
-    let testIdx = -1
-    for (let input of signature.parameters) {
-      testIdx += 1
-      if (parseTypes.includes(input.type)) {
-        args.push(
-          `${languageSpecificType.java[input.type]} ${replaceBrackets(
-            inputs[testIdx]
-          )}`
-        )
+    for (let i = 0; i < signature.parameters.length; i++) {
+      const inputType = signature.parameters[i].type
+      const rawInput = inputs[i]
+
+      if (inputType === 'List[int]' || inputType === 'int[]') {
+        const values = rawInput.replace(/^\[|\]$/g, '')
+        args.push(`new int[]{${values}}`)
+      } else if (inputType === 'List[str]' || inputType === 'String[]') {
+        const values = rawInput
+          .replace(/^\[|\]$/g, '')
+          .split(',')
+          .map((s) => `"${s.trim().replace(/^"|"$/g, '')}"`)
+          .join(', ')
+        args.push(`new String[]{${values}}`)
+      } else if (inputType === 'str' || inputType === 'String') {
+        args.push(rawInput)
       } else {
-        args.push(inputs[testIdx])
+        args.push(rawInput)
       }
-      // var str = replaceBrackets(inputs[testIdx])
-      // if (input.type === 'List[int]') {
-      //   args.push(`new int[] ${str}`)
-      // } else if (input.type === 'List[str]') {
-      //   args.push(`new String[] ${str}`)
-      // } else if (input.type === 'List[List[int]') {
-      //   args.push(`new int[][] ${str}`)
-      // } else if (input.type === 'List[List[str]') {
-      //   args.push(`new String[][] ${str}`)
-      // } else {
-      //   args.push(inputs[testIdx])
-      // }
     }
+
+    const resultCall = `solution.${functionName}(${args.join(', ')})`
+
+    const returnType = signature.returnType
+
+    const isArrayReturn =
+      returnType === 'List[int]' ||
+      returnType === 'int[]' ||
+      returnType.endsWith('[]')
+
+    const printStatement = isArrayReturn
+      ? `System.out.println(Arrays.toString(${resultCall}));`
+      : `System.out.println(${resultCall});`
+
     const mainFunction = `public static void main(String[] args) {
       Solution${idx} solution = new Solution${idx}();
-      System.out.println(Arrays.toString(solution.${functionName}(${args})));
+      ${printStatement}
     }`
     let code = `
     import java.util.*;

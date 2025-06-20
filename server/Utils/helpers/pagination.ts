@@ -21,9 +21,10 @@ export function buildQuery(params: object) {
     value = value?.split('?')[0]
     console.log({
       value,
+      params,
     })
 
-    if (params.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(params, key)) {
       // Special-case handling for topicId → query.topics.$in
       if (key === 'topicId' && mongoose.isValidObjectId(value)) {
         query.topics = { $in: [new mongoose.Types.ObjectId(value)] }
