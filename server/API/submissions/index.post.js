@@ -5,7 +5,6 @@ import SubmissionService from '@services/Submission.service.js'
 export default defineEventHandler(async (e) => {
   try {
     let body = await readBody(e)
-    body = JSON.parse(body)
     const user = e.context.user
     if (!user) {
       throw new Error('User not found.')

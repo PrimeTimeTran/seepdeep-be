@@ -77,12 +77,13 @@ const parseTypes = [
 export const problemInitializer = {
   python: function (functionName, codeBody, inputs) {
     const code = `
+from collections import defaultdict, Counter
+import heapq
 from typing import List\n${codeBody}\n
 
 solution = Solution()\n
 result = solution.${functionName}(${inputs})\n
 print(result)`
-    logger.info({ code: code, msg: 'Code' })
     return code
   },
   ruby: function (functionName, codeBody, inputs) {

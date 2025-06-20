@@ -8,10 +8,11 @@ const __dirname = dirname(__filename)
 
 const dbConnectionStringUri =
   process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship'
-console.log({
-  dbConnectionStringUri,
-  env: process.env.ENV_FILE,
-})
+
+// console.log({
+//   dbConnectionStringUri,
+//   env: process.env.ENV_FILE,
+// })
 
 export default defineNuxtConfig({
   sourcemap: { server: true, client: false },
