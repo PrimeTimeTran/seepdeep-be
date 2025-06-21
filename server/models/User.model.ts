@@ -1,41 +1,41 @@
-import { z } from "zod";
-import mongoose from "mongoose";
-import { zId } from "@zodyac/zod-mongoose";
+import { z } from 'zod'
+import mongoose from 'mongoose'
+import { zId } from '@zodyac/zod-mongoose'
 
-import { Auditor } from "./Audit/Audit";
-import { zodToMongooseSchema } from "./model.helpers";
+import { Auditor } from './Audit/Audit'
+import { zodToMongooseSchema } from './model.helpers'
 
 export const userEnumerators = {
   status: {
-    pending: "pending",
-    active: "active",
-    closed: "closed",
-    deactivated: "deactivated",
-    blocked: "blocked",
+    pending: 'pending',
+    active: 'active',
+    closed: 'closed',
+    deactivated: 'deactivated',
+    blocked: 'blocked',
   },
   roles: {
-    owner: "owner",
-    admin: "admin",
-    staff: "staff",
-    customer: "customer",
+    owner: 'owner',
+    admin: 'admin',
+    staff: 'staff',
+    customer: 'customer',
   },
-};
+}
 
 const problemsSchema = z.map(
   z.string(),
   z.object({
     dayTotal: z.number(),
     languages: z.map(z.string(), z.number()),
-  }),
-);
+  })
+)
 
 const streakSchema = z.map(
   z.string(),
   z.object({
     dayTotal: z.number(),
     problems: problemsSchema,
-  }),
-);
+  })
+)
 
 const zUser = z.object({
   email: z.string(),
@@ -73,30 +73,36 @@ const zUser = z.object({
   currentStreak: z.number().default(0),
   maxStreak: z.number().default(0),
   streak: streakSchema,
-  submissions: z.array(zId.describe("ObjectId:Submission")),
-  posts: z.array(zId.describe("ObjectId:Post")),
-  contests: z.array(zId.describe("ObjectId:Contest")),
-  comments: z.array(zId.describe("ObjectId:Comment")),
-  articles: z.array(zId.describe("ObjectId:Article")),
-  problems: z.array(zId.describe("ObjectId:Problem")),
-  solves: z.array(zId.describe("ObjectId:Solve")),
-  roles: z.array(zId.describe("ObjectId:Role")),
+  submissions: z.array(zId.describe('ObjectId:Submission')),
+  posts: z.array(zId.describe('ObjectId:Post')),
+  contests: z.array(zId.describe('ObjectId:Contest')),
+  comments: z.array(zId.describe('ObjectId:Comment')),
+  articles: z.array(zId.describe('ObjectId:Article')),
+  problems: z.array(zId.describe('ObjectId:Problem')),
+  solves: z.array(zId.describe('ObjectId:Solve')),
+  roles: z.array(zId.describe('ObjectId:Role')),
   createdAt: z.date().transform((value: any) => value || new Date()),
   updatedAt: z.date().transform((value: any) => value || new Date()),
-});
+})
 
-type StreakType = z.infer<typeof streakSchema>;
+type StreakType = z.infer<typeof streakSchema>
 
 type UserType = z.infer<typeof zUser> &
   mongoose.Document & {
-    markModified: (path: string) => void;
-  };
+    markModified: (path: string) => void
+  }
 
-const userSchemaDefinition = zodToMongooseSchema(zUser);
-const userSchema = new mongoose.Schema(userSchemaDefinition);
+const userSchemaDefinition = zodToMongooseSchema(zUser)
+userSchemaDefinition.submissions = [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Submission',
+  },
+]
+const userSchema = new mongoose.Schema(userSchemaDefinition)
 
-Auditor.addHooks(userSchema);
-const User = mongoose.model<UserType>("User", userSchema);
-export default User;
-export { userSchema, User };
-export type { UserType, StreakType };
+Auditor.addHooks(userSchema)
+const User = mongoose.model<UserType>('User', userSchema)
+export default User
+export { userSchema, User }
+export type { UserType, StreakType }

@@ -6,7 +6,6 @@ const err = {
 }
 export default defineEventHandler(async (e) => {
   let body = await readBody(e)
-  body = JSON.parse(body)
   const user = await User.findOne({ email: body.email })
   if (!user) throw createError(err)
 

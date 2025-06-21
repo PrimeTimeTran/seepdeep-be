@@ -58,7 +58,11 @@
           { "type": "int", "name": "target" }
         ],
         "returnType": "List[int]"
-      }
+      },
+      "topics": [
+        "685491f4781604a302338d2c",
+        "6855cbb3781604a302338d2e"
+      ]
     },
     {
       "_id": "66367f5e0d552cf0a90e8609",

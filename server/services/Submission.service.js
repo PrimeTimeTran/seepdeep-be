@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import crypto from 'crypto'
 import { exec } from 'child_process'
 import EventEmitter from 'node:events'
 import {
@@ -33,6 +34,7 @@ export default class SubmissionService {
     this.problem = null
     this.testCases = []
     this.isError = false
+    this.fileNames = []
     this.executionCount = 0
     this.user = e.context.user
     this.totalExecutions = null
@@ -102,7 +104,7 @@ export default class SubmissionService {
       const lang = this.language
       const [extension, filePath] = getVars(lang)
       const timestamp = Date.now()
-      let fileName = `runner_${timestamp}-${idx}.${extension}`
+      let fileName = `runner_${crypto.randomUUID()}-${idx}.${extension}`
       let scriptPath = path.join(scriptsDirectoryPath, fileName)
       let code = problemInitializer[lang](
         this.functionName,
@@ -125,11 +127,14 @@ export default class SubmissionService {
         this.scriptRun(command)
         this.scriptRun(filePath, idx, callback)
       } else if (lang === 'java') {
+        // Todo: Fix race condition in testing environment
         const binDir = path.join(defaultScriptPath, 'bin')
         fileName = path.join(defaultScriptPath, fileName)
+        // this.fileNames.push(fileName)
         let compileCode = `javac -d ${binDir} ${fileName}`
         this.scriptRun(compileCode)
         let runCode = `java -cp /tmp/scripts/bin Solution${idx}`
+        // this.fileNames.push(`/tmp/scripts/bin/Solution${idx}.class`)
         this.scriptRun(runCode, idx, callback)
       } else {
         this.scriptRun(command, idx, callback)
@@ -155,10 +160,6 @@ export default class SubmissionService {
         // eventEmitter.emit('error', msg)
       }
       if (callback) {
-        logger.info({
-          output: stdout.trim(),
-          msg: 'Test Output',
-        })
         this.buildTestResult(stdout.trim(), idx)
         callback(stdout.trim())
       }
@@ -225,6 +226,16 @@ export default class SubmissionService {
     const onDone = async () => {
       await this.submission.save()
       await this.solveService.updateSolved(this.submission.problem.toString())
+      // logger.info({ msg: this.fileNames, output: this.fileNames })
+      // this.fileNames.forEach((fileName) => {
+      //   fs.unlink(fileName, (err) => {
+      //     if (err) {
+      //       console.warn(`Failed to delete ${fileName}:`, err.message)
+      //     } else {
+      //       console.log(`Deleted: ${fileName}`)
+      //     }
+      //   })
+      // })
     }
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
