@@ -6,7 +6,15 @@ export function zodToMongooseSchema(zodSchema) {
 
   for (const key in zodSchema.shape) {
     const zodType = zodSchema.shape[key]
-    if (zodType instanceof z.ZodString) {
+    if (key === 'submissions') {
+      schema[key] = [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Submission',
+          required: !zodType.isOptional(),
+        },
+      ]
+    } else if (zodType instanceof z.ZodString) {
       schema[key] = {
         type: String,
         required: !zodType.isOptional(),

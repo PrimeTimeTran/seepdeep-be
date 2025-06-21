@@ -4,6 +4,7 @@ import { zId } from '@zodyac/zod-mongoose'
 
 import { Auditor } from './Audit/Audit'
 import { zodToMongooseSchema } from './model.helpers'
+import Submission from './Submission.model.js'
 
 export const userEnumerators = {
   status: {
@@ -73,16 +74,16 @@ const zUser = z.object({
   currentStreak: z.number().default(0),
   maxStreak: z.number().default(0),
   streak: streakSchema,
-  submissions: z.array(zId.describe('ObjectId:Submission')),
+  createdAt: z.date().transform((value: any) => value || new Date()),
+  updatedAt: z.date().transform((value: any) => value || new Date()),
   posts: z.array(zId.describe('ObjectId:Post')),
+  roles: z.array(zId.describe('ObjectId:Role')),
+  solves: z.array(zId.describe('ObjectId:Solve')),
   contests: z.array(zId.describe('ObjectId:Contest')),
   comments: z.array(zId.describe('ObjectId:Comment')),
   articles: z.array(zId.describe('ObjectId:Article')),
   problems: z.array(zId.describe('ObjectId:Problem')),
-  solves: z.array(zId.describe('ObjectId:Solve')),
-  roles: z.array(zId.describe('ObjectId:Role')),
-  createdAt: z.date().transform((value: any) => value || new Date()),
-  updatedAt: z.date().transform((value: any) => value || new Date()),
+  submissions: z.array(zId.describe('ObjectId:Submission')),
 })
 
 type StreakType = z.infer<typeof streakSchema>
@@ -93,12 +94,7 @@ type UserType = z.infer<typeof zUser> &
   }
 
 const userSchemaDefinition = zodToMongooseSchema(zUser)
-userSchemaDefinition.submissions = [
-  {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Submission',
-  },
-]
+
 const userSchema = new mongoose.Schema(userSchemaDefinition)
 
 Auditor.addHooks(userSchema)
