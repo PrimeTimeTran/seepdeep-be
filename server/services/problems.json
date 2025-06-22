@@ -59,10 +59,7 @@
         ],
         "returnType": "List[int]"
       },
-      "topics": [
-        "685491f4781604a302338d2c",
-        "6855cbb3781604a302338d2e"
-      ]
+      "topics": ["685491f4781604a302338d2c", "6855cbb3781604a302338d2e"]
     },
     {
       "_id": "66367f5e0d552cf0a90e8609",
@@ -120,7 +117,8 @@
       },
       "editorialBody": "A sliding window approach using a hash set or a dictionary can efficiently solve this problem in linear time. You maintain a window and slide it forward while ensuring that all characters inside are unique.",
       "editorialRating": 4.7,
-      "editorialVotes": { "1": 3, "2": 7 }
+      "editorialVotes": { "1": 3, "2": 7 },
+      "topics": ["685491fd781604a302338d2d"]
     },
     {
       "_id": "66367f5e0d552cf0a90e8614",
@@ -171,7 +169,8 @@
           { "type": "List[int]", "name": "nums2" }
         ],
         "returnType": "float"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "66367f5e0d552cf0a90e865b",
@@ -225,7 +224,8 @@
       "signature": {
         "parameters": [{ "type": "List[int]", "name": "height" }],
         "returnType": "int"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "66367f5e0d552cf0a90e8682",
@@ -276,7 +276,8 @@
       "signature": {
         "parameters": [{ "type": "List[int]", "name": "nums" }],
         "returnType": "List[List[int]]"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "66367f5e0d552cf0a90e875c",
@@ -360,7 +361,8 @@
       "signature": {
         "parameters": [{ "type": "List[List[str]]", "name": "board" }],
         "returnType": "bool"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "6844bbfa438d7b9a15caa7cf",
@@ -414,7 +416,8 @@
       "signature": {
         "parameters": [{ "type": "List[str]", "name": "strs" }],
         "returnType": "List[List[str]]"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "66367f5e0d552cf0a90e86bb",
@@ -465,7 +468,8 @@
       "signature": {
         "parameters": [{ "type": "List[int]", "name": "nums" }],
         "returnType": "int"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "68449561e05ddd247bea6d2d",
@@ -524,7 +528,8 @@
       "signature": {
         "parameters": [{ "type": "List[int]", "name": "nums" }],
         "returnType": "bool"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "6844ba7876977e14d4795339",
@@ -574,7 +579,8 @@
           { "type": "str", "name": "t" }
         ],
         "returnType": "bool"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "66367f5e0d552cf0a90e86aa",
@@ -629,7 +635,8 @@
       "signature": {
         "parameters": [{ "type": "List[int]", "name": "nums" }],
         "returnType": "List[int]"
-      }
+      },
+      "topics": []
     },
     {
       "_id": "66367f5e0d552cf0a90e86cc",
@@ -698,7 +705,8 @@
       "signature": {
         "parameters": [{ "type": "List[List[int]]", "name": "grid" }],
         "returnType": "int"
-      }
+      },
+      "topics": []
     }
   ]
 }
