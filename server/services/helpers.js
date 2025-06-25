@@ -79,6 +79,7 @@ export const problemInitializer = {
     const code = `
 from collections import defaultdict, Counter
 import heapq
+from heapq import heappop, heappush
 from typing import List\n${codeBody}\n
 
 solution = Solution()\n

@@ -1,79 +1,72 @@
 {
   "data": [
     {
-      "title": "Valid Parentheses",
-      "acceptanceRate": 48.1,
-      "accepted": 11.2,
+      "title": "Top K Frequent Elements",
+      "acceptanceRate": 64.2,
+      "accepted": 12.5,
       "author": {
         "urlAvatar": "https://avatars.leetcode.com/u/12345",
         "username": "PrimeTimeTran"
       },
-      "body": "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.\n\nAn input string is valid if:\n1. Open brackets are closed by the same type of brackets.\n2. Open brackets are closed in the correct order.\n3. Every closing bracket has a corresponding open bracket of the same type.",
+      "body": "Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.\n\nYou must solve it in better than O(n log n) time complexity.",
       "constraints": [
-        "1 <= s.length <= 10⁴",
-        "s consists of parentheses only: '()[]{}'"
+        "1 <= nums.length <= 10⁵",
+        "−10⁴ <= nums[i] <= 10⁴",
+        "k is in the range [1, the number of unique elements in nums]"
       ],
-      "difficulty": "Easy",
+      "difficulty": "Medium",
       "editorialAuthor": {
         "urlAvatar": "https://avatars.leetcode.com/u/9876",
         "username": "PrimeTimeTran"
       },
-      "editorialBody": "A common solution uses a stack to track opening brackets. For every closing bracket, check if it matches the top of the stack. If the stack is empty or mismatched, return false. If the stack is empty at the end, the string is valid.",
-      "editorialRating": 4.7,
-      "editorialVotes": { "1": 7, "2": 3 },
+      "editorialBody": "Use a hashmap to count the frequency of each element. Then, either use a heap of size `k` to keep track of the top `k` elements, or use bucket sort to group elements by frequency. Finally, extract the top `k` frequent values in linear time.",
+      "editorialRating": 4.6,
+      "editorialVotes": { "1": 6, "2": 2 },
       "frequency": "Very High",
       "hints": [
-        "Use a stack to process the parentheses.",
-        "Check matching pairs as you go.",
-        "Watch for early mismatches or leftover open brackets."
+        "Build a hashmap to count the frequency of each number.",
+        "Use a heap or bucket sort to extract the top `k` frequent elements.",
+        "Think about how to improve the time complexity to better than O(n log n)."
       ],
       "isPublished": true,
       "isSubmitted": false,
-      "numLC": 20,
+      "numLC": 347,
       "similar": [],
-      "submissions": 30.4,
+      "submissions": 18.3,
       "testCases": [
         {
-          "output": true,
-          "explanation": "",
+          "output": [1, 2],
+          "explanation": "1 and 2 are the two most frequent elements.",
           "inputs": {
-            "s": "()"
+            "nums": [1, 1, 1, 2, 2, 3],
+            "k": 2
           }
         },
         {
-          "output": true,
-          "explanation": "",
+          "output": [1],
+          "explanation": "1 is the most frequent element.",
           "inputs": {
-            "s": "()[]{}"
+            "nums": [1],
+            "k": 1
           }
         },
         {
-          "output": false,
-          "explanation": "",
+          "output": [2, 3],
+          "explanation": "2 and 3 appear twice, which is more frequent than others.",
           "inputs": {
-            "s": "(]"
-          }
-        },
-        {
-          "output": false,
-          "explanation": "",
-          "inputs": {
-            "s": "([)]"
-          }
-        },
-        {
-          "output": true,
-          "explanation": "",
-          "inputs": {
-            "s": "{[]}"
+            "nums": [4, 4, 2, 3, 3, 2, 5],
+            "k": 2
           }
         }
       ],
       "signature": {
-        "parameters": [{ "type": "str", "name": "s" }],
-        "returnType": "bool"
+        "parameters": [
+          { "type": "List[int]", "name": "nums" },
+          { "type": "int", "name": "k" }
+        ],
+        "returnType": "List[int]"
       },
-      "topics": ["68577abbff85feed0e9e4811", "68577acfff85feed0e9e4812"]
+      "topics": []
     }
   ]
 }

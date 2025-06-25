@@ -639,7 +639,6 @@
       "topics": []
     },
     {
-      "_id": "66367f5e0d552cf0a90e86cc",
       "title": "Island Perimeter",
       "acceptanceRate": 77.2,
       "accepted": 9.4,
@@ -782,6 +781,331 @@
         "returnType": "bool"
       },
       "topics": ["68577abbff85feed0e9e4811", "68577acfff85feed0e9e4812"]
+    },
+    {
+      "title": "Flood Fill",
+      "acceptanceRate": 55.0,
+      "accepted": 9.2,
+      "author": {
+        "urlAvatar": "https://avatars.leetcode.com/u/733author",
+        "username": "PrimeTimeTran"
+      },
+      "body": "An image is represented by an m x n integer grid image, where image[i][j] is the pixel value. Given a starting pixel (sr, sc) and a new color, perform a \"flood fill\" on the image. Return the modified image.",
+      "constraints": [
+        "m == image.length",
+        "n == image[i].length",
+        "1 <= m, n <= 50",
+        "0 <= image[i][j], newColor < 2¹⁶",
+        "0 <= sr < m",
+        "0 <= sc < n"
+      ],
+      "difficulty": "Easy",
+      "editorialAuthor": {
+        "urlAvatar": "https://avatars.leetcode.com/u/editor733",
+        "username": "PrimeTimeTran"
+      },
+      "editorialBody": "Use DFS or BFS to traverse 4-directionally from the start pixel, recoloring all connected pixels matching the original color. Avoid infinite loops by checking bounds and whether you've already changed the color.",
+      "editorialRating": 4.5,
+      "editorialVotes": { "1": 12, "2": 4 },
+      "frequency": "High",
+      "hints": [
+        "Record the original color before starting.",
+        "Stop recursion when pixel is out of bounds or color mismatched or already newColor.",
+        "Use a stack or recursion for DFS (or queue for BFS)."
+      ],
+      "isPublished": true,
+      "isSubmitted": false,
+      "numLC": 733,
+      "similar": [],
+      "submissions": 18.7,
+      "testCases": [
+        {
+          "inputs": {
+            "image": [
+              [1, 1, 1],
+              [1, 1, 0],
+              [1, 0, 1]
+            ],
+            "sr": 1,
+            "sc": 1,
+            "newColor": 2
+          },
+          "output": [
+            [2, 2, 2],
+            [2, 2, 0],
+            [2, 0, 1]
+          ],
+          "explanation": "All connected 1’s from (1,1) are recolored to 2."
+        },
+        {
+          "inputs": {
+            "image": [
+              [0, 0, 0],
+              [0, 0, 0]
+            ],
+            "sr": 0,
+            "sc": 0,
+            "newColor": 0
+          },
+          "output": [
+            [0, 0, 0],
+            [0, 0, 0]
+          ],
+          "explanation": "New color equals original color; no change."
+        }
+      ],
+      "signature": {
+        "parameters": [
+          { "type": "List[List[int]]", "name": "image" },
+          { "type": "int", "name": "sr" },
+          { "type": "int", "name": "sc" },
+          { "type": "int", "name": "newColor" }
+        ],
+        "returnType": "List[List[int]]"
+      },
+      "topics": ["68579774ff85feed0e9e4813"]
+    },
+    {
+      "title": "Find the Town Judge",
+      "acceptanceRate": 51.9,
+      "accepted": 7.3,
+      "author": {
+        "urlAvatar": "https://avatars.leetcode.com/u/12345",
+        "username": "PrimeTimeTran"
+      },
+      "body": "In a town, there are `n` people labeled from `1` to `n`. There is a rumor that one of these people is secretly the town judge.\n\nIf the town judge exists, then:\n1. The town judge trusts nobody.\n2. Everybody (except for the town judge) trusts the town judge.\n3. There is exactly one person that satisfies properties 1 and 2.\n\nYou are given an integer `n` representing the number of people, and an array `trust` where `trust[i] = [a, b]` representing that the person labeled `a` trusts the person labeled `b`.\n\nReturn the label of the town judge if the town judge exists and can be identified, or return -1 otherwise.",
+      "constraints": [
+        "1 <= n <= 1000",
+        "0 <= trust.length <= 10⁴",
+        "trust[i].length == 2",
+        "All trust[i] are unique",
+        "1 <= a, b <= n",
+        "a != b"
+      ],
+      "difficulty": "Easy",
+      "editorialAuthor": {
+        "urlAvatar": "https://avatars.leetcode.com/u/9876",
+        "username": "PrimeTimeTran"
+      },
+      "editorialBody": "Track the net trust score for each person: +1 for being trusted, -1 for trusting someone. The town judge should have a score of `n - 1` and not trust anyone. Iterate through the trust list to calculate these scores and find the person who meets the condition.",
+      "editorialRating": 4.5,
+      "editorialVotes": { "1": 5, "2": 2 },
+      "frequency": "High",
+      "hints": [
+        "Create an array to track trust counts.",
+        "Increase the count for the person being trusted, and decrease it for the person trusting.",
+        "The judge will have trust count of n - 1."
+      ],
+      "isPublished": true,
+      "isSubmitted": false,
+      "numLC": 997,
+      "similar": [],
+      "submissions": 15.7,
+      "testCases": [
+        {
+          "output": 2,
+          "explanation": "Everyone trusts person 2, and person 2 trusts nobody.",
+          "inputs": {
+            "n": 2,
+            "trust": [[1, 2]]
+          }
+        },
+        {
+          "output": -1,
+          "explanation": "Person 1 trusts person 2, and person 2 trusts person 1. No judge.",
+          "inputs": {
+            "n": 2,
+            "trust": [
+              [1, 2],
+              [2, 1]
+            ]
+          }
+        },
+        {
+          "output": 3,
+          "explanation": "Persons 1 and 2 trust person 3, and person 3 trusts nobody.",
+          "inputs": {
+            "n": 3,
+            "trust": [
+              [1, 3],
+              [2, 3]
+            ]
+          }
+        },
+        {
+          "output": -1,
+          "explanation": "No one has exactly n - 1 people trusting them.",
+          "inputs": {
+            "n": 3,
+            "trust": [
+              [1, 3],
+              [2, 3],
+              [3, 1]
+            ]
+          }
+        }
+      ],
+      "signature": {
+        "parameters": [
+          { "type": "int", "name": "n" },
+          { "type": "List[List[int]]", "name": "trust" }
+        ],
+        "returnType": "int"
+      },
+      "topics": []
+    },
+    {
+      "title": "Number of Islands",
+      "acceptanceRate": 57.3,
+      "accepted": 13.4,
+      "author": {
+        "urlAvatar": "https://avatars.leetcode.com/u/12345",
+        "username": "PrimeTimeTran"
+      },
+      "body": "Given an `m x n` 2D binary grid `grid` which represents a map of '1's (land) and '0's (water), return the number of islands.\n\nAn island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.",
+      "constraints": [
+        "m == grid.length",
+        "n == grid[i].length",
+        "1 <= m, n <= 300",
+        "grid[i][j] is '0' or '1'"
+      ],
+      "difficulty": "Medium",
+      "editorialAuthor": {
+        "urlAvatar": "https://avatars.leetcode.com/u/9876",
+        "username": "PrimeTimeTran"
+      },
+      "editorialBody": "Use Depth-First Search (DFS) or Breadth-First Search (BFS) to explore each island. Iterate through every cell in the grid; when you find a '1', increment the island count and start DFS/BFS to mark all connected '1's as visited (by flipping them to '0' or using a visited set).",
+      "editorialRating": 4.8,
+      "editorialVotes": { "1": 12, "2": 5 },
+      "frequency": "Very High",
+      "hints": [
+        "Can you visit each cell and use DFS to mark visited land?",
+        "Treat the grid as an implicit graph and traverse it using DFS or BFS.",
+        "Consider modifying the input grid to mark visited cells."
+      ],
+      "isPublished": true,
+      "isSubmitted": false,
+      "numLC": 200,
+      "similar": [],
+      "submissions": 22.6,
+      "testCases": [
+        {
+          "output": 1,
+          "explanation": "There is only one island surrounded by water.",
+          "inputs": {
+            "grid": [
+              ["1", "1", "1", "1", "0"],
+              ["1", "1", "0", "1", "0"],
+              ["1", "1", "0", "0", "0"],
+              ["0", "0", "0", "0", "0"]
+            ]
+          }
+        },
+        {
+          "output": 3,
+          "explanation": "There are three separate islands.",
+          "inputs": {
+            "grid": [
+              ["1", "1", "0", "0", "0"],
+              ["1", "1", "0", "0", "0"],
+              ["0", "0", "1", "0", "0"],
+              ["0", "0", "0", "1", "1"]
+            ]
+          }
+        },
+        {
+          "output": 0,
+          "explanation": "All cells are water.",
+          "inputs": {
+            "grid": [
+              ["0", "0", "0"],
+              ["0", "0", "0"],
+              ["0", "0", "0"]
+            ]
+          }
+        }
+      ],
+      "signature": {
+        "parameters": [{ "type": "List[List[str]]", "name": "grid" }],
+        "returnType": "int"
+      },
+      "topics": []
+    },
+    {
+      "title": "Max Area of Island",
+      "acceptanceRate": 69.1,
+      "accepted": 6.1,
+      "author": {
+        "urlAvatar": "https://avatars.leetcode.com/u/12345",
+        "username": "PrimeTimeTran"
+      },
+      "body": "You are given an `m x n` binary matrix `grid`. An island is a group of `1`s (representing land) connected 4-directionally (horizontal or vertical). You may assume all four edges of the grid are surrounded by water.\n\nThe area of an island is the number of cells with a value `1` in the island.\n\nReturn the maximum area of an island in `grid`. If there is no island, return `0`.",
+      "constraints": [
+        "m == grid.length",
+        "n == grid[i].length",
+        "1 <= m, n <= 50",
+        "grid[i][j] is either 0 or 1"
+      ],
+      "difficulty": "Medium",
+      "editorialAuthor": {
+        "urlAvatar": "https://avatars.leetcode.com/u/9876",
+        "username": "PrimeTimeTran"
+      },
+      "editorialBody": "Use Depth-First Search (DFS) to explore each island and calculate its area. Iterate through each cell of the grid, and whenever you find a '1', start DFS to mark all connected land cells as visited while counting the area. Track the maximum area found during the traversal.",
+      "editorialRating": 4.6,
+      "editorialVotes": { "1": 8, "2": 4 },
+      "frequency": "High",
+      "hints": [
+        "Can you use DFS to count the area of each island?",
+        "Consider marking visited land to avoid recounting.",
+        "Try keeping track of the max area during your traversal."
+      ],
+      "isPublished": true,
+      "isSubmitted": false,
+      "numLC": 695,
+      "similar": [],
+      "submissions": 9.8,
+      "testCases": [
+        {
+          "output": 5,
+          "explanation": "The island in the middle has an area of 6.",
+          "inputs": {
+            "grid": [
+              [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+              [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+              [0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ]
+          }
+        },
+        {
+          "output": 0,
+          "explanation": "No land present in the grid.",
+          "inputs": {
+            "grid": [
+              [0, 0, 0],
+              [0, 0, 0],
+              [0, 0, 0]
+            ]
+          }
+        },
+        {
+          "output": 3,
+          "explanation": "There is one island of area 3.",
+          "inputs": {
+            "grid": [
+              [1, 1, 0, 0],
+              [1, 0, 0, 1],
+              [0, 0, 0, 1]
+            ]
+          }
+        }
+      ],
+      "signature": {
+        "parameters": [{ "type": "List[List[int]]", "name": "grid" }],
+        "returnType": "int"
+      },
+      "topics": []
     }
   ]
 }

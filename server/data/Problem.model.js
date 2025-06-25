@@ -111,8 +111,8 @@ const problemSchema = new Schema({
       {
         output: Schema.Types.Mixed,
         explanation: String,
-        input: {
-          type: [Schema.Types.Mixed],
+        inputs: {
+          type: Schema.Types.Mixed,
           required: true,
         },
       },

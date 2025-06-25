@@ -24,18 +24,26 @@ String
 Stack
 68577acfff85feed0e9e4812
 
+Graph
+68579774ff85feed0e9e4813
+
+Prefix Sum
+685797f9ff85feed0e9e4814
+
 db['topics'].insertOne({
-name: "Hash Set"
+name: "Prefix Sum"
 })
 
 # Add Topics to Problem
 
 db["topics"].updateOne(
-{ _id: ObjectId("68577acfff85feed0e9e4812") },
-{ $push: { problems: ObjectId("68577bd38bef6e4a2b953e8c") } }
+{ _id: ObjectId("68579774ff85feed0e9e4813") },
+{ $push: { problems: ObjectId("685a2363e9ae18e695c7334d") } }
 )
 
 db["problems"].updateOne(
-{ _id: ObjectId("68577bd38bef6e4a2b953e8c") },
-{ $push: { topics: ObjectId("68577acfff85feed0e9e4812") } }
+{ _id: ObjectId("685a2363e9ae18e695c7334d") },
+{ $push: { topics: ObjectId("68579774ff85feed0e9e4813") } }
 )
+
+<!-- "Depth-First Search", "Breadth-First Search", "Union Find", "Matrix" -->

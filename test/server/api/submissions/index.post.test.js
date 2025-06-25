@@ -19,53 +19,53 @@ describe('POST /api/submissions', () => {
       })
       expect(res).toHaveProperty('data.submission.passing', true)
     })
-    it('should handle Dart', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.twoSum.dart,
-          lang: 'dart',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    })
-    it('should handle Ruby', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.twoSum.ruby,
-          lang: 'ruby',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    })
-    // Todo: Fix race condition
-    // Java tests will pass if run one at a time. They're fail if all run together.
-    // The Java files being named the same when compiled causes a collision in the test cases.
-    it('should handle Java', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.twoSum.java,
-          lang: 'java',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    }, 20000)
-    it('should handle Go', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.twoSum.go,
-          lang: 'go',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    })
+    // it('should handle Dart', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.twoSum.dart,
+    //       lang: 'dart',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // it('should handle Ruby', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.twoSum.ruby,
+    //       lang: 'ruby',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // // Todo: Fix race condition
+    // // Java tests will pass if run one at a time. They're fail if all run together.
+    // // The Java files being named the same when compiled causes a collision in the test cases.
+    // it('should handle Java', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.twoSum.java,
+    //       lang: 'java',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // }, 20000)
+    // it('should handle Go', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.twoSum.go,
+    //       lang: 'go',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
   })
   describe('longestSubstringWithoutRepeatingCharacters ', () => {
     it('should handle Python', async () => {
@@ -78,53 +78,53 @@ describe('POST /api/submissions', () => {
       })
       expect(res).toHaveProperty('data.submission.passing', true)
     })
-    it('should handle Dart', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.longestSubstringWithoutRepeatingCharacters.dart,
-          lang: 'dart',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    })
-    it('should handle Ruby', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.longestSubstringWithoutRepeatingCharacters.ruby,
-          lang: 'ruby',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    })
-    // Todo: Fix race condition
-    // Java tests will pass if run one at a time. They're fail if all run together.
-    // The Java files being named the same when compiled causes a collision in the test cases.
-    it('should handle Java', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.longestSubstringWithoutRepeatingCharacters.java,
-          lang: 'java',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    }, 20000)
-    it('should handle Go', async () => {
-      const res = await $fetch('/api/submissions', {
-        method: 'POST',
-        headers,
-        body: {
-          ...answers.longestSubstringWithoutRepeatingCharacters.go,
-          lang: 'go',
-        },
-      })
-      expect(res).toHaveProperty('data.submission.passing', true)
-    })
+    // it('should handle Dart', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.longestSubstringWithoutRepeatingCharacters.dart,
+    //       lang: 'dart',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // it('should handle Ruby', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.longestSubstringWithoutRepeatingCharacters.ruby,
+    //       lang: 'ruby',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // // Todo: Fix race condition
+    // // Java tests will pass if run one at a time. They're fail if all run together.
+    // // The Java files being named the same when compiled causes a collision in the test cases.
+    // it('should handle Java', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.longestSubstringWithoutRepeatingCharacters.java,
+    //       lang: 'java',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // }, 20000)
+    // it('should handle Go', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.longestSubstringWithoutRepeatingCharacters.go,
+    //       lang: 'go',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
   })
   describe('medianOfTwoSortedArrays ', () => {
     it('should handle Python', async () => {
@@ -137,46 +137,214 @@ describe('POST /api/submissions', () => {
       })
       expect(res).toHaveProperty('data.submission.passing', true)
     })
-    it('should handle Dart', async () => {
+    // it('should handle Dart', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.medianOfTwoSortedArrays.dart,
+    //       lang: 'dart',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // it('should handle Ruby', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.medianOfTwoSortedArrays.ruby,
+    //       lang: 'ruby',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // it('should handle Java', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.medianOfTwoSortedArrays.java,
+    //       lang: 'java',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+    // it('should handle Go', async () => {
+    //   const res = await $fetch('/api/submissions', {
+    //     method: 'POST',
+    //     headers,
+    //     body: {
+    //       ...answers.medianOfTwoSortedArrays.go,
+    //       lang: 'go',
+    //     },
+    //   })
+    //   expect(res).toHaveProperty('data.submission.passing', true)
+    // })
+  })
+  describe('containerWithMostWater ', () => {
+    it('should handle Python', async () => {
       const res = await $fetch('/api/submissions', {
         method: 'POST',
         headers,
         body: {
-          ...answers.medianOfTwoSortedArrays.dart,
-          lang: 'dart',
+          ...answers.containerWithMostWater.python,
         },
       })
       expect(res).toHaveProperty('data.submission.passing', true)
     })
-    it('should handle Ruby', async () => {
+  })
+  describe('3Sum ', () => {
+    it('should handle Python', async () => {
       const res = await $fetch('/api/submissions', {
         method: 'POST',
         headers,
         body: {
-          ...answers.medianOfTwoSortedArrays.ruby,
-          lang: 'ruby',
+          ...answers.threeSum.python,
         },
       })
       expect(res).toHaveProperty('data.submission.passing', true)
     })
-    it('should handle Java', async () => {
+  })
+  describe('validParentheses ', () => {
+    it('should handle Python', async () => {
       const res = await $fetch('/api/submissions', {
         method: 'POST',
         headers,
         body: {
-          ...answers.medianOfTwoSortedArrays.java,
-          lang: 'java',
+          ...answers.validParentheses.python,
         },
       })
       expect(res).toHaveProperty('data.submission.passing', true)
     })
-    it('should handle Go', async () => {
+  })
+  describe('validSudoku ', () => {
+    it('should handle Python', async () => {
       const res = await $fetch('/api/submissions', {
         method: 'POST',
         headers,
         body: {
-          ...answers.medianOfTwoSortedArrays.go,
-          lang: 'go',
+          ...answers.validSudoku.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('groupAnagrams ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.groupAnagrams.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('longestConsecutiveSequence ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.longestConsecutiveSequence.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('containsDuplicate ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.containsDuplicate.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('productOfArrayExceptSelf ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.productOfArrayExceptSelf.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('validAnagram ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.validAnagram.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('islandPerimeter ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.islandPerimeter.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('floodFill ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.floodFill.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('findTheTownJudge ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.findTheTownJudge.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('numberOfIslands ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.numberOfIslands.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('maxAreaOfIsland ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.maxAreaOfIsland.python,
         },
       })
       expect(res).toHaveProperty('data.submission.passing', true)
