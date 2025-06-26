@@ -30,20 +30,23 @@ Graph
 Prefix Sum
 685797f9ff85feed0e9e4814
 
+Dynamic Programming
+685dc659f956817861cf6f7d
+
 db['topics'].insertOne({
-name: "Prefix Sum"
+name: "Dynamic Programming"
 })
 
 # Add Topics to Problem
 
 db["topics"].updateOne(
-{ _id: ObjectId("68579774ff85feed0e9e4813") },
-{ $push: { problems: ObjectId("685a2363e9ae18e695c7334d") } }
+{ _id: ObjectId("685dc659f956817861cf6f7d") },
+{ $push: { problems: ObjectId("685dcaf71450b2609545990b") } }
 )
 
 db["problems"].updateOne(
-{ _id: ObjectId("685a2363e9ae18e695c7334d") },
-{ $push: { topics: ObjectId("68579774ff85feed0e9e4813") } }
+{ _id: ObjectId("685dcaf71450b2609545990b") },
+{ $push: { topics: ObjectId("685dc659f956817861cf6f7d") } }
 )
 
 <!-- "Depth-First Search", "Breadth-First Search", "Union Find", "Matrix" -->

@@ -80,7 +80,9 @@ export const problemInitializer = {
 from collections import defaultdict, Counter
 import heapq
 from heapq import heappop, heappush
-from typing import List\n${codeBody}\n
+from typing import List
+
+${codeBody.trim()}
 
 solution = Solution()\n
 result = solution.${functionName}(${inputs})\n

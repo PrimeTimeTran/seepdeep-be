@@ -1,19 +1,29 @@
 export function toCamelCase(string) {
+  string = string.replace(/^\d+\.\s*/, '')
+
   let cleanedString = string.replace(/[-.0-9]/g, function (match) {
     return replaceDigitsWithWords(match)
   })
+
   if (cleanedString !== string) {
     return cleanedString
   }
+
   let parts = cleanedString.split(/[_\s]/)
+
   let capitalizedParts = parts.map(function (part) {
     if (part.length > 0) {
+      if (/^[A-Z]+$/.test(part)) {
+        return part
+      }
       return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
     } else {
       return ''
     }
   })
+
   let camelCaseString = capitalizedParts.join('')
+
   if (/^[A-Za-z]/.test(string)) {
     camelCaseString =
       camelCaseString.charAt(0).toLowerCase() + camelCaseString.slice(1)

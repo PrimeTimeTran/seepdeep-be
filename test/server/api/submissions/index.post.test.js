@@ -350,4 +350,52 @@ describe('POST /api/submissions', () => {
       expect(res).toHaveProperty('data.submission.passing', true)
     })
   })
+  describe('coinChange ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.coinChange.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('houseRobber ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.houseRobber.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('houseRobberII ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.houseRobberII.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
+  describe('climbingStairs ', () => {
+    it('should handle Python', async () => {
+      const res = await $fetch('/api/submissions', {
+        method: 'POST',
+        headers,
+        body: {
+          ...answers.climbingStairs.python,
+        },
+      })
+      expect(res).toHaveProperty('data.submission.passing', true)
+    })
+  })
 })

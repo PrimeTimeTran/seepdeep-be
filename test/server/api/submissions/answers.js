@@ -207,4 +207,44 @@ export const answers = {
       problem: '685a2363e9ae18e695c7334d',
     },
   },
+  coinChange: {
+    python: {
+      lang: 'python',
+      body: 'class Solution:\n    def coinChange(self, coins: List[int], amount: int) -> int:\n        dp = [amount+1] * (amount+1)\n        dp[0] = 0\n        for a in range(1, amount+1):\n            for c in coins:\n                if a - c >= 0:\n                    dp[a] = min(dp[a], dp[a-c]+1)\n        return dp[amount] if dp[amount] != amount+1 else -1\n        \n\n\n\n\n\n\n\n\n\n\n',
+      lang: 'python',
+      problem: '685dc624385b880d5b00e32d',
+    },
+  },
+  houseRobber: {
+    python: {
+      lang: 'python',
+      body: 'class Solution:\n    def houseRobber(self, nums: List[int]) -> int:\n        prev = cur = 0\n        for n in nums:\n            prev, cur = max(prev, cur+n), prev\n        return prev',
+      lang: 'python',
+      problem: '685dc6ec375c9b62781266b2',
+    },
+  },
+  climbingStairs: {
+    python: {
+      lang: 'python',
+      body: 'class Solution:\n    def climbingStairs(self, n: int, store = { 1:1, 2:2 }) -> int:\n        if n not in store:\n            store[n] = self.climbingStairs(n-1) + self.climbingStairs(n-2)\n        return store[n]\n\n\n\n\n\n\n\n\n\n\n',
+      lang: 'python',
+      problem: '685dcaf71450b2609545990b',
+    },
+  },
+  houseRobberII: {
+    python: {
+      lang: 'python',
+      body: 'class Solution:\n    def houseRobberII(self, nums: List[int]) -> int:\n        def help(nums: List[int]) -> int:\n            prev = cur = 0\n            for n in nums:\n                prev, cur = max(prev, cur+n), prev\n            return prev\n        return max(help(nums[1:]), help(nums[:-1]), nums[0])\n\n\n\n\n\n\n\n\n\n\n',
+      lang: 'python',
+      problem: '685dc98a279f5c20744d4d5d',
+    },
+  },
+  climbingStairs: {
+    python: {
+      lang: 'python',
+      body: 'class Solution:\n    def climbingStairs(self, n: int, store = { 1:1, 2:2 }) -> int:\n        if n not in store:\n            store[n] = self.climbingStairs(n-1) + self.climbingStairs(n-2)\n        return store[n]\n\n\n\n\n\n\n\n\n\n\n',
+      lang: 'python',
+      problem: '685dcaf71450b2609545990b',
+    },
+  },
 }
