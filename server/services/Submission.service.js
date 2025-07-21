@@ -130,11 +130,9 @@ export default class SubmissionService {
         // Todo: Fix race condition in testing environment
         const binDir = path.join(defaultScriptPath, 'bin')
         fileName = path.join(defaultScriptPath, fileName)
-        // this.fileNames.push(fileName)
         let compileCode = `javac -d ${binDir} ${fileName}`
         this.scriptRun(compileCode)
         let runCode = `java -cp /tmp/scripts/bin Solution${idx}`
-        // this.fileNames.push(`/tmp/scripts/bin/Solution${idx}.class`)
         this.scriptRun(runCode, idx, callback)
       } else {
         this.scriptRun(command, idx, callback)
@@ -166,13 +164,11 @@ export default class SubmissionService {
     })
   }
 
-  // Extract function to a "functions" service...?
   normalizeArray(arr) {
     return arr
       .map((inner) => [...inner].sort())
       .sort((a, b) => a.join('').localeCompare(b.join('')))
   }
-  // Extract function to a "functions" service...?
   isArrayOfArrays(arr) {
     return Array.isArray(arr) && arr.every((inner) => Array.isArray(inner))
   }
@@ -226,16 +222,6 @@ export default class SubmissionService {
     const onDone = async () => {
       await this.submission.save()
       await this.solveService.updateSolved(this.submission.problem.toString())
-      // logger.info({ msg: this.fileNames, output: this.fileNames })
-      // this.fileNames.forEach((fileName) => {
-      //   fs.unlink(fileName, (err) => {
-      //     if (err) {
-      //       console.warn(`Failed to delete ${fileName}:`, err.message)
-      //     } else {
-      //       console.log(`Deleted: ${fileName}`)
-      //     }
-      //   })
-      // })
     }
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
