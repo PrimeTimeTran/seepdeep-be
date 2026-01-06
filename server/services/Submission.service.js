@@ -8,7 +8,7 @@ import {
   runCommands,
   problemInitializer,
   makeMethodNameWithLanguage,
-} from './helpers.js'
+} from './languageUtils.js'
 
 import SolveService from './Solve.service.ts'
 

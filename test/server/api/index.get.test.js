@@ -6,7 +6,7 @@ describe('GET /api', () => {
     const mockEvent = {}
     const response = await handler(mockEvent)
     expect(response).toEqual({
-      wizards: ['Harry', 'Hermione', 'Ron'],
+      wizards: ['Harry', 'Hermione', 'Ron', 'Draco', 'Neville'],
     })
   })
 })

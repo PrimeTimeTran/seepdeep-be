@@ -32,17 +32,16 @@ export function toCamelCase(string) {
   return camelCaseString
 }
 
-export function toSnakeCase(string) {
-  let cleanedString = string.replace(/[-.0-9]/g, function (match) {
-    return replaceDigitsWithWords(match)
-  })
-  if (cleanedString !== string) {
-    return cleanedString
-  }
-  let parts = cleanedString.split(/[_\s]/)
-  let snakeCaseString = parts.join('_').toLowerCase()
-
-  return snakeCaseString
+export function toSnakeCase(str) {
+  return (
+    str
+      // insert _ before uppercase letters preceded by lowercase letters or numbers
+      .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+      // insert _ before sequences of uppercase letters followed by lowercase (for all caps acronyms)
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+      .replace(/[\s\-]+/g, '_') // spaces and dashes to _
+      .toLowerCase()
+  )
 }
 
 function replaceDigitsWithWords(input) {

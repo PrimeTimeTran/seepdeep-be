@@ -10,8 +10,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@services': path.resolve('./server/services'),
-      '@api': path.resolve('./server/api'),
+      '@': path.resolve(__dirname), // root of your project
     },
+    extensions: ['.js', '.ts'], // add these!
   },
 })
