@@ -14,8 +14,10 @@ const dbConnectionStringUri = process.env.MONGODB_URI
 // })
 
 export default defineNuxtConfig({
+  compatibilityDate: '2026-01-07',
   sourcemap: { server: true, client: false },
   nitro: {
+    logLevel: 'error', // only show errors
     prerender: {
       failOnError: false,
       routes: ['/', '/articles/**/**/**', '/theme/**'],
@@ -69,7 +71,9 @@ export default defineNuxtConfig({
     experimental: {
       search: true,
     },
-    documentDriven: true,
+    documentDriven: {
+      injectPage: false, // turn off injectPage because we are using our own [...slug].vue
+    },
     highlight: {
       preload: [
         'dart',
@@ -136,6 +140,22 @@ export default defineNuxtConfig({
       authDomain: 'seepdeep-dev.firebaseapp.com',
       apiKey: 'AIzaSyC_H8RdeUmT-5sms4ai23E6nLe_nvFghuA',
       appId: '1:870966333694:web:9d5168051bd506074155af',
+    },
+  },
+  vite: {
+    optimizeDeps: {
+      include: [
+        'vuedraggable',
+        '@formkit/i18n',
+        'vue3-toastify',
+        '@fortawesome/fontawesome-svg-core',
+        'v-calendar',
+      ],
+    },
+  },
+  mdc: {
+    highlight: {
+      langs: ['javascript', 'python', 'ts', 'vue'],
     },
   },
 })

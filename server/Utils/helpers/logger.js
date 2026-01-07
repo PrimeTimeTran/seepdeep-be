@@ -10,7 +10,7 @@ const stream = pretty({
 const formatters = {
   log(obj) {
     return obj
-  }
+  },
 }
 
 // trace, debug, info, warn, error, fatal
@@ -19,17 +19,13 @@ export const logger = pino({
   transport: {
     target: 'pino-pretty',
     options: {
-      colorize: true
-    }
+      colorize: true,
+    },
   },
   formatters: formatters,
-  stream
+  stream,
 })
 
 export const print = (obj) => {
-  if (typeof obj === 'String') {
-    console.log(colorize(obj, { pretty: true }))
-  } else {
-    console.log(colorize(obj, { pretty: true }))
-  }
+  console.log(colorize(obj, { pretty: true }))
 }
