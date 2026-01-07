@@ -76,14 +76,14 @@ const zUser = z.object({
   streak: streakSchema,
   createdAt: z.date().transform((value: any) => value || new Date()),
   updatedAt: z.date().transform((value: any) => value || new Date()),
-  posts: z.array(zId.describe('ObjectId:Post')),
-  roles: z.array(zId.describe('ObjectId:Role')),
-  solves: z.array(zId.describe('ObjectId:Solve')),
-  contests: z.array(zId.describe('ObjectId:Contest')),
-  comments: z.array(zId.describe('ObjectId:Comment')),
-  articles: z.array(zId.describe('ObjectId:Article')),
-  problems: z.array(zId.describe('ObjectId:Problem')),
-  submissions: z.array(zId.describe('ObjectId:Submission')),
+  posts: z.array(zId('Post')),
+  roles: z.array(zId('Role')),
+  solves: z.array(zId('Solve')),
+  contests: z.array(zId('Contest')),
+  comments: z.array(zId('Comment')),
+  articles: z.array(zId('Article')),
+  problems: z.array(zId('Problem')),
+  submissions: z.array(zId('Submission')),
 })
 
 type StreakType = z.infer<typeof streakSchema>

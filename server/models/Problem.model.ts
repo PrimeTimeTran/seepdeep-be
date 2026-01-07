@@ -64,7 +64,7 @@ const zProblem = z.object({
   submissions: z.number(),
   testCases: z.array(zTestCases),
   title: z.string(),
-  topics: z.array(zId.describe('ObjectId:Topic')),
+  topics: z.array(zId('Topic')),
   id: z.string(),
   signature: zSignature,
   startCode: z.string().nonempty(),

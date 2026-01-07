@@ -18,8 +18,8 @@ export enum Mastery {
 }
 
 const zSolve = z.object({
-  user: zId.describe('ObjectId:User'),
-  problem: zId.describe('ObjectId:Problem'),
+  user: zId('User'),
+  problem: zId('Problem'),
   countEncountered: z.number().default(1),
   countNovice: z.number().default(0),
   countApprentice: z.number().default(0),

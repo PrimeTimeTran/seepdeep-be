@@ -28,7 +28,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@vueuse/core": "^10.7.0",
     "@vueuse/firebase": "^10.7.0",
-    "@zodyac/zod-mongoose": "^1.1.2",
+    "@zodyac/zod-mongoose": "^4.2.2",
     "animated-scroll-to": "^2.3.0",
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
