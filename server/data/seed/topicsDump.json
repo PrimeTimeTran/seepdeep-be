@@ -1,0 +1,130 @@
+[
+  {
+    "_id": "695dbffd8ff60c2d341353b3",
+    "name": "String"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353b5",
+    "name": "Array"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353b7",
+    "name": "Hash Table"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353b9",
+    "name": "Sorting"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353bb",
+    "name": "Binary Search"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353bd",
+    "name": "Topological Sort"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353bf",
+    "name": "Two Pointers"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353c1",
+    "name": "Sliding Window"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353c3",
+    "name": "Linked List"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353c5",
+    "name": "Matrix"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353c7",
+    "name": "Trees"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353c9",
+    "name": "Prefix Sum"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353cb",
+    "name": "Stack"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353cd",
+    "name": "Queue"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353cf",
+    "name": "Priority Queue"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353d1",
+    "name": "Back Tracking"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353d3",
+    "name": "Heap"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353d5",
+    "name": "Graph"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353d7",
+    "name": "DFS"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353d9",
+    "name": "BFS"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353db",
+    "name": "UF"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353dd",
+    "name": "DP"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353df",
+    "name": "Interval"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353e1",
+    "name": "Greedy"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353e3",
+    "name": "Advanced Graph"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353e5",
+    "name": "DP 2"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353e7",
+    "name": "Binary"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353e9",
+    "name": "Trie"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353eb",
+    "name": "Math"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353ed",
+    "name": "Database"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353ef",
+    "name": "SQL"
+  },
+  {
+    "_id": "695dbffd8ff60c2d341353f1",
+    "name": "Pandas"
+  }
+]

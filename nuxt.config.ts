@@ -6,8 +6,7 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const dbConnectionStringUri =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/turboship'
+const dbConnectionStringUri = process.env.MONGODB_URI
 
 // console.log({
 //   dbConnectionStringUri,

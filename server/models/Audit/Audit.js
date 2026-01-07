@@ -1,5 +1,10 @@
 import { closure } from '../../middleware/04.audit.global.js'
 
+// Note:
+// This has to be manually imported when running seeds.
+// It does cause other issues when running the server though
+// import { AuditLog } from '../Audit.model.js'
+
 export class Auditor {
   static async createEntry(modelName, action, user, doc) {
     try {

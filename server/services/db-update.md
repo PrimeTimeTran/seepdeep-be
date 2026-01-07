@@ -33,20 +33,22 @@ Prefix Sum
 Dynamic Programming
 685dc659f956817861cf6f7d
 
+```
 db['topics'].insertOne({
-name: "Dynamic Programming"
+  name: "Dynamic Programming"
 })
+```
 
 # Add Topics to Problem
 
+```mongo
 db["topics"].updateOne(
-{ _id: ObjectId("685dc659f956817861cf6f7d") },
-{ $push: { problems: ObjectId("685dcaf71450b2609545990b") } }
+  { _id: ObjectId("685dc659f956817861cf6f7d") },
+  { $push: { problems: ObjectId("685dcaf71450b2609545990b") } }
 )
 
 db["problems"].updateOne(
-{ _id: ObjectId("685dcaf71450b2609545990b") },
-{ $push: { topics: ObjectId("685dc659f956817861cf6f7d") } }
+  { _id: ObjectId("685dcaf71450b2609545990b") },
+  { $push: { topics: ObjectId("685dc659f956817861cf6f7d") } }
 )
-
-<!-- "Depth-First Search", "Breadth-First Search", "Union Find", "Matrix" -->
+```

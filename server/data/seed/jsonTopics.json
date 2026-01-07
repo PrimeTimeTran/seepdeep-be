@@ -1,0 +1,100 @@
+{
+  "data": [
+    {
+      "name": "String"
+    },
+    {
+      "name": "Array"
+    },
+    {
+      "name": "Hash Table"
+    },
+    {
+      "name": "Sorting"
+    },
+    {
+      "name": "Binary Search"
+    },
+    {
+      "name": "Topological Sort"
+    },
+    {
+      "name": "Two Pointers"
+    },
+    {
+      "name": "Sliding Window"
+    },
+    {
+      "name": "Linked List"
+    },
+    {
+      "name": "Matrix"
+    },
+    {
+      "name": "Trees"
+    },
+    {
+      "name": "Prefix Sum"
+    },
+    {
+      "name": "Stack"
+    },
+    {
+      "name": "Queue"
+    },
+    {
+      "name": "Priority Queue"
+    },
+    {
+      "name": "Back Tracking"
+    },
+    {
+      "name": "Heap"
+    },
+    {
+      "name": "Graph"
+    },
+    {
+      "name": "DFS"
+    },
+    {
+      "name": "BFS"
+    },
+    {
+      "name": "UF"
+    },
+    {
+      "name": "DP"
+    },
+    {
+      "name": "Interval"
+    },
+    {
+      "name": "Greedy"
+    },
+    {
+      "name": "Advanced Graph"
+    },
+    {
+      "name": "DP 2"
+    },
+    {
+      "name": "Binary"
+    },
+    {
+      "name": "Trie"
+    },
+    {
+      "name": "Math"
+    },
+    {
+      "name": "Database"
+    },
+    {
+      "name": "SQL"
+    },
+    {
+      "name": "Pandas"
+    }
+  ]
+}

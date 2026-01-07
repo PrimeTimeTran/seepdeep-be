@@ -10,8 +10,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname), // root of your project
+      '@': path.resolve(__dirname),
     },
-    extensions: ['.js', '.ts'], // add these!
+    extensions: ['.js', '.ts'],
   },
 })

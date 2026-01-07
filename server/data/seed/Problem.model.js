@@ -1,5 +1,8 @@
 import mongoose, { Schema } from 'mongoose'
 
+// import { Auditor } from '../../models/Audit/Audit.js'
+import { Auditor } from '../../models/Audit/Audit.js'
+
 // Problem Types:
 
 // Potential domains...?
