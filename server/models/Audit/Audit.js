@@ -8,8 +8,10 @@ import { closure } from '../../middleware/04.audit.global.js'
 export class Auditor {
   static async createEntry(modelName, action, user, doc) {
     try {
+      const actorId = context?.user?.id ?? null
+
       const auditLogEntry = await new AuditLog({
-        actorId: user.id,
+        actorId: actorId,
         actorEmail: user.email,
         actorFirstName: user.firstName,
         action,

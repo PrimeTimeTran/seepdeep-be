@@ -8,7 +8,7 @@ export function captureEvent(val) {
     const user = {
       id: event?.user?._id || '1',
       firstName: event?.user?.firstName || 'cleverprogrammer',
-      email: event?.user?.email || 'dev@ltran.net',
+      email: event?.user?.email || 'primetimetran@gmail.com',
     }
     return user
   }

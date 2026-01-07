@@ -4,7 +4,7 @@ interface token {
 }
 
 export default defineEventHandler(async (e) => {
-  const user: token = jwtVerify(e.context.token) as token
+  const user: token = jwtVerify(e?.context?.token) as token
   if (user) {
     const id = user.userId
     const me = await User.findById(id).exec()
@@ -13,6 +13,6 @@ export default defineEventHandler(async (e) => {
     })
     e.context.user = me
   } else {
-    logger.warn({ msg: 'Unauthenticated request' })
+    logger.warn({ msg: 'Unauthenticated request... Just Saying' })
   }
 })
