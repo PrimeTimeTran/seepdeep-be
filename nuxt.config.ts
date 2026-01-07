@@ -14,6 +14,9 @@ const dbConnectionStringUri = process.env.MONGODB_URI
 // })
 
 export default defineNuxtConfig({
+  experimental: {
+    oxc: false,
+  },
   compatibilityDate: '2026-01-07',
   sourcemap: { server: true, client: false },
   nitro: {

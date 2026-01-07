@@ -38,7 +38,7 @@ export default class SubmissionService {
     this.executionCount = 0
     this.user = e.context.user
     this.totalExecutions = null
-    this.solveService = new SolveService(e, body, this.language)
+    // this.solveService = new SolveService(e, body, this.language)
   }
 
   async setup() {
@@ -221,7 +221,7 @@ export default class SubmissionService {
   async onComplete() {
     const onDone = async () => {
       await this.submission.save()
-      await this.solveService.updateSolved(this.submission.problem.toString())
+      // await this.solveService.updateSolved(this.submission.problem.toString())
     }
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {

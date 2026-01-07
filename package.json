@@ -107,5 +107,8 @@
     "test": "VITEST_NUXT_SERVER=true vitest",
     "test_generators": "VITEST_NUXT_SERVER=false npx vitest run test/server/services"
   },
+  "overrides": {
+    "fuse.js": "6.6.2"
+  },
   "type": "module"
 }
