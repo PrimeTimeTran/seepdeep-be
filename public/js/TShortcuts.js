@@ -12,7 +12,7 @@ function findParentWithClass(element, className) {
 }
 
 class TurboShortcuts {
-  static shortcuts = 'alt+r, alt+m, alt+d, alt+l,alt+s'
+  static shortcuts = 'alt+r, alt+m, alt+d, alt+l, alt+s, alt+p'
   static items = {
     'alt+r': function () {
       document.getElementById('tRightDrawerToggle').click()
@@ -23,10 +23,10 @@ class TurboShortcuts {
     'alt+m': function () {
       document.getElementById('tModalToggle').click()
     },
-    'alt+d': function () {
+    'alt+p': function () {
       document.getElementById('tThemeToggle').click()
     },
-    'alt+s': function () {
+    'alt+d': function (e) {
       document.getElementById('tSampleThemes').click()
     },
   }
