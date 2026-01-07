@@ -1,8 +1,10 @@
+# Use Node.js LTS on Debian Bullseye
 FROM node:18-bullseye
 
+# Set working directory
 WORKDIR /usr/src/app
 
-# System deps (single layer)
+# System dependencies (single layer for caching)
 RUN apt-get update && apt-get install -y \
   git \
   python3 \
@@ -14,23 +16,14 @@ RUN apt-get update && apt-get install -y \
   unzip \
   && rm -rf /var/lib/apt/lists/*
 
-# Global tools
+ENV NUXT_EXPERIMENTAL_OXC=false
 RUN npm install -g typescript
-
-# Copy deps first for better caching
 COPY package.json package-lock.json ./
-
-# Deterministic install (important for Nuxt + native modules)
-RUN npm ci
-
-# Copy rest of the app
+RUN npm install
 COPY . .
-
-RUN chmod +x ./scripts/start.sh
-
-# Build Nuxt
+RUN npx nuxt prepare
 RUN npm run build
-
+RUN chmod +x ./scripts/start.sh
 ARG HOST
 ARG HOST_URL
 ARG MONGODB_URI

@@ -1,6 +1,6 @@
 <script setup>
 import _ from 'lodash'
-import { Icon } from '#components'
+import { Icon } from '@iconify/vue'
 import { useEventBus } from '@vueuse/core'
 const ArtIcon = h(Icon, { name: 'map:art-gallery', color: 'grey' })
 const ArtIcon2 = h(Icon, { name: 'icon-park-solid:components', color: 'grey' })

@@ -3,7 +3,7 @@
 // https://fontawesome.com/icons
 // https://vue-hero-icons.netlify.app/
 // https://icon-sets.iconify.design/ei/page-2.html
-import { Icon } from '#components'
+import { Icon } from '@iconify/vue'
 definePageMeta({
   layout: 't-main-layout',
   layoutTransition: true,

@@ -1,5 +1,5 @@
 <script setup>
-import { Icon } from '#components'
+import { Icon } from '@iconify/vue'
 import {
   Bars4Icon,
   BellIcon,
@@ -9,7 +9,6 @@ import {
   PuzzlePieceIcon,
 } from '@heroicons/vue/20/solid'
 import { useEventBus } from '@vueuse/core'
-
 const ArtIcon = h(Icon, { name: 'map:art-gallery', color: 'grey' })
 const ArtIcon2 = h(Icon, { name: 'icon-park-solid:components', color: 'grey' })
 const state = reactive({
