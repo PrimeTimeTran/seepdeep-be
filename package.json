@@ -88,7 +88,7 @@
     "tailwindcss": "^3.3.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
-    "vite": "^7.3.0",
+    "vite": "^7.2.7",
     "vitest": "^3.2.4",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",
@@ -104,7 +104,6 @@
     "seed": "npx dotenv -e .env.local -- node server/data/seed/seed",
     "generate": "nuxt generate",
     "nodemonDev": "nodemon --watch 'nuxt.config.js' --exec 'nuxt dev'",
-    "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
     "test": "VITEST_NUXT_SERVER=true vitest",
     "test_generators": "VITES T_NUXT_SERVER=false npx vitest run test/server/services"
